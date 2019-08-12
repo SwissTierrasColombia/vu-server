@@ -1,0 +1,6 @@
+definitions:
+  Error:
+    properties:
+      message:
+        type: string
+        description: Description error

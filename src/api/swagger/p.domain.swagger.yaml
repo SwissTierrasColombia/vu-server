@@ -1,0 +1,15 @@
+/api/p/domains/types-data:
+  x-swagger-router-controller: p.domain.controller
+  get:
+    operationId: getTypesData
+    tags:
+      - Domains
+    summary: Get types data
+    description: Get types data
+    responses:
+      200:
+        description: Get types data
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

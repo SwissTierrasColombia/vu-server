@@ -1,0 +1,7 @@
+{
+    "todo": {
+        "title_required": "The title is required.",
+        "description_required": "The description is required.",
+        "tasks_pending": "The user has three tasks pending."
+    }
+}

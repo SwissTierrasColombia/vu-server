@@ -1,0 +1,15 @@
+/api/p/steps:
+  x-swagger-router-controller: p.step.controller
+  get:
+    operationId: getSteps
+    tags:
+      - Steps
+    summary: Get steps
+    description: Get steps
+    responses:
+      200:
+        description: Get steps
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

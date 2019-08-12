@@ -1,0 +1,7 @@
+{
+    "todo": {
+        "title_required": "El título es requerido.",
+        "description_required": "La descripción es requerida.",
+        "tasks_pending": "El usuario tiene tres tareas pendientes."
+    }
+}
