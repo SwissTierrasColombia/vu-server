@@ -7,10 +7,15 @@
             "process_role_required": "El rol es requerido.",
             "process_not_exists": "El proceso no existe.",
             "process_role_registered": "El rol ya está registrado en el proceso.",
+            "process_step_registered": "El paso ya está registrado en el proceso.",
             "roles": {
                 "role_required": "El rol es requerido.",
                 "role_invalid": "El rol es inválido.",
                 "role_not_exists": "El rol no existe."
+            },
+            "steps": {
+                "step_required": "El paso es requerido.",
+                "step_invalid": "El paso es inválido."
             }
         }
     }

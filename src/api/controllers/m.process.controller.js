@@ -9,6 +9,7 @@ import ProcessImplementation from '../business/manage/process/process.implementa
 // Transformers
 import { mProcessTransformer } from '../transformers/m.process.transformer';
 import { mRoleTransformer } from '../transformers/m.role.transformer';
+import { mStepTransformer } from '../transformers/m.step.transformer';
 
 // create process
 export async function createProcess(req, res) {
@@ -167,6 +168,80 @@ export async function updateRoleFromProcess(req, res) {
 
         const roles = await ProcessImplementation.iGetRolesByProcess(processId);
         return result(res, 200, mRoleTransformer.transformer(roles));
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// add step to process
+export async function addStepToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate step id
+        req.checkBody("step", getMessage('m.process.steps.step_required', language)).notEmpty();
+        req.checkBody("step", getMessage('m.process.steps.step_invalid', language)).isMongoId();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const pStepId = req.body.step;
+
+        await ProcessImplementation.iAddStepToProcess(processId, pStepId);
+
+        const steps = await ProcessImplementation.iGetStepsByProcess(processId);
+        return result(res, 200, mStepTransformer.transformer(steps));
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+
+// get roles by process
+export async function getStepsFromProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+
+        const steps = await ProcessImplementation.iGetStepsByProcess(processId);
+        return result(res, 200, mStepTransformer.transformer(steps));
     } catch (exception) {
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });

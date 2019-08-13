@@ -110,3 +110,50 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+
+/api/m/processes/{process}/steps:
+  x-swagger-router-controller: m.process.controller
+  post:
+    operationId: addStepToProcess
+    tags:
+      - M/Processes
+    summary: Add step to process
+    description: Add step to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: step
+        in: formData
+        description: P/Step ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get steps from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getStepsFromProcess
+    tags:
+      - M/Processes
+    summary: Get steps from process
+    description: Get steps from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get steps from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

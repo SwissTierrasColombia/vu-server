@@ -24,8 +24,8 @@ const MStepSchema = new Schema({
         default: Date.now
     }
 
-}, { collection: 'p_steps' });
+}, { collection: 'm_steps' });
 
-//require('./statics/p.step.static').default(MStepSchema);
+require('./statics/m.step.static').default(MStepSchema);
 
 export default mongoose.model('MStepModel', MStepSchema);
