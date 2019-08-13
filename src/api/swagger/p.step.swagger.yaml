@@ -3,7 +3,7 @@
   get:
     operationId: getSteps
     tags:
-      - Steps
+      - P/Steps
     summary: Get steps
     description: Get steps
     responses:

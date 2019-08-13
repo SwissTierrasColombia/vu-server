@@ -1,7 +1,17 @@
 {
-    "todo": {
-        "title_required": "El título es requerido.",
-        "description_required": "La descripción es requerida.",
-        "tasks_pending": "El usuario tiene tres tareas pendientes."
+    "m": {
+        "process": {
+            "process_name_required": "El nombre del proceso es requerido.",
+            "process_required": "El proceso es requerido.",
+            "process_invalid": "El proceso es inválido.",
+            "process_role_required": "El rol es requerido.",
+            "process_not_exists": "El proceso no existe.",
+            "process_role_registered": "El rol ya está registrado en el proceso.",
+            "roles": {
+                "role_required": "El rol es requerido.",
+                "role_invalid": "El rol es inválido.",
+                "role_not_exists": "El rol no existe."
+            }
+        }
     }
 }

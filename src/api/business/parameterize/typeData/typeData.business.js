@@ -3,11 +3,7 @@ import PTypeDataModel from '../../../models/p.typesData.model';
 
 export default class TypeDataBusiness {
 
-    constructor() {
-
-    }
-
-    static async getTypesData() {
+    static async getAllTypesData() {
         return await PTypeDataModel.getTypesData();
     }
 

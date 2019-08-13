@@ -3,7 +3,7 @@
   get:
     operationId: getTypesData
     tags:
-      - Domains
+      - P/Domains
     summary: Get types data
     description: Get types data
     responses:

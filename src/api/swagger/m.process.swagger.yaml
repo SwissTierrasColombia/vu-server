@@ -1,0 +1,112 @@
+/api/m/processes:
+  x-swagger-router-controller: m.process.controller
+  post:
+    operationId: createProcess
+    tags:
+      - M/Processes
+    summary: Create a process
+    description: Create a process
+    parameters:
+      - name: processName
+        in: formData
+        type: string
+        description: Process name
+        required: true
+    responses:
+      201:
+        description: Create a process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getProcesses
+    tags:
+      - M/Processes
+    summary: Get processes
+    description: Get processes
+    responses:
+      200:
+        description: Get processes
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/roles:
+  x-swagger-router-controller: m.process.controller
+  post:
+    operationId: addRoleToProcess
+    tags:
+      - M/Processes
+    summary: Add role to process
+    description: Add role to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: role
+        in: formData
+        description: Role ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get roles from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getRolesByProcess
+    tags:
+      - M/Processes
+    summary: Get roles from process
+    description: Get roles from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get roles from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/roles/{role}:
+  x-swagger-router-controller: m.process.controller
+  put:
+    operationId: updateRoleFromProcess
+    tags:
+      - M/Processes
+    summary: Update role from process
+    description: Update role from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: role
+        in: path
+        description: Role ID
+        required: true
+        type: string
+      - name: name
+        in: formData
+        description: Role name
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get roles from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

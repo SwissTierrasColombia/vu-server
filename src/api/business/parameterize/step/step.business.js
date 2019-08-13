@@ -3,11 +3,7 @@ import PStepModel from '../../../models/p.step.model';
 
 export default class StepBusiness {
 
-    constructor() {
-
-    }
-
-    static async getSteps() {
+    static async getAllSteps() {
         return await PStepModel.getSteps();
     }
 

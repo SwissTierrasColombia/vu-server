@@ -3,7 +3,7 @@ import { result, error } from 'express-easy-helper';
 import { getMessage } from '../../lib/helpers/locales';
 
 // Business
-import TypeDataBusiness from '../business/parameterize/domains/typeData.business';
+import TypeDataImplementation from '../business/parameterize/typeData/typeData.implementation';
 
 // Transformers
 import { pTypeDataTransformer } from '../transformers/p.typeData.transformer';
@@ -12,7 +12,7 @@ import { pTypeDataTransformer } from '../transformers/p.typeData.transformer';
 export async function getTypesData(req, res) {
 
     try {
-        const typesData = await TypeDataBusiness.getTypesData();
+        const typesData = await TypeDataImplementation.getTypesData();
         return result(res, 200, pTypeDataTransformer.transformer(typesData));
     } catch (exception) {
         if (exception.codeHttp && exception.key) {

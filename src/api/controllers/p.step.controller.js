@@ -3,7 +3,7 @@ import { result, error } from 'express-easy-helper';
 import { getMessage } from '../../lib/helpers/locales';
 
 // Business
-import StepBusiness from '../business/parameterize/step/step.business';
+import StepImplementation from '../business/parameterize/step/step.implementation';
 
 // Transformers
 import { pStepTransformer } from '../transformers/p.step.transformer';
@@ -12,7 +12,7 @@ import { pStepTransformer } from '../transformers/p.step.transformer';
 export async function getSteps(req, res) {
 
     try {
-        const steps = await StepBusiness.getSteps();
+        const steps = await StepImplementation.getSteps();
         return result(res, 200, pStepTransformer.transformer(steps));
     } catch (exception) {
         if (exception.codeHttp && exception.key) {
