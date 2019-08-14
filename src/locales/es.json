@@ -15,8 +15,26 @@
             },
             "steps": {
                 "step_required": "El paso es requerido.",
-                "step_invalid": "El paso es inválido."
+                "step_invalid": "El paso es inválido.",
+                "step_field_registered": "El campo ya ha sido registrado en el paso.",
+                "step_not_exists": "El paso no existe."
+            },
+            "fields": {
+                "field_name_required": "El nombre del campo es requerido.",
+                "field_is_required_required": "Se debe especificar si el campo es requerido.",
+                "field_permissions_required": "Se deben especificar los permisos de los campos con respecto a los roles registrados.",
+                "field_type_required": "El tipo del campo es requerido.",
+                "field_type_invalid": "El tipo del campo es inválido.",
+                "field_name_invalid": "El nombre del campo es inválido.",
+                "field_required": "El campo es requerido.",
+                "field_invalid": "El campo es inválido.",
+                "field_not_exists": "El campo no existe."
             }
+        }
+    },
+    "p": {
+        "types_data": {
+            "type_not_exists": "El tipo de dato no existe."
         }
     }
 }

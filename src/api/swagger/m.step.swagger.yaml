@@ -1,0 +1,117 @@
+/api/m/steps/{step}/fields:
+  x-swagger-router-controller: m.step.controller
+  post:
+    operationId: addFieldToStep
+    tags:
+      - M/Steps
+    summary: Add field to step
+    description: Add field to step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: field
+        in: formData
+        type: string
+        description: Name field
+        required: true
+      - name: description
+        in: formData
+        type: string
+        description: Description field
+        required: false
+      - name: type
+        in: formData
+        type: string
+        description: Type field
+        required: true
+      - name: isRequired
+        in: formData
+        type: boolean
+        description: The field is required?
+        required: true
+      - name: permissions
+        description: Permissions
+        in: formData
+        type: array
+        items: {}
+    responses:
+      200:
+        description: Create new field
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getFieldsFromStep
+    tags:
+      - M/Steps
+    summary: Get fields from step
+    description: Get fields from step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+    responses:
+      200:
+        description: Get fields from step
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/steps/{step}/fields/{field}:
+  x-swagger-router-controller: m.step.controller
+  put:
+    operationId: updateFieldFromStep
+    tags:
+      - M/Steps
+    summary: Update field from step
+    description: Update field from step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: field
+        in: path
+        type: string
+        description: Field ID
+        required: true
+      - name: nameField
+        in: formData
+        type: string
+        description: Field name
+        required: true
+      - name: description
+        in: formData
+        type: string
+        description: Description field
+        required: false
+      - name: type
+        in: formData
+        type: string
+        description: Type field
+        required: true
+      - name: isRequired
+        in: formData
+        type: boolean
+        description: The field is required?
+        required: true
+      - name: permissions
+        description: Permissions
+        in: formData
+        type: array
+        items: {}
+    responses:
+      200:
+        description: Create new field
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

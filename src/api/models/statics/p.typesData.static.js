@@ -7,7 +7,12 @@ export default (PTypesDataModel) => {
 
         async getTypesData() {
             return await this.find();
-        }
+        },
+
+        async getTypeDataById(typeDataId) {
+            return await this.findById(typeDataId);
+        },
+
 
     }
 

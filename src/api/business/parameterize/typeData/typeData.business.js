@@ -7,5 +7,13 @@ export default class TypeDataBusiness {
         return await PTypeDataModel.getTypesData();
     }
 
+    static async getTypeDataById(typeDataId) {
+        try {
+            return await PTypeDataModel.getTypeDataById(typeDataId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 
 }

@@ -22,6 +22,10 @@ export default (MStepModel) => {
             return await this.find({ process: processId });
         },
 
+        async getStepById(stepId) {
+            return await this.findById(stepId);
+        },
+
     }
 
 };

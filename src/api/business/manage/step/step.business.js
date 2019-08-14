@@ -15,4 +15,12 @@ export default class StepBusiness {
         return await MStepModel.getStepsByProcess(processId);
     }
 
+    static async getStepById(stepId) {
+        try {
+            return await MStepModel.getStepById(stepId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }
