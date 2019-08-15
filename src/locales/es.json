@@ -28,7 +28,8 @@
                 "field_name_invalid": "El nombre del campo es inválido.",
                 "field_required": "El campo es requerido.",
                 "field_invalid": "El campo es inválido.",
-                "field_not_exists": "El campo no existe."
+                "field_not_exists": "El campo no existe.",
+                "field_not_belongs_to_step": "El campo no pertenece al paso."
             }
         }
     },

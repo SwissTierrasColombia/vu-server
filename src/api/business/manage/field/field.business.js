@@ -22,4 +22,13 @@ export default class FieldBusiness {
     static async updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId) {
         return await MFieldModel.updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId);
     }
+
+    static async removeFieldById(mFieldId) {
+        try {
+            return await MFieldModel.removeField(mFieldId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }

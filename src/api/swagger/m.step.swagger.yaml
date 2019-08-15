@@ -115,3 +115,27 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+  delete:
+    operationId: removeFieldFromStep
+    tags:
+      - M/Steps
+    summary: Remove field from step
+    description: Remove field from step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: field
+        in: path
+        type: string
+        description: Field ID
+        required: true
+    responses:
+      204:
+        description: Remove new field
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

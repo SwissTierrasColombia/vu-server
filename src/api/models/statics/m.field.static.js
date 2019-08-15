@@ -47,6 +47,10 @@ export default (MFieldModel) => {
             return await field.save();
         },
 
+        async removeField(mFieldId) {
+            return await this.remove({ _id: mFieldId });
+        }
+
     }
 
 };

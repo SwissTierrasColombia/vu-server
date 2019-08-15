@@ -132,6 +132,11 @@ export async function updateFieldFromStep(req, res) {
             return req.body.permissions !== Array;
         });
 
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
         const mStepId = req.swagger.params.step.value;
         const mFieldId = req.swagger.params.field.value;
         const nameField = req.body.nameField;
@@ -150,3 +155,39 @@ export async function updateFieldFromStep(req, res) {
     }
 
 }
+
+// remove field from step
+export async function removeFieldFromStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+        const mFieldId = req.swagger.params.field.value;
+
+        await FieldImplementation.iRemoveField(mFieldId, mStepId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
