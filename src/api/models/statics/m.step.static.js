@@ -1,5 +1,6 @@
 
 
+
 export default (MStepModel) => {
 
     // Statics
@@ -25,6 +26,19 @@ export default (MStepModel) => {
         async getStepById(stepId) {
             return await this.findById(stepId);
         },
+
+        async addRuleToStep(mStepId, rule) {
+            return await this.findOneAndUpdate(
+                { '_id': mStepId },
+                {
+                    '$push': {
+                        rules: {
+                            $each: [rule],
+                        }
+                    }
+                }
+            );
+        }
 
     }
 

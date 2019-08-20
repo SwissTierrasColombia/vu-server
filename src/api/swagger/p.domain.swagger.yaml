@@ -13,3 +13,35 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/p/domains/types-callback:
+  x-swagger-router-controller: p.domain.controller
+  get:
+    operationId: getTypesCallback
+    tags:
+      - P/Domains
+    summary: Get types callbacks
+    description: Get types callbacks
+    responses:
+      200:
+        description: Get types callbacks
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/p/domains/types-operator:
+  x-swagger-router-controller: p.domain.controller
+  get:
+    operationId: getTypesOperator
+    tags:
+      - P/Domains
+    summary: Get types operators
+    description: Get types operators
+    responses:
+      200:
+        description: Get types operators
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

@@ -1,9 +1,9 @@
 import Transformer from 'transformer-response-data';
 
 //create transformer and define output properties
-export let mStepTransformer = new Transformer({
+export let pOperatorTransformer = new Transformer({
     "_id": "_id",
-    "typeStep": "typeStep",
-    "rules": "rules",
+    "operator": "operator",
+    "symbol": "symbol",
     "createdAt": "createdAt"
 });

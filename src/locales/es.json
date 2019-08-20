@@ -30,6 +30,15 @@
                 "field_invalid": "El campo es inválido.",
                 "field_not_exists": "El campo no existe.",
                 "field_not_belongs_to_step": "El campo no pertenece al paso."
+            },
+            "rules": {
+                "rule_conditions_required": "Se deben especificar las condiciones para la regla.",
+                "rule_conditions_invalid": "Las condiciones para la regla son inválidas.",
+                "rule_callbacks_required": "Se deben especificar los callbacks para la regla.",
+                "rule_callbacks_invalid": "Los callbacks para la regla son inválidos.",
+                "rule_required": "La regla es requerida.",
+                "rule_invalid": "La regla es inválida.",
+                "rule_not_exists": "La regla no existe."
             }
         }
     },

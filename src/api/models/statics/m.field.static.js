@@ -1,6 +1,5 @@
 // Libs
 import { addPopulates } from '../../../lib/helpers/mongoose';
-import { updateFieldFromStep } from '../../controllers/m.step.controller';
 
 export default (MFieldModel) => {
 

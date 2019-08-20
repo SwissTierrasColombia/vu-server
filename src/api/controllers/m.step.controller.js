@@ -5,9 +5,11 @@ import validator from 'validator';
 
 // Business
 import FieldImplementation from '../business/manage/field/field.implementation';
+import StepImplementation from '../business/manage/step/step.implementation';
 
 // Transformers
 import { mFieldTransformer } from '../transformers/m.field.transformer';
+import { mStepTransformer } from '../transformers/m.step.transformer';
 
 // add field to step
 export async function addFieldToStep(req, res) {
@@ -40,6 +42,11 @@ export async function addFieldToStep(req, res) {
         req.check('permissions', getMessage('m.process.fields.field_permissions_required', language)).custom((value) => {
             return req.body.permissions !== Array;
         });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
 
         const mStepId = req.swagger.params.step.value;
         const nameField = req.body.field;
@@ -171,6 +178,14 @@ export async function removeFieldFromStep(req, res) {
             return validator.isMongoId(req.swagger.params.step.value);
         });
 
+        // validate field
+        req.check('field', getMessage('m.process.fields.field_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.field.value);
+        });
+        req.check('field', getMessage('m.process.fields.field_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.field.value);
+        });
+
         const errors = req.validationErrors();
         if (errors) {
             return badRequest(res, 400, { message: errors[0].msg });
@@ -191,3 +206,94 @@ export async function removeFieldFromStep(req, res) {
 
 }
 
+// add rule to step
+export async function addRuleToStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        // validate conditions
+        req.checkBody("conditions", getMessage('m.process.rules.rule_conditions_required', language)).notEmpty();
+        req.check('conditions', getMessage('m.process.rules.rule_conditions_required', language)).custom((value) => {
+            return req.body.conditions !== Array;
+        });
+
+        // validate callbacks
+        req.checkBody("callbacks", getMessage('m.process.rules.rule_callbacks_required', language)).notEmpty();
+        req.check('callbacks', getMessage('m.process.rules.rule_callbacks_required', language)).custom((value) => {
+            return req.body.callbacks !== Array;
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+        const conditions = req.body.conditions;
+        const callbacks = req.body.callbacks;
+
+        const stepUpdated = await StepImplementation.iAddRuleToStep(mStepId, conditions, callbacks);
+
+        return result(res, 200, mStepTransformer.transformer(stepUpdated));
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// remove rule from step
+export async function removeRuleToStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        // validate rule
+        req.check('rule', getMessage('m.process.rules.rule_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.rule.value);
+        });
+        req.check('rule', getMessage('m.process.rules.rule_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.rule.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+        const ruleId = req.swagger.params.rule.value;
+
+        await StepImplementation.iRemoveRuleToStep(mStepId, ruleId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        console.log('remove', exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}

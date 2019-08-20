@@ -23,4 +23,8 @@ export default class StepBusiness {
         }
     }
 
+    static async addRuleToStep(mStepId, rule) {
+        return await MStepModel.addRuleToStep(mStepId, rule);
+    }
+
 }

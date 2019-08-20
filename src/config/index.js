@@ -65,7 +65,17 @@ export default {
           file: 'p.step.seed',
           schema: 'PStepModel',
           plant: 'once'
-        }
+        },
+        {
+          file: 'p.callback.seed',
+          schema: 'PCallbackModel',
+          plant: 'once'
+        },
+        {
+          file: 'p.operator.seed',
+          schema: 'POperatorModel',
+          plant: 'once'
+        },
       ]
     },
   },

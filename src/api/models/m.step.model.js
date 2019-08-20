@@ -11,6 +11,56 @@ const MStepSchema = new Schema({
         ],
     },
 
+    rules: [
+
+        {
+            conditions: [
+
+                {
+                    field: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'MFieldModel',
+                        required: [
+                            true, 'The field is required.'
+                        ],
+                    },
+                    operator: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'POperatorModel',
+                        required: [
+                            true, 'The operator is required.'
+                        ],
+                    },
+                    value: {
+                        type: Schema.Types.Mixed,
+                        required: [
+                            true, 'Value is required.'
+                        ],
+                    }
+                }
+
+            ],
+            callbacks: [
+                {
+                    callback: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'PCallbackModel',
+                        required: [
+                            true, 'The callback is required.'
+                        ],
+                    },
+                    metadata: {
+                        type: Schema.Types.Mixed,
+                        required: [
+                            true, 'Metadata is required.'
+                        ],
+                    }
+                }
+            ]
+        }
+
+    ],
+
     typeStep: {
         type: Schema.Types.ObjectId,
         ref: 'PStepModel',

@@ -139,3 +139,62 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/m/steps/{step}/rules:
+  x-swagger-router-controller: m.step.controller
+  post:
+    operationId: addRuleToStep
+    tags:
+      - M/Steps
+    summary: Add rule to step
+    description: Add rule to step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: conditions
+        description: Conditions
+        in: formData
+        type: array
+        items: {}
+      - name: callbacks
+        description: Callbacks
+        in: formData
+        type: array
+        items: {}
+    responses:
+      200:
+        description: Add rule to step
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/steps/{step}/rules/{rule}:
+  x-swagger-router-controller: m.step.controller
+  delete:
+    operationId: removeRuleToStep
+    tags:
+      - M/Steps
+    summary: Remove to step
+    description: Remove rule to step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: rule
+        in: path
+        type: string
+        description: Rule ID
+        required: true
+    responses:
+      200:
+        description: Remove rule to step
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
