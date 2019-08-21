@@ -10,6 +10,7 @@ import ProcessImplementation from '../business/manage/process/process.implementa
 import { mProcessTransformer } from '../transformers/m.process.transformer';
 import { mRoleTransformer } from '../transformers/m.role.transformer';
 import { mStepTransformer } from '../transformers/m.step.transformer';
+import { mVariableTransformer } from '../transformers/m.variable.transformer';
 
 // create process
 export async function createProcess(req, res) {
@@ -177,6 +178,50 @@ export async function updateRoleFromProcess(req, res) {
 
 }
 
+// remove role from process
+export async function removeRoleFromProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate role id
+        req.check('role', getMessage('m.process.roles.role_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.role.value);
+        });
+        req.check('role', getMessage('m.process.roles.role_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.role.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const roleId = req.swagger.params.role.value;
+
+        await ProcessImplementation.iRemoveRoleFromProcess(processId, roleId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+
 // add step to process
 export async function addStepToProcess(req, res) {
 
@@ -245,6 +290,178 @@ export async function getStepsFromProcess(req, res) {
     } catch (exception) {
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// add variable to process
+export async function addVariableToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate variable
+        req.checkBody("variable", getMessage('m.process.variables.variable_name_required', language)).notEmpty();
+
+        // validate value
+        req.checkBody("value", getMessage('m.process.variables.variable_value_required', language)).notEmpty();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const variableName = req.body.variable;
+        const variableValue = req.body.value;
+
+        await ProcessImplementation.iAddVariableToProcess(processId, variableName, variableValue);
+
+        const variables = await ProcessImplementation.iGetVariablesByProcess(processId);
+        return result(res, 200, mVariableTransformer.transformer(variables));
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// get variables by process
+export async function getVariablesByProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+
+        const variables = await ProcessImplementation.iGetVariablesByProcess(processId);
+
+        return result(res, 200, mVariableTransformer.transformer(variables));
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// update variable from process
+export async function updateVariableFromProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate variable id
+        req.check('variable', getMessage('m.process.variables.variable_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.variable.value);
+        });
+        req.check('variable', getMessage('m.process.variables.variable_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.variable.value);
+        });
+
+        // validate role
+        req.checkBody("name", getMessage('m.process.variables.variable_name_invalid', language)).notEmpty();
+
+        // validate value
+        req.checkBody("value", getMessage('m.process.variables.variable_value_required', language)).notEmpty();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const variableId = req.swagger.params.variable.value;
+        const variableName = req.body.name;
+        const variableValue = req.body.value;
+
+        await ProcessImplementation.iUpdateVariableFromProcess(processId, variableId, variableName, variableValue);
+
+        const variables = await ProcessImplementation.iGetVariablesByProcess(processId);
+        return result(res, 200, mVariableTransformer.transformer(variables));
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// remove variable from process
+export async function removeVariableFromProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate variable id
+        req.check('variable', getMessage('m.process.variables.variable_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.variable.value);
+        });
+        req.check('variable', getMessage('m.process.variables.variable_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.variable.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const variableId = req.swagger.params.variable.value;
+
+        await ProcessImplementation.iRemoveVariableFromProcess(processId, variableId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
         return error(res, 500, { message: 'Server error ...' });
     }

@@ -100,8 +100,7 @@ export default class StepImplementation extends StepBusiness {
             throw new APIException('m.process.rules.rule_not_exists', 404);
         }
 
-        console.log("here");
-
+        await StepBusiness.removeRuleToStep(stepId, ruleId);
     }
 
 }

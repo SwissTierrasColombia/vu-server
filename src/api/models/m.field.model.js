@@ -30,6 +30,14 @@ const MFieldSchema = new Schema({
         ]
     },
 
+    isPrivate: {
+        type: Boolean,
+        default: false,
+        required: [
+            true, 'It is mandatory to determine if the field is private.'
+        ]
+    },
+
     permissions: [
         {
             role: {

@@ -27,4 +27,8 @@ export default class StepBusiness {
         return await MStepModel.addRuleToStep(mStepId, rule);
     }
 
+    static async removeRuleToStep(mStepId, roleId) {
+        return await MStepModel.removeRuleToStep(mStepId, roleId);
+    }
+
 }

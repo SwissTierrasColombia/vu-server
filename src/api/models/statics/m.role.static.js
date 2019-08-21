@@ -30,6 +30,10 @@ export default (MRoleModel) => {
             let role = await this.findOne({ _id: roleId, process: processId });
             role.role = roleName;
             return await role.save();
+        },
+
+        async removeRoleById(roleId) {
+            return await this.remove({ _id: roleId });
         }
 
     }

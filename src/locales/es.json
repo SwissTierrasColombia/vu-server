@@ -11,7 +11,8 @@
             "roles": {
                 "role_required": "El rol es requerido.",
                 "role_invalid": "El rol es inválido.",
-                "role_not_exists": "El rol no existe."
+                "role_not_exists": "El rol no existe.",
+                "role_not_belongs_process": "El rol no pertenece al proceso."
             },
             "steps": {
                 "step_required": "El paso es requerido.",
@@ -29,7 +30,8 @@
                 "field_required": "El campo es requerido.",
                 "field_invalid": "El campo es inválido.",
                 "field_not_exists": "El campo no existe.",
-                "field_not_belongs_to_step": "El campo no pertenece al paso."
+                "field_not_belongs_to_step": "El campo no pertenece al paso.",
+                "field_pri_count_description": "Cantidad de veces que se ha iniciado el paso."
             },
             "rules": {
                 "rule_conditions_required": "Se deben especificar las condiciones para la regla.",
@@ -39,6 +41,16 @@
                 "rule_required": "La regla es requerida.",
                 "rule_invalid": "La regla es inválida.",
                 "rule_not_exists": "La regla no existe."
+            },
+            "variables": {
+                "variable_name_required": "El nombre de la variable es requerido.",
+                "variable_value_required": "El valor de la variable es requerido.",
+                "variable_name_invalid": "El nombre de la variable es inválida.",
+                "variable_process_registered": "La variable ya esta registrada en el proceso.",
+                "variable_required": "La variable es requerida.",
+                "variable_invalid": "La variable es inválida.",
+                "variable_not_exists": "La variable no existe.",
+                "variable_not_belongs_process": "La variable no pertenece al proceso."
             }
         }
     },

@@ -178,7 +178,7 @@
     operationId: removeRuleToStep
     tags:
       - M/Steps
-    summary: Remove to step
+    summary: Remove rule to step
     description: Remove rule to step
     parameters:
       - name: step

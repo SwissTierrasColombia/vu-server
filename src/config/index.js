@@ -1,6 +1,6 @@
 import path from 'path';
 
-const APP_NAME = `your-app-name`;
+const APP_NAME = `PM Server`;
 const DB_NAME = `your-database-name-dev`;
 const CLIENT = '/client';
 

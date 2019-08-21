@@ -58,6 +58,7 @@ export async function addFieldToStep(req, res) {
         const fieldNew = await FieldImplementation.iCreateField(nameField, description, pTypeId, isRequired, permissions, mStepId);
         return result(res, 201, mFieldTransformer.transformer(fieldNew));
     } catch (exception) {
+        console.log('error --->', exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -289,7 +290,6 @@ export async function removeRuleToStep(req, res) {
 
         return result(res, 204, {});
     } catch (exception) {
-        console.log('remove', exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }

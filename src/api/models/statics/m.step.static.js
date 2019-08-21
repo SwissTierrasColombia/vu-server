@@ -38,6 +38,19 @@ export default (MStepModel) => {
                     }
                 }
             );
+        },
+
+        async removeRuleToStep(mStepId, ruleId) {
+            let step = await this.findById(mStepId);
+            let rules = step.rules;
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+                if (rule._id.toString() === ruleId.toString()) {
+                    rules.splice(i, 1);
+                }
+            }
+            step.rules = rules;
+            return await step.save();
         }
 
     }

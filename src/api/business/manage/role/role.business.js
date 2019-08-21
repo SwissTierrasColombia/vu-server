@@ -27,4 +27,12 @@ export default class RoleBusiness {
         return await MRoleModel.updateRoleFromProcess(processId, roleId, roleName);
     }
 
+    static async removeRoleById(roleId) {
+        try {
+            return await MRoleModel.removeRoleById(roleId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }

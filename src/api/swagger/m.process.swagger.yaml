@@ -110,7 +110,30 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
-
+  delete:
+    operationId: removeRoleFromProcess
+    tags:
+      - M/Processes
+    summary: Remove role from process
+    description: Remove role from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: role
+        in: path
+        description: Role ID
+        required: true
+        type: string
+    responses:
+      204:
+        description: Sin contenido
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
 
 /api/m/processes/{process}/steps:
   x-swagger-router-controller: m.process.controller
@@ -153,6 +176,118 @@
     responses:
       200:
         description: Get steps from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/variables:
+  x-swagger-router-controller: m.process.controller
+  post:
+    operationId: addVariableToProcess
+    tags:
+      - M/Processes
+    summary: Add variable to process
+    description: Add variable to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: variable
+        in: formData
+        description: Variable name
+        type: string
+        required: true
+      - name: value
+        in: formData
+        description: Value
+        type: string
+        required: true
+    responses:
+      200:
+        description: Add variable to process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getVariablesByProcess
+    tags:
+      - M/Processes
+    summary: Get variables from process
+    description: Get variables from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get variables from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/variables/{variable}:
+  x-swagger-router-controller: m.process.controller
+  put:
+    operationId: updateVariableFromProcess
+    tags:
+      - M/Processes
+    summary: Update variable from process
+    description: Update variable from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: variable
+        in: path
+        description: Variable ID
+        required: true
+        type: string
+      - name: name
+        in: formData
+        description: Variable name
+        required: true
+        type: string
+      - name: value
+        in: formData
+        description: Value name
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get variables from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  delete:
+    operationId: removeVariableFromProcess
+    tags:
+      - M/Processes
+    summary: Remove variable from process
+    description: Remove variable from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: variable
+        in: path
+        description: Variable ID
+        required: true
+        type: string
+    responses:
+      204:
+        description: Sin contenido
       500:
         description: Server error
         schema:
