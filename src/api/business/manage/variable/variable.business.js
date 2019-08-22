@@ -35,4 +35,12 @@ export default class VariableBusiness {
         }
     }
 
+    static async removeVariablesByProcessId(processId) {
+        try {
+            return MVariableModel.removeVariablesByProcessId(processId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }

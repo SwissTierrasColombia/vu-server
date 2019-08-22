@@ -27,7 +27,7 @@ export async function addFieldToStep(req, res) {
         });
 
         // validate field name
-        req.checkBody("field", getMessage('m.process.fields.field_name_required', language)).notEmpty();
+        req.checkBody("nameField", getMessage('m.process.fields.field_name_required', language)).notEmpty();
 
         // validate field type
         req.checkBody("type", getMessage('m.process.fields.field_type_required', language)).notEmpty();
@@ -49,7 +49,7 @@ export async function addFieldToStep(req, res) {
         }
 
         const mStepId = req.swagger.params.step.value;
-        const nameField = req.body.field;
+        const nameField = req.body.nameField;
         const pTypeId = req.body.type;
         const isRequired = req.body.isRequired;
         const permissions = req.body.permissions;
@@ -58,7 +58,7 @@ export async function addFieldToStep(req, res) {
         const fieldNew = await FieldImplementation.iCreateField(nameField, description, pTypeId, isRequired, permissions, mStepId);
         return result(res, 201, mFieldTransformer.transformer(fieldNew));
     } catch (exception) {
-        console.log('error --->', exception);
+        console.log("m.step@addFieldToStep ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -92,6 +92,7 @@ export async function getFieldsFromStep(req, res) {
         const fields = await FieldImplementation.getFieldsByStep(mStepId);
         return result(res, 200, mFieldTransformer.transformer(fields));
     } catch (exception) {
+        console.log("m.step@getFieldsFromStep ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -156,6 +157,7 @@ export async function updateFieldFromStep(req, res) {
         const fieldUpdate = await FieldImplementation.iUpdateField(mFieldId, nameField, description, pTypeId, isRequired, permissions, mStepId);
         return result(res, 200, mFieldTransformer.transformer(fieldUpdate));
     } catch (exception) {
+        console.log("m.step@updateFieldFromStep ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -199,6 +201,7 @@ export async function removeFieldFromStep(req, res) {
 
         return result(res, 204, {});
     } catch (exception) {
+        console.log("m.step@removeFieldFromStep ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -247,6 +250,7 @@ export async function addRuleToStep(req, res) {
 
         return result(res, 200, mStepTransformer.transformer(stepUpdated));
     } catch (exception) {
+        console.log("m.step@addRuleToStep ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -290,6 +294,7 @@ export async function removeRuleToStep(req, res) {
 
         return result(res, 204, {});
     } catch (exception) {
+        console.log("m.step@removeRuleToStep ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }

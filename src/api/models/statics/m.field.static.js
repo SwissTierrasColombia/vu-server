@@ -48,8 +48,12 @@ export default (MFieldModel) => {
 
         async removeField(mFieldId) {
             return await this.remove({ _id: mFieldId });
+        },
+
+        async removeFieldsByStepId(stepId) {
+            return await this.remove({ step: stepId });
         }
 
-    }
+    };
 
 };

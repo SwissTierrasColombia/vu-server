@@ -7,7 +7,7 @@ import { pTypeDataTransformer } from './p.typeData.transformer';
 //create transformer and define output properties
 export let mFieldTransformer = new Transformer({
     "_id": "_id",
-    "field": "field",
+    "nameField": "field",
     "description": "description",
     "isRequired": "isRequired",
     "isPrivate": "isPrivate",

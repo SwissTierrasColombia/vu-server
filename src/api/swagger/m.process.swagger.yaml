@@ -33,6 +33,52 @@
         schema:
           $ref: "#/definitions/Error"
 
+/api/m/processes/{process}:
+  x-swagger-router-controller: m.process.controller
+  put:
+    operationId: updateProcess
+    tags:
+      - M/Processes
+    summary: Update a process
+    description: Update a process
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: Process ID
+        required: true
+      - name: processName
+        in: formData
+        type: string
+        description: Process name
+        required: true
+    responses:
+      200:
+        description: Process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  delete:
+    operationId: removeProcess
+    tags:
+      - M/Processes
+    summary: Remove a process
+    description: Remove a process
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: Process ID
+        required: true
+    responses:
+      204:
+        description: Sin contenido
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
 /api/m/processes/{process}/roles:
   x-swagger-router-controller: m.process.controller
   post:
@@ -171,6 +217,33 @@
       - name: process
         in: path
         description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get steps from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/steps/{step}:
+  x-swagger-router-controller: m.process.controller
+  delete:
+    operationId: removeStepToProcess
+    tags:
+      - M/Processes
+    summary: Remove step to process
+    description: Remove step to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: step
+        in: path
+        description: M/Step ID
         required: true
         type: string
     responses:

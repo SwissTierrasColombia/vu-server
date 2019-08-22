@@ -34,8 +34,12 @@ export default (MRoleModel) => {
 
         async removeRoleById(roleId) {
             return await this.remove({ _id: roleId });
+        },
+
+        async removeRolesByProcessId(processId) {
+            return await this.remove({ process: processId });
         }
 
-    }
+    };
 
 };

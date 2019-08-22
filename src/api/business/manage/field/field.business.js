@@ -31,4 +31,12 @@ export default class FieldBusiness {
         }
     }
 
+    static async removeFieldsByStepId(stepId) {
+        try {
+            return await MFieldModel.removeFieldsByStepId(stepId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }

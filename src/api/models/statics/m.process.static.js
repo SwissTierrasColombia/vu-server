@@ -21,6 +21,16 @@ export default (MProcessModel) => {
             return await this.findById(processId);
         },
 
-    }
+        async removeProcessById(processId) {
+            return await this.remove({ _id: processId });
+        },
+
+        async updateProcess(processId, processName) {
+            let process = await this.findById(processId);
+            process.process = processName;
+            return await process.save();
+        },
+
+    };
 
 };

@@ -33,6 +33,7 @@ export async function createProcess(req, res) {
 
         return result(res, 201, mProcessTransformer.transformer(processNew));
     } catch (exception) {
+        console.log("m.process@createProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -50,6 +51,7 @@ export async function getProcesses(req, res) {
         const processes = await ProcessImplementation.getProcesses();
         return result(res, 200, mProcessTransformer.transformer(processes));
     } catch (exception) {
+        console.log("m.process@getProcesses ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -89,6 +91,7 @@ export async function addRoleToProcess(req, res) {
         const roles = await ProcessImplementation.iGetRolesByProcess(processId);
         return result(res, 200, mRoleTransformer.transformer(roles));
     } catch (exception) {
+        console.log("m.process@addRoleToProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -122,6 +125,7 @@ export async function getRolesByProcess(req, res) {
 
         return result(res, 200, mRoleTransformer.transformer(roles));
     } catch (exception) {
+        console.log("m.process@getRolesByProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -170,6 +174,7 @@ export async function updateRoleFromProcess(req, res) {
         const roles = await ProcessImplementation.iGetRolesByProcess(processId);
         return result(res, 200, mRoleTransformer.transformer(roles));
     } catch (exception) {
+        console.log("m.process@updateRoleFromProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -213,6 +218,7 @@ export async function removeRoleFromProcess(req, res) {
 
         return result(res, 204, {});
     } catch (exception) {
+        console.log("m.process@removeRoleFromProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -254,6 +260,52 @@ export async function addStepToProcess(req, res) {
         const steps = await ProcessImplementation.iGetStepsByProcess(processId);
         return result(res, 200, mStepTransformer.transformer(steps));
     } catch (exception) {
+        console.log("m.process@addStepToProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// remove step to process
+export async function removeStepToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const mStepId = req.swagger.params.step.value;
+
+        await ProcessImplementation.iRemoveStepToProcess(processId, mStepId);
+
+        const steps = await ProcessImplementation.iGetStepsByProcess(processId);
+        return result(res, 200, mStepTransformer.transformer(steps));
+    } catch (exception) {
+        console.log("m.process@removeStepToProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -288,6 +340,7 @@ export async function getStepsFromProcess(req, res) {
         const steps = await ProcessImplementation.iGetStepsByProcess(processId);
         return result(res, 200, mStepTransformer.transformer(steps));
     } catch (exception) {
+        console.log("m.process@getStepsFromProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -331,6 +384,7 @@ export async function addVariableToProcess(req, res) {
         const variables = await ProcessImplementation.iGetVariablesByProcess(processId);
         return result(res, 200, mVariableTransformer.transformer(variables));
     } catch (exception) {
+        console.log("m.process@addVariableToProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -365,6 +419,7 @@ export async function getVariablesByProcess(req, res) {
 
         return result(res, 200, mVariableTransformer.transformer(variables));
     } catch (exception) {
+        console.log("m.process@getVariablesByProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -417,6 +472,7 @@ export async function updateVariableFromProcess(req, res) {
         const variables = await ProcessImplementation.iGetVariablesByProcess(processId);
         return result(res, 200, mVariableTransformer.transformer(variables));
     } catch (exception) {
+        console.log("m.process@updateVariableFromProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
@@ -460,8 +516,84 @@ export async function removeVariableFromProcess(req, res) {
 
         return result(res, 204, {});
     } catch (exception) {
+        console.log("m.process@removeVariableFromProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+export async function removeProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+
+
+        await ProcessImplementation.iRemoveProcess(processId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        console.log("m.process@removeProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+
+export async function updateProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validation process name
+        req.checkBody("processName", getMessage('m.process.process_name_required', language)).notEmpty();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const processName = req.body.processName;
+
+
+        const process = await ProcessImplementation.iUpdateProcess(processId, processName);
+
+        return result(res, 200, mProcessTransformer.transformer(process));
+    } catch (exception) {
+        console.log("m.process@updateProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
         return error(res, 500, { message: 'Server error ...' });
     }

@@ -51,8 +51,16 @@ export default (MStepModel) => {
             }
             step.rules = rules;
             return await step.save();
+        },
+
+        async removeStepsByProcessId(processId) {
+            return await this.remove({ process: processId });
+        },
+
+        async removeStepById(stepId) {
+            return await this.remove({ _id: stepId });
         }
 
-    }
+    };
 
 };

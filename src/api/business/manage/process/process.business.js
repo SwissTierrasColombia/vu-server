@@ -19,4 +19,16 @@ export default class ProcessBusiness {
         }
     }
 
+    static async removeProcessById(processId) {
+        try {
+            return await MProcessModel.removeProcessById(processId);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    static async updateProcess(processId, processName) {
+        return await MProcessModel.updateProcess(processId, processName);
+    }
+
 }

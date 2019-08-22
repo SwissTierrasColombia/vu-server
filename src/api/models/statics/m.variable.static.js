@@ -36,8 +36,12 @@ export default (MVariableModel) => {
 
         async removeVariableById(variableId) {
             return await this.remove({ _id: variableId });
+        },
+
+        async removeVariablesByProcessId(processId) {
+            return await this.remove({ process: processId });
         }
 
-    }
+    };
 
 };

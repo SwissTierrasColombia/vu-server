@@ -35,4 +35,12 @@ export default class RoleBusiness {
         }
     }
 
+    static async removeRolesByProcessId(processId) {
+        try {
+            return await MRoleModel.removeRolesByProcessId(processId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }

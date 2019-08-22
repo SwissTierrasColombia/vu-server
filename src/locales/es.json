@@ -18,7 +18,8 @@
                 "step_required": "El paso es requerido.",
                 "step_invalid": "El paso es inválido.",
                 "step_field_registered": "El campo ya ha sido registrado en el paso.",
-                "step_not_exists": "El paso no existe."
+                "step_not_exists": "El paso no existe.",
+                "step_not_belong_process": "El paso no pertenece al proceso."
             },
             "fields": {
                 "field_name_required": "El nombre del campo es requerido.",

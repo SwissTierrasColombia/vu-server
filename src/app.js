@@ -36,7 +36,7 @@ const app = express();
           mode: [${chalk.magentaBright(`${config.mode}`)}]
           url: ${chalk.blueBright(`http://${config.server.ip}:${config.server.port}`)}\n-------`));
     // Ready!
-    console.log(chalk.black.bgGreenBright(`>>nodetomic-api-swagger ready!<<`));
+    console.log(chalk.black.bgGreenBright(`>>pm-server ready!<<`));
   });
 
 })();

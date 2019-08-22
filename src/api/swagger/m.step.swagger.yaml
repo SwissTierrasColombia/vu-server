@@ -12,7 +12,7 @@
         type: string
         description: Step ID
         required: true
-      - name: field
+      - name: nameField
         in: formData
         type: string
         description: Name field

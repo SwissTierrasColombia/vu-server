@@ -15,6 +15,7 @@ export async function getSteps(req, res) {
         const steps = await StepImplementation.getSteps();
         return result(res, 200, pStepTransformer.transformer(steps));
     } catch (exception) {
+        console.log("p.step@getSteps ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }

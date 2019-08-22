@@ -31,4 +31,20 @@ export default class StepBusiness {
         return await MStepModel.removeRuleToStep(mStepId, roleId);
     }
 
+    static async removeStepsByProcessId(processId) {
+        try {
+            return await MStepModel.removeStepsByProcessId(processId);
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static async removeStepById(mStepId) {
+        try {
+            return await MStepModel.removeStepById(mStepId);
+        } catch (error) {
+            return null;
+        }
+    }
+
 }

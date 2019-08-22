@@ -19,7 +19,7 @@ export default class ProcessImplementation extends ProcessBusiness {
     }
 
     static async registerProcess(name) {
-        return await this.createProcess(name);
+        return await this.createProcess(name.trim());
     }
 
     static async getProcesses() {
@@ -132,6 +132,30 @@ export default class ProcessImplementation extends ProcessBusiness {
         return processFound;
     }
 
+    static async iRemoveStepToProcess(processId, mStepId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(processId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        const stepFound = await StepBusiness.getStepById(mStepId);
+        if (!stepFound) {
+            throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        if (stepFound.process.toString() !== processId.toString()) {
+            throw new APIException('m.process.steps.step_not_belong_process', 401);
+        }
+
+        // remove fields
+        await FieldBusiness.removeFieldsByStepId(stepFound._id.toString());
+
+        // remove steps
+        await StepBusiness.removeStepById(stepFound._id.toString());
+    }
+
     static async iGetStepsByProcess(processId) {
 
         // verify if the process exists
@@ -237,5 +261,48 @@ export default class ProcessImplementation extends ProcessBusiness {
 
         await VariableBusiness.removeVariableById(variableId);
     }
+
+    static async iRemoveProcess(processId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(processId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // remove variables
+        await VariableBusiness.removeVariablesByProcessId(processId);
+
+        // remove roles
+        await RoleBusiness.removeRolesByProcessId(processId);
+
+        const steps = await StepBusiness.getStepsFromProcess(processId);
+
+        // remove fields
+        for (let property in steps) {
+            const step = steps[property];
+            await FieldBusiness.removeFieldsByStepId(step._id.toString());
+        }
+
+        // remove steps
+        await StepBusiness.removeStepsByProcessId(processId);
+
+        // remove process
+        await ProcessBusiness.removeProcessById(processId);
+    }
+
+    static async iUpdateProcess(processId, processName) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(processId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        await ProcessBusiness.updateProcess(processId, processName);
+
+        return await this.getProcessById(processId);
+    }
+
 
 }

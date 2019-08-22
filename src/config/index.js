@@ -1,14 +1,17 @@
 import path from 'path';
+import dotenv from 'dotenv';
+
+// Load enviroment variables
+dotenv.config();
 
 const APP_NAME = `PM Server`;
-const DB_NAME = `your-database-name-dev`;
 const CLIENT = '/client';
 
 export default {
-  secret: `your_secret_key`, // Secret Key
+  secret: process.env.APP_SECRET, // Secret Key
   server: { // Express
-    ip: '192.168.98.75',
-    port: 8000,
+    ip: process.env.SERVER_HOST,
+    port: process.env.SERVER_PORT,
   },
   log: true, // show logs
   // Roles: if a user has multiple roles, will take the time of the greater role
@@ -39,23 +42,18 @@ export default {
     maxretries: 10, //reconnect retries, default 10
     //auth: '123', //optional password, if needed
     db: 0, //optional db selection
-    secret: 'secret_key', // secret key for Tokens!
+    secret: process.env.REDIS_JWT_SECRET, // secret key for Tokens!
     multiple: true, // single or multiple sessions by user
     kea: false // Enable notify-keyspace-events KEA
   },
   mongoose: { // MongoDB
     // uri: mongodb://username:password@host:port/database?options
-    uri: `mongodb://localhost:27017/${DB_NAME}`,
+    uri: process.env.MONGO_CONNECTION,
     options: {
     },
     seed: {
       path: '/api/models/seeds/',
       list: [
-        {
-          file: 'user.seed',
-          schema: 'User',
-          plant: 'once' //  once - always - never
-        },
         {
           file: 'p.typesData.seed',
           schema: 'PTypeDataModel',

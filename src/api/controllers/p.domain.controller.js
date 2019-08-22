@@ -19,6 +19,7 @@ export async function getTypesData(req, res) {
         const typesData = await TypeDataImplementation.getTypesData();
         return result(res, 200, pTypeDataTransformer.transformer(typesData));
     } catch (exception) {
+        console.log("p.domain@getTypesData ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -34,6 +35,7 @@ export async function getTypesCallback(req, res) {
         const callbacks = await CallbackImplementation.getTypeCallbacks();
         return result(res, 200, pCallbackTransformer.transformer(callbacks));
     } catch (exception) {
+        console.log("p.domain@getTypesCallback ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
@@ -49,6 +51,7 @@ export async function getTypesOperator(req, res) {
         const operators = await OperatorImplementation.getTypesOperator();
         return result(res, 200, pOperatorTransformer.transformer(operators));
     } catch (exception) {
+        console.log("p.domain@getTypesOperator ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
