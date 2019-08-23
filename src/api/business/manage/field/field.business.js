@@ -7,8 +7,8 @@ export default class FieldBusiness {
         return await MFieldModel.getFieldByNameAndStep(name, mStepId);
     }
 
-    static async createField(name, description, type, isRequired, permissions, mStepId) {
-        return await MFieldModel.createField(name, description, type, isRequired, permissions, mStepId);
+    static async createField(name, description, type, isRequired, permissions, mStepId, isPrivate) {
+        return await MFieldModel.createField(name, description, type, isRequired, permissions, mStepId, isPrivate);
     }
 
     static async getFieldsByStep(stepId, populates) {

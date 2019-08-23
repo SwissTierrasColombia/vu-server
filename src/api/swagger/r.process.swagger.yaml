@@ -1,0 +1,26 @@
+/api/r/processes:
+  x-swagger-router-controller: r.process.controller
+  post:
+    operationId: saveInformationProcess
+    tags:
+      - R/Processes
+    summary: Save information process
+    description: Save information process
+    parameters:
+      - name: process
+        in: formData
+        type: string
+        description: M/Process ID
+        required: true
+      - name: step
+        in: formData
+        type: string
+        description: M/Step ID
+        required: true
+    responses:
+      200:
+        description: Save information
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

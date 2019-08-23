@@ -10,7 +10,7 @@ export default (MFieldModel) => {
             return await this.findOne({ field: name, step: stepId });
         },
 
-        async createField(name, description, type, isRequired, permissions, stepId) {
+        async createField(name, description, type, isRequired, permissions, stepId, isPrivate) {
             const MFieldModel = this;
             const field = new MFieldModel({
                 field: name,
@@ -18,7 +18,8 @@ export default (MFieldModel) => {
                 isRequired,
                 description,
                 permissions,
-                step: stepId
+                step: stepId,
+                isPrivate: (isPrivate) ? isPrivate : false
             });
             return await field.save();
         },

@@ -127,7 +127,8 @@ export default class ProcessImplementation extends ProcessBusiness {
         const typeFieldCount = TypeDataBusiness.TYPE_DATA_NUMBER;
         const isRequiredFieldCount = true;
         const permissionsFieldCount = [];
-        await FieldBusiness.createField(nameFieldCount, descriptionFieldCount, typeFieldCount, isRequiredFieldCount, permissionsFieldCount, mStepNewId);
+        const isPrivate = true;
+        await FieldBusiness.createField(nameFieldCount, descriptionFieldCount, typeFieldCount, isRequiredFieldCount, permissionsFieldCount, mStepNewId, isPrivate);
 
         return processFound;
     }

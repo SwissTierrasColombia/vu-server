@@ -11,24 +11,6 @@ const MProcessSchema = new Schema({
         ]
     },
 
-    // global variables
-    variables: [
-        {
-            key: {
-                type: String,
-                required: [
-                    true, 'Key is required.'
-                ]
-            },
-            value: {
-                type: Schema.Types.Mixed,
-                required: [
-                    true, 'Value is required.'
-                ]
-            },
-        }
-    ],
-
     createdAt: {
         type: Date,
         default: Date.now
