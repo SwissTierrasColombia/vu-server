@@ -11,6 +11,11 @@ const MProcessSchema = new Schema({
         ]
     },
 
+    description: {
+        type: String,
+        required: false
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

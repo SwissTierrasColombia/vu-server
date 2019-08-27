@@ -38,7 +38,7 @@ export default class TypeDataBusiness {
                 valid = validator.isEmail(value);
                 break;
             case TypeDataBusiness.TYPE_DATA_PHONE_NUMBER:
-
+                valid = true;
                 break;
             case TypeDataBusiness.TYPE_DATA_DATE:
                 valid = moment(value, 'YYYY-MM-DD', true).isValid();

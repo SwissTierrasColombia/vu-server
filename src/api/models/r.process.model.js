@@ -28,14 +28,17 @@ const RProcessSchema = new Schema({
 
     metadata: {
         type: Schema.Types.Mixed,
-        required: [
-            true, 'Metadata is required.'
-        ],
+        required: false
     },
 
     createdAt: {
         type: Date,
         default: Date.now
+    },
+
+    updatedAt: {
+        type: Date,
+        required: false
     }
 
 }, { collection: 'r_processes' });

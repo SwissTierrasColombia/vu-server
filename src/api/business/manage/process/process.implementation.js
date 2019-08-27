@@ -18,8 +18,9 @@ export default class ProcessImplementation extends ProcessBusiness {
         super();
     }
 
-    static async registerProcess(name) {
-        return await this.createProcess(name.trim());
+    static async registerProcess(name, description) {
+        description = (description) ? description : '';
+        return await this.createProcess(name.trim(), description);
     }
 
     static async getProcesses() {
@@ -165,7 +166,23 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        return await StepBusiness.getStepsFromProcess(processId);
+        let steps = await StepBusiness.getStepsFromProcess(processId, ['typeStep']);
+        steps = JSON.parse(JSON.stringify(steps));
+        for (let i in steps) {
+            let step = steps[i];
+            let rules = step.rules;
+            for (let j in rules) {
+                let rule = rules[j];
+                let conditions = rule.conditions;
+                for (let k in conditions) {
+                    let condition = conditions[k];
+                    let field = await FieldBusiness.getFieldById(condition.field.toString());
+                    condition.typeData = field.typeData;
+                }
+            }
+        }
+
+        return steps;
     }
 
     static async iAddVariableToProcess(processId, variableName, variableValue) {
@@ -292,7 +309,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         await ProcessBusiness.removeProcessById(processId);
     }
 
-    static async iUpdateProcess(processId, processName) {
+    static async iUpdateProcess(processId, processName, processDescription) {
 
         // verify if the process exists
         const processFound = await this.getProcessById(processId);
@@ -300,7 +317,9 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        await ProcessBusiness.updateProcess(processId, processName);
+        processDescription = (processDescription) ? processDescription : '';
+
+        await ProcessBusiness.updateProcess(processId, processName, processDescription);
 
         return await this.getProcessById(processId);
     }

@@ -24,3 +24,25 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/r/processes/{process}:
+  x-swagger-router-controller: r.process.controller
+  get:
+    operationId: getProcessData
+    tags:
+      - R/Processes
+    summary: Get process data
+    description: Get process data
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: M/Process ID
+        required: true
+    responses:
+      200:
+        description: Get process data
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

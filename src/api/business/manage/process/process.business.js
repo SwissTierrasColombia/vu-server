@@ -3,8 +3,8 @@ import MProcessModel from '../../../models/m.process.model';
 
 export default class ProcessBusiness {
 
-    static async createProcess(name) {
-        return await MProcessModel.createProcess(name);
+    static async createProcess(name, description) {
+        return await MProcessModel.createProcess(name, description);
     }
 
     static async getAllProcesses() {
@@ -27,8 +27,8 @@ export default class ProcessBusiness {
         }
     }
 
-    static async updateProcess(processId, processName) {
-        return await MProcessModel.updateProcess(processId, processName);
+    static async updateProcess(processId, processName, processDescription) {
+        return await MProcessModel.updateProcess(processId, processName, processDescription);
     }
 
 }

@@ -1,4 +1,5 @@
-
+// Libs
+import { addPopulates } from '../../../lib/helpers/mongoose';
 
 
 export default (MStepModel) => {
@@ -19,8 +20,10 @@ export default (MStepModel) => {
             return await step.save();
         },
 
-        async getStepsByProcess(processId) {
-            return await this.find({ process: processId });
+        async getStepsByProcess(processId, populates) {
+            let steps = this.find({ process: processId });
+            steps = addPopulates(steps, populates);
+            return await steps.exec();
         },
 
         async getStepById(stepId) {

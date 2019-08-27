@@ -28,8 +28,9 @@ export async function createProcess(req, res) {
         }
 
         const processName = req.body.processName;
+        const processDescription = req.body.processDescription;
 
-        const processNew = await ProcessImplementation.registerProcess(processName);
+        const processNew = await ProcessImplementation.registerProcess(processName, processDescription);
 
         return result(res, 201, mProcessTransformer.transformer(processNew));
     } catch (exception) {
@@ -585,9 +586,10 @@ export async function updateProcess(req, res) {
 
         const processId = req.swagger.params.process.value;
         const processName = req.body.processName;
+        const processDescription = req.body.processDescription;
 
 
-        const process = await ProcessImplementation.iUpdateProcess(processId, processName);
+        const process = await ProcessImplementation.iUpdateProcess(processId, processName, processDescription);
 
         return result(res, 200, mProcessTransformer.transformer(process));
     } catch (exception) {

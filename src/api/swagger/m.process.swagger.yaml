@@ -12,6 +12,11 @@
         type: string
         description: Process name
         required: true
+      - name: processDescription
+        in: formData
+        type: string
+        description: Process description
+        required: false
     responses:
       201:
         description: Create a process
@@ -52,6 +57,11 @@
         type: string
         description: Process name
         required: true
+      - name: processDescription
+        in: formData
+        type: string
+        description: Process description
+        required: false
     responses:
       200:
         description: Process

@@ -59,5 +59,11 @@
         "types_data": {
             "type_not_exists": "El tipo de dato no existe."
         }
+    },
+    "r": {
+        "process": {
+            "data_required": "La información es requerida.",
+            "data_invalid": "Hay campos requeridos a los cuales no se les ha especificado valor."
+        }
     }
 }

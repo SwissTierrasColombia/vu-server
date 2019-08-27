@@ -11,8 +11,8 @@ export default class StepBusiness {
         return await MStepModel.createStep(typeStepId, processId);
     }
 
-    static async getStepsFromProcess(processId) {
-        return await MStepModel.getStepsByProcess(processId);
+    static async getStepsFromProcess(processId, populates) {
+        return await MStepModel.getStepsByProcess(processId, populates);
     }
 
     static async getStepById(stepId) {
