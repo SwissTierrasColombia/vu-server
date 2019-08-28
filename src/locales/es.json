@@ -8,6 +8,12 @@
             "process_not_exists": "El proceso no existe.",
             "process_role_registered": "El rol ya está registrado en el proceso.",
             "process_step_registered": "El paso ya está registrado en el proceso.",
+            "process_deploy_error_roles": "No se han especificado roles al proceso.",
+            "process_deploy_error_steps": "No se han especificado pasos al proceso.",
+            "process_deploy_error_users": "No se han creado usuarios para el proceso.",
+            "process_deploy_error_fields": "Hay pasos a los cuales no se les han especificado campos.",
+            "process_deploy_error_rules": "Hay pasos a los cuales no se les han especificado condiciones de flujo.",
+            "process_deploy_error_steps_roles": "Hay pasos a los cuales no se les han especificado roles.",
             "roles": {
                 "role_required": "El rol es requerido.",
                 "role_invalid": "El rol es inválido.",
@@ -19,7 +25,8 @@
                 "step_invalid": "El paso es inválido.",
                 "step_field_registered": "El campo ya ha sido registrado en el paso.",
                 "step_not_exists": "El paso no existe.",
-                "step_not_belong_process": "El paso no pertenece al proceso."
+                "step_not_belong_process": "El paso no pertenece al proceso.",
+                "step_role_registered": "El rol ya se encuentra registrado en el paso."
             },
             "fields": {
                 "field_name_required": "El nombre del campo es requerido.",
@@ -52,6 +59,18 @@
                 "variable_invalid": "La variable es inválida.",
                 "variable_not_exists": "La variable no existe.",
                 "variable_not_belongs_process": "La variable no pertenece al proceso."
+            },
+            "users": {
+                "firstname_required": "El nombre del usuario es requerido.",
+                "lastname_required": "Los apellidos del usuario son requerido.",
+                "username_required": "El username del usuario es requerido.",
+                "roles_required": "Los roles del usuario son requeridos.",
+                "roles_invalid": "Los roles del usuario son inválidos.",
+                "user_process_registered": "El usuario ya se encuentra registrado en el proceso.",
+                "user_required": "El usuario es requerido",
+                "user_not_exists": "El usuario no existe",
+                "user_not_belongs_process": "El usuario no pertenece al proceso.",
+                "user_roles_minimum_one": "Se debe especificar al menos un rol para el usuario."
             }
         }
     },

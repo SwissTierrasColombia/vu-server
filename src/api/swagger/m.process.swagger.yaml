@@ -375,3 +375,161 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/users:
+  x-swagger-router-controller: m.process.controller
+  post:
+    operationId: addUserToProcess
+    tags:
+      - M/Processes
+    summary: Add user to process
+    description: Add user to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: firstName
+        in: formData
+        type: string
+        description: First Name
+        required: true
+      - name: lastName
+        in: formData
+        type: string
+        description: Last Name
+        required: true
+      - name: username
+        in: formData
+        type: string
+        description: Username
+        required: true
+      - name: roles
+        in: formData
+        type: array
+        items:
+          type: string
+        description: Roles
+        required: true
+    responses:
+      200:
+        description: Get users from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getUsersToProcess
+    tags:
+      - M/Processes
+    summary: Get users to process
+    description: Get users to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get users from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/users/{user}:
+  x-swagger-router-controller: m.process.controller
+  put:
+    operationId: updateUserToProcess
+    tags:
+      - M/Processes
+    summary: Update user to process
+    description: Update user to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: user
+        in: path
+        description: User ID
+        required: true
+        type: string
+      - name: firstName
+        in: formData
+        type: string
+        description: First Name
+        required: true
+      - name: lastName
+        in: formData
+        type: string
+        description: Last Name
+        required: true
+      - name: username
+        in: formData
+        type: string
+        description: Username
+        required: true
+      - name: roles
+        in: formData
+        type: array
+        items:
+          type: string
+        description: Roles
+        required: true
+    responses:
+      200:
+        description: Get users from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  delete:
+    operationId: removeUserFromProcess
+    tags:
+      - M/Processes
+    summary: Remove user from process
+    description: Remove user from process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: user
+        in: path
+        description: User ID
+        required: true
+        type: string
+    responses:
+      204:
+        description: Sin contenido
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/deploy:
+  x-swagger-router-controller: m.process.controller
+  put:
+    operationId: deployProcess
+    tags:
+      - M/Processes
+    summary: Deploy process
+    description: Deploy process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Deploy process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

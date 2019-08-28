@@ -31,4 +31,8 @@ export default class ProcessBusiness {
         return await MProcessModel.updateProcess(processId, processName, processDescription);
     }
 
+    static async updateActiveProcess(processId, active) {
+        return await MProcessModel.updateActiveProcess(processId, active);
+    }
+
 }

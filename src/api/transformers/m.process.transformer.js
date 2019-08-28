@@ -6,5 +6,6 @@ export let mProcessTransformer = new Transformer({
     "process": "process",
     "description": "description",
     "variables": "variables",
+    "active": "active",
     "createdAt": "createdAt"
 });

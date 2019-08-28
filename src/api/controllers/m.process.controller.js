@@ -11,6 +11,7 @@ import { mProcessTransformer } from '../transformers/m.process.transformer';
 import { mRoleTransformer } from '../transformers/m.role.transformer';
 import { mStepTransformer } from '../transformers/m.step.transformer';
 import { mVariableTransformer } from '../transformers/m.variable.transformer';
+import { mUserTransformer } from '../transformers/m.user.transformer';
 
 // create process
 export async function createProcess(req, res) {
@@ -596,6 +597,238 @@ export async function updateProcess(req, res) {
         console.log("m.process@updateProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// add user to process
+export async function addUserToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate first name
+        req.checkBody("firstName", getMessage('m.process.users.firstname_required', language)).notEmpty();
+
+        // validate last name
+        req.checkBody("lastName", getMessage('m.process.users.lastname_required', language)).notEmpty();
+
+        // validate username
+        req.checkBody("username", getMessage('m.process.users.username_required', language)).notEmpty();
+
+        // validate roles
+        req.checkBody("roles", getMessage('m.process.users.roles_required', language)).notEmpty();
+        req.check('roles', getMessage('m.process.users.roles_invalid', language)).custom((value) => {
+            return req.body.roles !== Array;
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const username = req.body.username;
+        const roles = req.body.roles;
+
+        await ProcessImplementation.iAddUserToProcess(processId, firstName, lastName, username, roles);
+
+        const users = await ProcessImplementation.iGetUsersByProcess(processId);
+        return result(res, 200, mUserTransformer.transformer(users));
+    } catch (exception) {
+        console.log("m.process@addUserToProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// get users to process
+export async function getUsersToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+
+        const users = await ProcessImplementation.iGetUsersByProcess(processId);
+        return result(res, 200, mUserTransformer.transformer(users));
+    } catch (exception) {
+        console.log("m.process@getUsersToProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// update user to process
+export async function updateUserToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate user id
+        req.check('user', getMessage('m.process.users.user_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.user.value);
+        });
+        req.check('user', getMessage('m.process.users.user_required', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.user.value);
+        });
+
+        // validate first name
+        req.checkBody("firstName", getMessage('m.process.users.firstname_required', language)).notEmpty();
+
+        // validate last name
+        req.checkBody("lastName", getMessage('m.process.users.lastname_required', language)).notEmpty();
+
+        // validate username
+        req.checkBody("username", getMessage('m.process.users.username_required', language)).notEmpty();
+
+        // validate roles
+        req.checkBody("roles", getMessage('m.process.users.roles_required', language)).notEmpty();
+        req.check('roles', getMessage('m.process.users.roles_invalid', language)).custom((value) => {
+            return req.body.roles !== Array;
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const userId = req.swagger.params.user.value;
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const username = req.body.username;
+        const roles = req.body.roles;
+
+        await ProcessImplementation.iUpdateUserFromProcess(processId, userId, firstName, lastName, username, roles);
+
+        const users = await ProcessImplementation.iGetUsersByProcess(processId);
+        return result(res, 200, mUserTransformer.transformer(users));
+    } catch (exception) {
+        console.log("m.process@updateUserToProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// remove role from process
+export async function removeUserFromProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate user id
+        req.check('user', getMessage('m.process.users.user_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.user.value);
+        });
+        req.check('user', getMessage('m.process.users.user_required', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.user.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const userId = req.swagger.params.user.value;
+
+        await ProcessImplementation.iRemoveUserFromProcess(processId, userId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        console.log("m.process@removeRoleFromProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// deploy process
+export async function deployProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+
+        const process = await ProcessImplementation.deployProcess(processId);
+
+        return result(res, 200, mProcessTransformer.transformer(process));
+    } catch (exception) {
+        console.log("m.process@deployProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }
         return error(res, 500, { message: 'Server error ...' });
     }

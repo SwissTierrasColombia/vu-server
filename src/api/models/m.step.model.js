@@ -69,6 +69,16 @@ const MStepSchema = new Schema({
         ],
     },
 
+    roles: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'MRoleModel',
+            required: [
+                true, 'The role is required.'
+            ]
+        }
+    ],
+
     createdAt: {
         type: Date,
         default: Date.now

@@ -47,4 +47,8 @@ export default class StepBusiness {
         }
     }
 
+    static async updateRolesToStep(mStepId, roles) {
+        return await MStepModel.updateRolesToStep(mStepId, roles);
+    }
+
 }

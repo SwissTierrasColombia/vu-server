@@ -302,3 +302,87 @@ export async function removeRuleToStep(req, res) {
     }
 
 }
+
+// add role to step
+export async function addRoleToStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        // validate role
+        req.checkBody("role", getMessage('m.process.roles.role_required', language)).notEmpty();
+        req.checkBody("role", getMessage('m.process.roles.role_invalid', language)).isMongoId();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+        const mRoleId = req.body.role;
+
+        const stepUpdated = await StepImplementation.iAddRoleToStep(mStepId, mRoleId);
+
+        return result(res, 200, mStepTransformer.transformer(stepUpdated));
+    } catch (exception) {
+        console.log("m.step@addRoleToStep ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// remove role to step
+export async function removeRoleToStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        // validate role
+        req.check('role', getMessage('m.process.roles.role_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.role.value);
+        });
+        req.check('role', getMessage('m.process.roles.role_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.role.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+        const mRoleId = req.swagger.params.role.value;
+
+        const stepUpdated = await StepImplementation.iRemoveRoleToStep(mStepId, mRoleId);
+
+        return result(res, 200, mStepTransformer.transformer(stepUpdated));
+    } catch (exception) {
+        console.log("m.step@removeRoleToStep ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}

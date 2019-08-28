@@ -198,3 +198,57 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/m/steps/{step}/roles:
+  x-swagger-router-controller: m.step.controller
+  post:
+    operationId: addRoleToStep
+    tags:
+      - M/Steps
+    summary: Add role to step
+    description: Add role to step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: role
+        description: Role ID
+        in: formData
+        type: string
+        required: true
+    responses:
+      200:
+        description: Add role to step
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/steps/{step}/roles/{role}:
+  x-swagger-router-controller: m.step.controller
+  delete:
+    operationId: removeRoleToStep
+    tags:
+      - M/Steps
+    summary: Remove role to step
+    description: Remove role to step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: Step ID
+        required: true
+      - name: role
+        description: Role ID
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Remove role to step
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

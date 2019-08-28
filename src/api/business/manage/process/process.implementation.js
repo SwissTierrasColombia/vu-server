@@ -7,6 +7,7 @@ import RoleBusiness from '../role/role.business';
 import StepBusiness from '../step/step.business';
 import FieldBusiness from '../field/field.business';
 import VariableBusiness from '../variable/variable.business';
+import UserBusiness from '../user/user.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 
 // Exceptions
@@ -324,5 +325,175 @@ export default class ProcessImplementation extends ProcessBusiness {
         return await this.getProcessById(processId);
     }
 
+    static async iAddUserToProcess(processId, firstName, lastName, username, roles) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(processId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the user already registered in the process
+        const userFound = await UserBusiness.getUserByUsernameAndProcess(username.trim(), processId);
+        if (userFound) {
+            throw new APIException('m.process.users.user_process_registered', 401);
+        }
+
+        // verify roles
+        const rolesValid = [];
+        for (let i in roles) {
+            const mRoleId = roles[i];
+            const roleFound = await RoleBusiness.getRoleById(mRoleId);
+            if (roleFound && roleFound.process.toString() === processId) {
+                rolesValid.push(mRoleId);
+            }
+        }
+
+        if (rolesValid.length === 0) {
+            throw new APIException('m.process.users.user_roles_minimum_one', 401);
+        }
+
+        await UserBusiness.createUser(firstName, lastName, username.trim(), rolesValid, processId);
+
+        return processFound;
+    }
+
+    static async iGetUsersByProcess(mProcessId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        return await UserBusiness.getUsersByProcessId(mProcessId, ['process', 'roles']);
+    }
+
+    static async iUpdateUserFromProcess(processId, userId, firstName, lastName, username, roles) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(processId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the role exists
+        const userFound = await UserBusiness.getUserById(userId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
+
+        // verify if the user belong to process
+        if (userFound.process.toString() !== processId.toString()) {
+            throw new APIException('m.process.users.user_not_belongs_process', 401);
+        }
+
+        // verify if the username already registered in the process
+        const userByUsernameFound = await UserBusiness.getUserByUsernameAndProcess(username.trim(), processId);
+        if (userByUsernameFound && userByUsernameFound._id.toString() !== userId.toString()) {
+            throw new APIException('m.process.users.user_process_registered', 401);
+        }
+
+        // verify roles
+        const rolesValid = [];
+        for (let i in roles) {
+            const mRoleId = roles[i];
+            const roleFound = await RoleBusiness.getRoleById(mRoleId);
+            if (roleFound && roleFound.process.toString() === processId) {
+                rolesValid.push(mRoleId);
+            }
+        }
+
+        if (rolesValid.length === 0) {
+            throw new APIException('m.process.users.user_roles_minimum_one', 401);
+        }
+
+        await UserBusiness.updateUser(userId, firstName, lastName, username, rolesValid);
+
+        return processFound;
+    }
+
+    static async iRemoveUserFromProcess(processId, userId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(processId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the role exists
+        const userFound = await UserBusiness.getUserById(userId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
+
+        // verify if the user belong to process
+        if (userFound.process.toString() !== processId.toString()) {
+            throw new APIException('m.process.users.user_not_belongs_process', 401);
+        }
+
+        await UserBusiness.removeUserById(userId);
+    }
+
+    static async deployProcess(mProcessId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify that the process had a minimum role
+        const roles = await RoleBusiness.getRolesByProcess(mProcessId);
+        if (roles.length === 0) {
+            throw new APIException('m.process.process_deploy_error_roles', 401);
+        }
+
+        // verify that the process had a minimum step
+        const steps = await StepBusiness.getStepsFromProcess(mProcessId);
+        if (steps.length === 0) {
+            throw new APIException('m.process.process_deploy_error_steps', 401);
+        }
+
+        // verify that the process had a minimum users
+        const users = await UserBusiness.getUsersByProcessId(mProcessId);
+        if (users.length === 0) {
+            throw new APIException('m.process.process_deploy_error_users', 401);
+        }
+
+        // check at each step if you have assigned fields
+        for (let i in steps) {
+            const step = steps[i];
+            let fields = await FieldBusiness.getFieldsByStep(step._id.toString());
+            fields = fields.filter(field => {
+                return field.isPrivate === false;
+            });
+            if (fields.length === 0) {
+                throw new APIException('m.process.process_deploy_error_fields', 401);
+            }
+        }
+
+        // check at each step if you have assigned rules
+        for (let i in steps) {
+            const step = steps[i];
+            const rules = step.rules;
+            if (rules.length === 0) {
+                throw new APIException('m.process.process_deploy_error_rules', 401);
+            }
+        }
+
+        // check at each step if you have assigned roles
+        for (let i in steps) {
+            const step = steps[i];
+            const roles = step.roles;
+            if (roles.length === 0) {
+                throw new APIException('m.process.process_deploy_error_steps_roles', 401);
+            }
+        }
+
+        await this.updateActiveProcess(mProcessId, true);
+
+        return await this.getProcessById(mProcessId);
+    }
 
 }

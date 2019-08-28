@@ -33,6 +33,12 @@ export default (MProcessModel) => {
             return await process.save();
         },
 
+        async updateActiveProcess(processId, active) {
+            let process = await this.findById(processId);
+            process.active = active;
+            return await process.save();
+        }
+
     };
 
 };

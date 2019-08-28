@@ -62,6 +62,12 @@ export default (MStepModel) => {
 
         async removeStepById(stepId) {
             return await this.remove({ _id: stepId });
+        },
+
+        async updateRolesToStep(mStepId, roles) {
+            let step = await this.findById(mStepId);
+            step.roles = roles;
+            return await step.save();
         }
 
     };
