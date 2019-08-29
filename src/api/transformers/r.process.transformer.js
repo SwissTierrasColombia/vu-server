@@ -11,12 +11,7 @@ export let rProcessTransformer = new Transformer({
         "field": "process",
         "reference": mProcessTransformer
     },
-    "step": {
-        "field": "step",
-        "reference": mStepTransformer
-    },
-    "data": "data",
-    "metadata": "metadata",
+    "steps": "steps",
     "createdAt": "createdAt",
     "updatedAt": "updatedAt"
 });

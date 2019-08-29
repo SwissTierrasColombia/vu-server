@@ -46,6 +46,10 @@ export default (MUserModel) => {
             return await this.remove({ _id: userId });
         },
 
+        async getUsersByUsername(username) {
+            return await this.find({ username });
+        },
+
     };
 
 };

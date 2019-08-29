@@ -7,34 +7,43 @@ export default (RProcessModel) => {
     // Statics
     RProcessModel.statics = {
 
-        async saveInformationStep(mProcessId, mStepId, data) {
+        async createProcess(mProcessId, mSteps) {
             const RProcessModel = this;
             const process = new RProcessModel({
                 process: mProcessId,
-                step: mStepId,
-                data
+                steps: mSteps
             });
             return await process.save();
         },
 
-        async getInformationByProcessAndStep(mProcessId, mStepId, populates) {
-            let data = this.findOne({ process: mProcessId, step: mStepId });
-            data = addPopulates(data, populates);
-            return await data.exec();
+        async getProcessById(rProcessId) {
+            return await this.findById(rProcessId);
         },
 
-        async updateInformationStep(mProcessId, mStepId, data, metadata) {
-            let record = await this.findOne({ process: mProcessId, step: mStepId });
-            record.data = data;
-            record.metadata = metadata;
-            record.updatedAt = moment();
-            return await record.save();
+        async updateProcessStep(rProcessId, mStepId, data, metadata) {
+            return await this.findOneAndUpdate(
+                {
+                    '_id': rProcessId,
+                    'steps.step': mStepId
+                },
+                {
+                    "$set": {
+                        "steps.$.data": data,
+                        "steps.$.metadata": metadata,
+                        "steps.$.updatedAt": moment()
+                    }
+                }
+            );
         },
 
-        async getDataByProcessId(mProcessId, populates) {
-            let data = this.find({ process: mProcessId });
-            data = addPopulates(data, populates);
-            return await data.exec();
+        async getProcessesByProcessAndSteps(mProcessId, mRoles, populates) {
+            let processes = this.find({
+                process: mProcessId,
+                'steps.step': { "$in": mRoles },
+                'steps.active': true
+            });
+            processes = addPopulates(processes, populates);
+            return await processes.exec();
         }
 
     };

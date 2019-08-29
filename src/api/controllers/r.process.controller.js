@@ -17,8 +17,8 @@ export async function saveInformationProcess(req, res) {
     try {
 
         // validate m/process id
-        req.checkBody("process", getMessage('m.process.process_required', language)).notEmpty();
-        req.checkBody("process", getMessage('m.process.process_invalid', language)).isMongoId();
+        req.checkBody("mProcess", getMessage('m.process.process_required', language)).notEmpty();
+        req.checkBody("mProcess", getMessage('m.process.process_invalid', language)).isMongoId();
 
         // validate m/step id
         req.checkBody("step", getMessage('m.process.steps.step_required', language)).notEmpty();
@@ -32,12 +32,13 @@ export async function saveInformationProcess(req, res) {
             return badRequest(res, 400, { message: errors[0].msg });
         }
 
-        const mProcessId = req.body.process;
+        const mProcessId = req.body.mProcess;
+        const rProcessId = req.body.rProcess;
         const mStepId = req.body.step;
         const data = req.body.data;
         const metadata = req.body.metadata;
 
-        const dataSave = await ProcessImplementation.iSaveInformationStep(mProcessId, mStepId, data, metadata);
+        const dataSave = await ProcessImplementation.iSaveInformationStep(mProcessId, mStepId, data, metadata, rProcessId);
 
         return result(res, 200, rProcessTransformer.transformer(dataSave));
     } catch (exception) {
@@ -51,7 +52,7 @@ export async function saveInformationProcess(req, res) {
 }
 
 // get process data
-export async function getProcessData(req, res) {
+export async function getProcess(req, res) {
 
     const language = 'es';
 
@@ -70,13 +71,13 @@ export async function getProcessData(req, res) {
             return badRequest(res, 400, { message: errors[0].msg });
         }
 
-        const mProcessId = req.swagger.params.process.value;
+        const rProcessId = req.swagger.params.process.value;
 
-        const data = await ProcessImplementation.iGetInformationProcess(mProcessId);
+        const data = await ProcessImplementation.iGetInformationProcess(rProcessId);
 
-        return result(res, 200, data);
+        return result(res, 200, rProcessTransformer.transformer(data));
     } catch (exception) {
-        console.log("r.process@getProcessData ---->", exception);
+        console.log("r.process@getProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }

@@ -7,5 +7,12 @@ export default class StepBusiness {
         return await PStepModel.getSteps();
     }
 
+    static async getStepById(pStepId) {
+        try {
+            return await PStepModel.getStepById(pStepId);
+        } catch (error) {
+            return null;
+        }
+    }
 
 }

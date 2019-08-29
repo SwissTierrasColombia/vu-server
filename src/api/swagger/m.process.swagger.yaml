@@ -533,3 +533,25 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/flow:
+  x-swagger-router-controller: m.process.controller
+  get:
+    operationId: getStepsFlow
+    tags:
+      - M/Processes
+    summary: Get steps flow
+    description: Get steps flow
+    parameters:
+      - name: process
+        in: path
+        description: MProcess ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get steps flow
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

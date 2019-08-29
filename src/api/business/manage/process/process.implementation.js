@@ -9,6 +9,8 @@ import FieldBusiness from '../field/field.business';
 import VariableBusiness from '../variable/variable.business';
 import UserBusiness from '../user/user.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
+import PCallbackBusiness from '../../parameterize/callback/callback.business';
+import PStepBusiness from '../../parameterize/step/step.business';
 
 // Exceptions
 import APIException from '../../../exceptions/api.exception';
@@ -494,6 +496,52 @@ export default class ProcessImplementation extends ProcessBusiness {
         await this.updateActiveProcess(mProcessId, true);
 
         return await this.getProcessById(mProcessId);
+    }
+
+    static async iGetStepsFlow(mProcessId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        const steps = await StepBusiness.getStepsFromProcess(mProcessId);
+
+        const nodes = [];
+        const links = [];
+
+        for (let i in steps) {
+            const step = steps[i];
+            const rules = step.rules;
+
+            const typeStep = await PStepBusiness.getStepById(step.typeStep.toString());
+            nodes.push(
+                {
+                    id: step._id.toString(),
+                    label: typeStep.step
+                }
+            );
+            for (let j = 0; j < rules.length; j++) {
+                const rule = rules[j];
+                const callbacks = rule.callbacks;
+                for (let k = 0; k < callbacks.length; k++) {
+                    const callback = callbacks[k];
+                    if (callback.callback.toString() === PCallbackBusiness.CALLBACK_STEP) {
+                        links.push(
+                            {
+                                id: i,
+                                source: step._id.toString(),
+                                target: callback.metadata.step.toString()
+                            }
+                        );
+
+                    }
+                }
+            }
+
+        }
+        return { nodes, links };
     }
 
 }

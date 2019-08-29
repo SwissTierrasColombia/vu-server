@@ -35,4 +35,8 @@ export default class UserBusiness {
         }
     }
 
+    static async getUsersByUsername(username) {
+        return await MUserModel.getUsersByUsername(username);
+    }
+
 }

@@ -7,7 +7,7 @@
     summary: Save information process
     description: Save information process
     parameters:
-      - name: process
+      - name: mProcess
         in: formData
         type: string
         description: M/Process ID
@@ -28,20 +28,20 @@
 /api/r/processes/{process}:
   x-swagger-router-controller: r.process.controller
   get:
-    operationId: getProcessData
+    operationId: getProcess
     tags:
       - R/Processes
-    summary: Get process data
-    description: Get process data
+    summary: Get process
+    description: Get process
     parameters:
       - name: process
         in: path
         type: string
-        description: M/Process ID
+        description: R/Process ID
         required: true
     responses:
       200:
-        description: Get process data
+        description: Get process
       500:
         description: Server error
         schema:

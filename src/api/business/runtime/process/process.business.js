@@ -3,20 +3,24 @@ import RProcessModel from '../../../models/r.process.model';
 
 export default class ProcessBusiness {
 
-    static async saveInformationStep(mProcessId, mStepId, data) {
-        return await RProcessModel.saveInformationStep(mProcessId, mStepId, data);
+    static async getProcessById(rProcessId) {
+        try {
+            return await RProcessModel.getProcessById(rProcessId);
+        } catch (error) {
+            return null;
+        }
     }
 
-    static async getInformationByProcessAndStep(mProcessId, mStepId, populates) {
-        return await RProcessModel.getInformationByProcessAndStep(mProcessId, mStepId, populates);
+    static async createProcess(mProcessId, mSteps) {
+        return await RProcessModel.createProcess(mProcessId, mSteps);
     }
 
-    static async updateInformationStep(mProcessId, mStepId, data, metadata) {
-        return await RProcessModel.updateInformationStep(mProcessId, mStepId, data, metadata);
+    static async updateProcessStep(rProcessId, mStepId, data, metadata) {
+        return await RProcessModel.updateProcessStep(rProcessId, mStepId, data, metadata);
     }
 
-    static async getDataByProcessId(mProcessId, populates) {
-        return await RProcessModel.getDataByProcessId(mProcessId, populates);
+    static async getProcessesByProcessAndSteps(mProcessId, mRoles, populates) {
+        return await RProcessModel.getProcessesByProcessAndSteps(mProcessId, mRoles, populates);
     }
 
 }

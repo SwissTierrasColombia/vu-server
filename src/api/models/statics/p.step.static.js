@@ -7,6 +7,10 @@ export default (PStepModel) => {
 
         async getSteps() {
             return await this.find();
+        },
+
+        async getStepById(pStepId) {
+            return await this.findById(pStepId);
         }
 
     }

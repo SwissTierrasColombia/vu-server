@@ -11,14 +11,6 @@ const RProcessSchema = new Schema({
         ],
     },
 
-    step: {
-        type: Schema.Types.ObjectId,
-        ref: 'MStepModel',
-        required: [
-            true, 'The step is required.'
-        ],
-    },
-
     steps: [
         {
             step: {

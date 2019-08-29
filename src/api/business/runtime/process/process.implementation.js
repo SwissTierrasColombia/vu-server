@@ -5,6 +5,7 @@ import RProcessBusiness from './process.business';
 import MProcessBusiness from '../../manage/process/process.business';
 import MStepBusiness from '../../manage/step/step.business';
 import MFieldBusiness from '../../manage/field/field.business';
+import MUserBusiness from '../../manage/user/user.business';
 
 // Exceptions
 import APIException from '../../../exceptions/api.exception';
@@ -15,7 +16,7 @@ export default class ProcessImplementation extends RProcessBusiness {
         super();
     }
 
-    static async iSaveInformationStep(mProcessId, mStepId, data, metadata) {
+    static async iSaveInformationStep(mProcessId, mStepId, data, metadata, rProcessId) {
 
         // verify if the process exists
         const processFound = await MProcessBusiness.getProcessById(mProcessId);
@@ -48,26 +49,77 @@ export default class ProcessImplementation extends RProcessBusiness {
             throw new APIException('r.process.data_invalid', 401);
         }
 
-        // verify if the data is new or update
-        let dataSave = await this.getInformationByProcessAndStep(mProcessId, mStepId);
-        if (dataSave) {
-            await this.updateInformationStep(mProcessId, mStepId, data, metadata);
+        let runtimeProcessFound = await this.getProcessById(rProcessId);
+        if (runtimeProcessFound) {
+
+            // update step in rProcess
+            metadata = (metadata) ? metadata : {};
+            await this.updateProcessStep(rProcessId, mStepId, data, metadata);
+            runtimeProcessFound = await this.getProcessById(rProcessId);
         } else {
-            await this.saveInformationStep(mProcessId, mStepId, data);
+
+            // create runtime process
+            const rSteps = [];
+            const mSteps = await MStepBusiness.getStepsFromProcess(mProcessId);
+
+            for (let i in mSteps) {
+                const mStep = mSteps[i];
+                let activeStep = false;
+                let dataStep = {};
+                if (mStep._id.toString() === mStepId.toString()) {
+                    activeStep = true;
+                    dataStep = data;
+                }
+                rSteps.push({
+                    step: mStep._id.toString(),
+                    active: activeStep,
+                    data: dataStep,
+                    metadata: {}
+                });
+            }
+
+            runtimeProcessFound = await this.createProcess(mProcessId, rSteps);
         }
 
-        return await this.getInformationByProcessAndStep(mProcessId, mStepId, ['process', 'step']);
+        return runtimeProcessFound;
     }
 
-    static async iGetInformationProcess(mProcessId) {
+    static async iGetInformationProcess(rProcessId) {
 
         // verify if the process exists
-        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        const processFound = await this.getProcessById(rProcessId);
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        return await this.getDataByProcessId(mProcessId, ['process', 'step']);
+        return processFound;
+    }
+
+    static async getProcessesByUser(username) {
+        console.log('username', username);
+
+        const users = await MUserBusiness.getUsersByUsername(username);
+
+        const allProcesses = [];
+
+        for (let i in users) {
+            const user = users[i];
+
+            const mProcessId = user.process.toString();
+
+            const steps = await MStepBusiness.getStepsByProcessAndRoles(mProcessId, user.roles);
+            const stepsId = [];
+            for (let j = 0; j < steps.length; j++) {
+                stepsId.push(steps[j]._id.toString());
+            }
+            const rProcesses = await this.getProcessesByProcessAndSteps(mProcessId, stepsId, ['process']);
+            for (let j = 0; j < rProcesses.length; j++) {
+                allProcesses.push(rProcesses[j]);
+            }
+
+        }
+
+        return allProcesses;
     }
 
 

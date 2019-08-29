@@ -1,0 +1,21 @@
+/api/r/users/{username}/processes:
+  x-swagger-router-controller: r.user.controller
+  get:
+    operationId: getProcessesBelongToUser
+    tags:
+      - R/Users
+    summary: Get processes - user
+    description: Get processes - user
+    parameters:
+      - name: username
+        in: path
+        type: string
+        description: Username User
+        required: true
+    responses:
+      200:
+        description: Get processes
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
