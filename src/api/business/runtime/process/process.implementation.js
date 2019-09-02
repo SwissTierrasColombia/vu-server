@@ -96,7 +96,6 @@ export default class ProcessImplementation extends RProcessBusiness {
     }
 
     static async getProcessesByUser(username) {
-        console.log('username', username);
 
         const users = await MUserBusiness.getUsersByUsername(username);
 

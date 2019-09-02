@@ -55,4 +55,8 @@ export default class StepBusiness {
         return await MStepModel.getStepsByProcessAndRoles(mProcessId, roles);
     }
 
+    static async updateStepRules(mStepId, rules) {
+        return await MStepModel.updateStepRules(mStepId, rules);
+    }
+
 }

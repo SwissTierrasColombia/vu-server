@@ -157,6 +157,29 @@ export default class ProcessImplementation extends ProcessBusiness {
         // remove fields
         await FieldBusiness.removeFieldsByStepId(stepFound._id.toString());
 
+        // remove references callbacks
+        const steps = await StepBusiness.getStepsFromProcess(processId);
+        for (let i in steps) {
+            const step = steps[i];
+            if (step._id.toString() !== mStepId.toString()) {
+                const rules = step.rules;
+                for (let j = 0; j < rules.length; j++) {
+                    const rule = rules[j];
+                    const callbacks = rule.callbacks;
+                    for (let k = 0; k < callbacks.length; k++) {
+                        const callback = callbacks[k];
+                        if (callback.callback.toString() === PCallbackBusiness.CALLBACK_STEP &&
+                            callback.metadata.step.toString() === mStepId.toString()) {
+                            callbacks.splice(k, 1);
+                        }
+                    }
+                }
+
+                // update step
+                await StepBusiness.updateStepRules(step._id.toString(), rules);
+            }
+        }
+
         // remove steps
         await StepBusiness.removeStepById(stepFound._id.toString());
     }
@@ -180,7 +203,7 @@ export default class ProcessImplementation extends ProcessBusiness {
                 for (let k in conditions) {
                     let condition = conditions[k];
                     let field = await FieldBusiness.getFieldById(condition.field.toString());
-                    condition.typeData = field.typeData;
+                    condition.typeData = (field) ? field.typeData : null;
                 }
             }
         }

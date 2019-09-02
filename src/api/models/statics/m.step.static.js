@@ -72,6 +72,12 @@ export default (MStepModel) => {
 
         async getStepsByProcessAndRoles(mProcessId, mRoles) {
             return await this.find({ process: mProcessId, roles: { "$in": mRoles } });
+        },
+
+        async updateStepRules(mStepId, rules) {
+            let step = await this.findById(mStepId);
+            step.rules = rules;
+            return await step.save();
         }
 
     };
