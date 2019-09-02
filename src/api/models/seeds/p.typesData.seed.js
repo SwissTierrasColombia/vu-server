@@ -18,5 +18,25 @@ export default [
     {
         _id: "5d5c31053f13df7873bcdd7c",
         typeData: "Fecha"
+    },
+    {
+        _id: "5d6d14bdcf24455da624f3d2",
+        typeData: "Lista Respuesta Única"
+    },
+    {
+        _id: "5d6d14db839412978f3d657d",
+        typeData: "Lista Selección Múltiple"
+    },
+    {
+        _id: "5d6d158e15ba903fa8b8b5f5",
+        typeData: "Casilla de Verificación"
+    },
+    {
+        _id: "5d6d20ef775e54cab6e1a7c3",
+        typeData: "Archivo"
+    },
+    {
+        _id: "5d6d41ebd3bc60802d460fcf",
+        typeData: "Área de Texto"
     }
 ];

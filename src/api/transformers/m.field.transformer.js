@@ -9,6 +9,7 @@ export let mFieldTransformer = new Transformer({
     "_id": "_id",
     "nameField": "field",
     "description": "description",
+    "metadata": "metadata",
     "isRequired": "isRequired",
     "isPrivate": "isPrivate",
     "permissions": "permissions",

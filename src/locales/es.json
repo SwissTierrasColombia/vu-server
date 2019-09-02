@@ -39,7 +39,8 @@
                 "field_invalid": "El campo es inválido.",
                 "field_not_exists": "El campo no existe.",
                 "field_not_belongs_to_step": "El campo no pertenece al paso.",
-                "field_pri_count_description": "Cantidad de veces que se ha iniciado el paso."
+                "field_pri_count_description": "Cantidad de veces que se ha iniciado el paso.",
+                "field_option_list_required": "Las opciones de la lista son requeridas."
             },
             "rules": {
                 "rule_conditions_required": "Se deben especificar las condiciones para la regla.",

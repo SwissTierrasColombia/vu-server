@@ -7,8 +7,8 @@ export default class FieldBusiness {
         return await MFieldModel.getFieldByNameAndStep(name, mStepId);
     }
 
-    static async createField(name, description, type, isRequired, permissions, mStepId, isPrivate) {
-        return await MFieldModel.createField(name, description, type, isRequired, permissions, mStepId, isPrivate);
+    static async createField(name, description, type, isRequired, permissions, mStepId, isPrivate, metadata) {
+        return await MFieldModel.createField(name, description, type, isRequired, permissions, mStepId, isPrivate, metadata);
     }
 
     static async getFieldsByStep(stepId, populates) {
@@ -19,8 +19,8 @@ export default class FieldBusiness {
         return await MFieldModel.getFieldById(fieldId, populates);
     }
 
-    static async updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId) {
-        return await MFieldModel.updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId);
+    static async updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId, metadata) {
+        return await MFieldModel.updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId, metadata);
     }
 
     static async removeFieldById(mFieldId) {

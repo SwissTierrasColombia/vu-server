@@ -30,6 +30,11 @@ const MFieldSchema = new Schema({
         ]
     },
 
+    metadata: {
+        type: Schema.Types.Mixed,
+        required: false
+    },
+
     isPrivate: {
         type: Boolean,
         default: false,

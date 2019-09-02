@@ -37,7 +37,11 @@ export default (MProcessModel) => {
             let process = await this.findById(processId);
             process.active = active;
             return await process.save();
-        }
+        },
+
+        async getProcessesByActive(active) {
+            return await this.find({ active });
+        },
 
     };
 

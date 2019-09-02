@@ -121,5 +121,27 @@ export default class ProcessImplementation extends RProcessBusiness {
         return allProcesses;
     }
 
+    static async getDataStartProcedure(mProcessId) {
+
+        // verify if the process exists
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        const firstMStep = await MProcessBusiness.getFirstStepFromProcess(mProcessId);
+        let mFields = [];
+        if (firstMStep) {
+            mFields = await MFieldBusiness.getFieldsByStep(firstMStep._id.toString());
+        }
+
+        mFields = mFields.filter(item => { return item.isPrivate === false; });
+
+        return {
+            fields: mFields,
+            step: firstMStep._id.toString()
+        };
+    }
+
 
 }

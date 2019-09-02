@@ -30,6 +30,12 @@
       - M/Processes
     summary: Get processes
     description: Get processes
+    parameters:
+      - name: available
+        in: query
+        type: boolean
+        description: Determines whether filtering is required only by the processes available for paperwork
+        required: false
     responses:
       200:
         description: Get processes

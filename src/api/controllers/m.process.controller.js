@@ -50,7 +50,10 @@ export async function getProcesses(req, res) {
     const language = 'es';
 
     try {
-        const processes = await ProcessImplementation.getProcesses();
+
+        const propAvailable = req.swagger.params.available.value;
+
+        const processes = await ProcessImplementation.getProcesses(propAvailable);
         return result(res, 200, mProcessTransformer.transformer(processes));
     } catch (exception) {
         console.log("m.process@getProcesses ---->", exception);

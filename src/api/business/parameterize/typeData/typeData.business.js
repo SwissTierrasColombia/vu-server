@@ -12,6 +12,11 @@ export default class TypeDataBusiness {
     static TYPE_DATA_EMAIL = '5d5c174067bca9c43a6c0781';
     static TYPE_DATA_PHONE_NUMBER = '5d5c17a7c5e62930e04c6f57';
     static TYPE_DATA_DATE = '5d5c31053f13df7873bcdd7c';
+    static TYPE_DATA_SINGLE_RESPONSE_LIST = '5d6d14bdcf24455da624f3d2';
+    static TYPE_DATA_MULTIPLE_RESPONSE_LIST = '5d6d14db839412978f3d657d';
+    static TYPE_DATA_CHECKBOX = '5d6d158e15ba903fa8b8b5f5';
+    static TYPE_DATA_FILE = '5d6d20ef775e54cab6e1a7c3';
+    static TYPE_DATA_TEXTAREA = '5d6d41ebd3bc60802d460fcf';
 
     static async getAllTypesData() {
         return await PTypeDataModel.getTypesData();

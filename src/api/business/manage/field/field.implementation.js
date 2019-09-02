@@ -1,8 +1,8 @@
 // Business
 import FieldBusiness from './field.business';
-import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import StepBusiness from '../step/step.business';
 import RoleBusiness from '../role/role.business';
+import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 
 // Exceptions
 import APIException from '../../../exceptions/api.exception';
@@ -14,7 +14,7 @@ export default class FieldImplementation extends FieldBusiness {
     }
 
 
-    static async iCreateField(name, description, pTypeId, isRequired, permissions, mStepId) {
+    static async iCreateField(name, description, pTypeId, isRequired, permissions, metadata, mStepId) {
 
         // verify if step exists
         const mStepFound = await StepBusiness.getStepById(mStepId);
@@ -73,12 +73,22 @@ export default class FieldImplementation extends FieldBusiness {
             throw new APIException('m.process.fields.field_permissions_required', 401);
         }
 
-        const fieldNew = await FieldBusiness.createField(name, description, pTypeId, isRequired, permissionsValid, mStepId);
+        // verify metadata if its necessary
+        switch (pTypeId) {
+            case TypeDataBusiness.TYPE_DATA_MULTIPLE_RESPONSE_LIST:
+            case TypeDataBusiness.TYPE_DATA_SINGLE_RESPONSE_LIST:
+                if (!(metadata && metadata.hasOwnProperty('options'))) {
+                    throw new APIException('m.process.fields.field_option_list_required', 401);
+                }
+                break;
+        }
+
+        const fieldNew = await FieldBusiness.createField(name, description, pTypeId, isRequired, permissionsValid, mStepId, false, metadata);
 
         return await FieldBusiness.getFieldById(fieldNew._id.toString(), ['step', 'typeData']);
     }
 
-    static async iUpdateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId) {
+    static async iUpdateField(mFieldId, name, description, pTypeId, isRequired, permissions, metadata, mStepId) {
 
         // verify if field exists
         const fieldFound = await FieldBusiness.getFieldById(mFieldId);
@@ -145,7 +155,18 @@ export default class FieldImplementation extends FieldBusiness {
             throw new APIException('m.process.fields.field_permissions_required', 401);
         }
 
-        await FieldBusiness.updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId);
+        // verify metadata if its necessary
+        switch (pTypeId) {
+            case TypeDataBusiness.TYPE_DATA_MULTIPLE_RESPONSE_LIST:
+            case TypeDataBusiness.TYPE_DATA_SINGLE_RESPONSE_LIST:
+                if (!(metadata && metadata.hasOwnProperty('options'))) {
+                    throw new APIException('m.process.fields.field_option_list_required', 401);
+                }
+                break;
+        }
+
+
+        await FieldBusiness.updateField(mFieldId, name, description, pTypeId, isRequired, permissions, mStepId, metadata);
 
         return await FieldBusiness.getFieldById(mFieldId, ['step', 'typeData']);
     }

@@ -54,8 +54,9 @@ export async function addFieldToStep(req, res) {
         const isRequired = req.body.isRequired;
         const permissions = req.body.permissions;
         const description = req.body.description;
+        const metadata = req.body.metadata;
 
-        const fieldNew = await FieldImplementation.iCreateField(nameField, description, pTypeId, isRequired, permissions, mStepId);
+        const fieldNew = await FieldImplementation.iCreateField(nameField, description, pTypeId, isRequired, permissions, metadata, mStepId);
         return result(res, 201, mFieldTransformer.transformer(fieldNew));
     } catch (exception) {
         console.log("m.step@addFieldToStep ---->", exception);
@@ -153,8 +154,9 @@ export async function updateFieldFromStep(req, res) {
         const isRequired = req.body.isRequired;
         const permissions = req.body.permissions;
         const description = req.body.description;
+        const metadata = req.body.metadata;
 
-        const fieldUpdate = await FieldImplementation.iUpdateField(mFieldId, nameField, description, pTypeId, isRequired, permissions, mStepId);
+        const fieldUpdate = await FieldImplementation.iUpdateField(mFieldId, nameField, description, pTypeId, isRequired, permissions, metadata, mStepId);
         return result(res, 200, mFieldTransformer.transformer(fieldUpdate));
     } catch (exception) {
         console.log("m.step@updateFieldFromStep ---->", exception);

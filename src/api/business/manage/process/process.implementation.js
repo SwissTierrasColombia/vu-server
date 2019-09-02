@@ -26,7 +26,12 @@ export default class ProcessImplementation extends ProcessBusiness {
         return await this.createProcess(name.trim(), description);
     }
 
-    static async getProcesses() {
+    static async getProcesses(filterAvailable) {
+
+        if (filterAvailable) {
+            return await this.getProcessesAvailable();
+        }
+
         return await this.getAllProcesses();
     }
 

@@ -8,6 +8,7 @@ import ProcessImplementation from '../business/runtime/process/process.implement
 
 // Transformers
 import { rProcessTransformer } from '../transformers/r.process.transformer';
+import { mFieldTransformer } from '../transformers/m.field.transformer';
 
 // save information process
 export async function saveInformationProcess(req, res) {
@@ -78,6 +79,47 @@ export async function getProcess(req, res) {
         return result(res, 200, rProcessTransformer.transformer(data));
     } catch (exception) {
         console.log("r.process@getProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// get data start procedure
+export async function getDataStartProcedure(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mProcessId = req.swagger.params.process.value;
+
+        const dataStartProcedure = await ProcessImplementation.getDataStartProcedure(mProcessId);
+
+        const data = {
+            fields: dataStartProcedure.fields,
+            process: mProcessId,
+            step: dataStartProcedure.step
+        };
+
+        return result(res, 200, data);
+    } catch (exception) {
+        console.log("r.process@getDataStartProcedure ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }
