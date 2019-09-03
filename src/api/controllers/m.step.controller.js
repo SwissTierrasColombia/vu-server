@@ -388,3 +388,38 @@ export async function removeRoleToStep(req, res) {
     }
 
 }
+
+// set origin step
+export async function setOriginStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+
+        const stepUpdated = await StepImplementation.updateStepToOrigin(mStepId);
+
+        return result(res, 200, mStepTransformer.transformer(stepUpdated));
+    } catch (exception) {
+        console.log("m.step@setOriginStep ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}

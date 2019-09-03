@@ -1,4 +1,8 @@
 // Libs
+import validator from 'validator';
+import { getMessage } from '../../../../lib/helpers/locales';
+import moment from 'moment';
+import config from '../../../../config';
 
 // Business
 import RProcessBusiness from './process.business';
@@ -6,6 +10,7 @@ import MProcessBusiness from '../../manage/process/process.business';
 import MStepBusiness from '../../manage/step/step.business';
 import MFieldBusiness from '../../manage/field/field.business';
 import MUserBusiness from '../../manage/user/user.business';
+import PTypeDataBusiness from '../../parameterize/typeData/typeData.business';
 
 // Exceptions
 import APIException from '../../../exceptions/api.exception';
@@ -16,7 +21,7 @@ export default class ProcessImplementation extends RProcessBusiness {
         super();
     }
 
-    static async iSaveInformationStep(mProcessId, mStepId, data, metadata, rProcessId) {
+    static async iSaveInformationStep(mProcessId, mStepId, data, metadata, files, rProcessId) {
 
         // verify if the process exists
         const processFound = await MProcessBusiness.getProcessById(mProcessId);
@@ -38,24 +43,54 @@ export default class ProcessImplementation extends RProcessBusiness {
         // validate data
         const mFields = await MFieldBusiness.getFieldsByStep(mStepId);
         let errorField = false;
-        mFields.forEach(mField => {
+        let messageError = '';
+
+        for (let i in mFields) {
+            const mField = mFields[i];
             if (!mField.isPrivate) {
-                if (mField.isRequired && !data.hasOwnProperty(mField.field)) {
-                    errorField = true;
+
+                if (mField.isRequired) {
+                    if (!data.hasOwnProperty(mField.field) || validator.isEmpty(data[mField.field])) {
+                        if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
+                            if (!files || !files.hasOwnProperty(mField.field)) {
+                                errorField = true;
+                                messageError = getMessage('r.process.data_field_type_required', 'es').replace('{{field}}', mField.description);
+                                break;
+                            }
+                        } else {
+                            errorField = true;
+                            messageError = getMessage('r.process.data_field_type_required', 'es').replace('{{field}}', mField.description);
+                            break;
+                        }
+                    }
                 }
+
+                // validate data through type data
+                const valueField = data[mField.field];
+                if (valueField) {
+                    errorField = !await PTypeDataBusiness.verifyValueFromTypeData(mField.typeData, valueField, mField.metadata);
+                    if (errorField) {
+                        messageError = getMessage('r.process.data_field_type_invalid', 'es').replace('{{field}}', mField.description);
+                        break;
+                    }
+                }
+
             }
-        });
-        if (errorField) {
-            throw new APIException('r.process.data_invalid', 401);
         }
+
+        if (errorField) {
+            throw new APIException('-', 401, messageError);
+        }
+
+        console.log('bien I');
 
         let runtimeProcessFound = await this.getProcessById(rProcessId);
         if (runtimeProcessFound) {
 
             // update step in rProcess
-            metadata = (metadata) ? metadata : {};
-            await this.updateProcessStep(rProcessId, mStepId, data, metadata);
-            runtimeProcessFound = await this.getProcessById(rProcessId);
+            // metadata = (metadata) ? metadata : {};
+            // await this.updateProcessStep(rProcessId, mStepId, data, metadata);
+            // runtimeProcessFound = await this.getProcessById(rProcessId);
         } else {
 
             // create runtime process
@@ -67,6 +102,19 @@ export default class ProcessImplementation extends RProcessBusiness {
                 let activeStep = false;
                 let dataStep = {};
                 if (mStep._id.toString() === mStepId.toString()) {
+                    // save files
+                    for (let i in mFields) {
+                        const mField = mFields[i];
+                        if (!mField.isPrivate) {
+                            if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
+                                const file = files[mField.field];
+                                const newName = moment().unix() + '_' + file.name.replace(' ', '_');
+                                const path = `/assets/${newName}`;
+                                await file.mv(`${config.base}${path}`);
+                                data[mField.field] = path;
+                            }
+                        }
+                    }
                     activeStep = true;
                     dataStep = data;
                 }
@@ -129,7 +177,8 @@ export default class ProcessImplementation extends RProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        const firstMStep = await MProcessBusiness.getFirstStepFromProcess(mProcessId);
+        const firstMStep = await MStepBusiness.getStepFirstFromProcess(mProcessId);
+
         let mFields = [];
         if (firstMStep) {
             mFields = await MFieldBusiness.getFieldsByStep(firstMStep._id.toString());

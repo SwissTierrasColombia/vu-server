@@ -177,4 +177,22 @@ export default class StepImplementation extends StepBusiness {
         return await this.getStepById(mStepId);
     }
 
+    static async updateStepToOrigin(mStepId) {
+
+        // verify if step exists
+        const mStepFound = await this.getStepById(mStepId);
+        if (!mStepFound) {
+            throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        const stepsProcess = await this.getStepsFromProcess(mStepFound.process.toString());
+        for (let i in stepsProcess) {
+            const step = stepsProcess[i];
+            const isFirst = (step._id.toString() === mStepId) ? true : false;
+            await this.updateStepFirst(step._id.toString(), isFirst);
+        }
+
+        return await this.getStepById(mStepId);
+    }
+
 }

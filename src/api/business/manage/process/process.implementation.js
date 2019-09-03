@@ -209,6 +209,7 @@ export default class ProcessImplementation extends ProcessBusiness {
                     let condition = conditions[k];
                     let field = await FieldBusiness.getFieldById(condition.field.toString());
                     condition.typeData = (field) ? field.typeData : null;
+                    condition.metadata = (field) ? field.metadata : {};
                 }
             }
         }

@@ -38,5 +38,9 @@ export default [
     {
         _id: "5d6d41ebd3bc60802d460fcf",
         typeData: "Área de Texto"
+    },
+    {
+        _id: "5d6e64250b353073ccfa2d89",
+        typeData: "URL"
     }
 ];

@@ -25,27 +25,32 @@ export async function saveInformationProcess(req, res) {
         req.checkBody("step", getMessage('m.process.steps.step_required', language)).notEmpty();
         req.checkBody("step", getMessage('m.process.steps.step_invalid', language)).isMongoId();
 
-        // validate data
-        req.checkBody("data", getMessage('r.process.data_required', language)).notEmpty();
-
         const errors = req.validationErrors();
         if (errors) {
             return badRequest(res, 400, { message: errors[0].msg });
         }
 
+        const files = req.files;
         const mProcessId = req.body.mProcess;
         const rProcessId = req.body.rProcess;
         const mStepId = req.body.step;
-        const data = req.body.data;
         const metadata = req.body.metadata;
 
-        const dataSave = await ProcessImplementation.iSaveInformationStep(mProcessId, mStepId, data, metadata, rProcessId);
+        const data = {};
+        for (let prop in req.body) {
+            if (prop.indexOf('dproperty_') !== -1) {
+                data[prop.replace('dproperty_', '')] = req.body[prop];
+            }
+        }
+
+        const dataSave = await ProcessImplementation.iSaveInformationStep(mProcessId, mStepId, data, metadata, files, rProcessId);
 
         return result(res, 200, rProcessTransformer.transformer(dataSave));
     } catch (exception) {
         console.log("r.process@saveInformationProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
-            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+            const messageError = (exception.errorMessage) ? exception.errorMessage : getMessage(exception.key, language);
+            return error(res, exception.codeHttp, { message: messageError });
         }
         return error(res, 500, { message: 'Server error ...' });
     }

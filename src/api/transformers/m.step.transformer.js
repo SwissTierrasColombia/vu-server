@@ -6,5 +6,6 @@ export let mStepTransformer = new Transformer({
     "typeStep": "typeStep",
     "rules": "rules",
     "roles": "roles",
+    "isFirst": "isFirst",
     "createdAt": "createdAt"
 });

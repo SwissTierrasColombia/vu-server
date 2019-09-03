@@ -59,4 +59,12 @@ export default class StepBusiness {
         return await MStepModel.updateStepRules(mStepId, rules);
     }
 
+    static async updateStepFirst(mStepId, isFirst) {
+        return await MStepModel.updateStepFirst(mStepId, isFirst);
+    }
+
+    static async getStepFirstFromProcess(mProcessId) {
+        return await MStepModel.getStepFirstFromProcess(mProcessId);
+    }
+
 }

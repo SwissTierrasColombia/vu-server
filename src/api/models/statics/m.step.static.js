@@ -78,6 +78,16 @@ export default (MStepModel) => {
             let step = await this.findById(mStepId);
             step.rules = rules;
             return await step.save();
+        },
+
+        async updateStepFirst(mStepId, isFirst) {
+            let step = await this.findById(mStepId);
+            step.isFirst = isFirst;
+            return await step.save();
+        },
+
+        async getStepFirstFromProcess(mProcessId) {
+            return await this.findOne({ process: mProcessId, isFirst: true });
         }
 
     };
