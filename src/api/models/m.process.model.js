@@ -21,6 +21,24 @@ const MProcessSchema = new Schema({
         default: false
     },
 
+    entities: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'VUEntityModel',
+            required: [
+                true, 'The entity is required.'
+            ]
+        }
+    ],
+
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'VUUserModel',
+        required: [
+            true, 'The entity is required.'
+        ]
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

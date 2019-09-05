@@ -7,8 +7,8 @@ import PCallbackBusiness from '../../parameterize/callback/callback.business';
 
 export default class ProcessBusiness {
 
-    static async createProcess(name, description) {
-        return await MProcessModel.createProcess(name, description);
+    static async createProcess(name, description, vuUserId) {
+        return await MProcessModel.createProcess(name, description, vuUserId);
     }
 
     static async getAllProcesses() {
@@ -74,6 +74,10 @@ export default class ProcessBusiness {
             }
         }
 
+    }
+
+    static async updateEntities(processId, entities) {
+        return await MProcessModel.updateEntities(processId, entities);
     }
 
 }

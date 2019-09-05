@@ -1,21 +1,17 @@
-/auth/local:
+/api/vu/account/login:
   x-swagger-router-controller: local.controller
-# callback
   post:
     operationId: callback
     tags:
-      - Authentication
+      - VU - Account
     summary: Signin
-    description: | 
-      Login
-      username = admin / password = 123
-      username = user / password = 123
+    description: Signin
     consumes:
       - application/x-www-form-urlencoded
     parameters:
       - name: username
         in: formData
-        description: username 
+        description: username
         required: true
         type: string
       - name: password
@@ -28,11 +24,11 @@
       200:
         description: Success.
         schema:
-            type: object
-            properties:
-              token:
-                type: string
+          type: object
+          properties:
+            token:
+              type: string
       422:
-        $ref: '#/responses/auth-422'
+        $ref: "#/responses/auth-422"
       500:
-        $ref: '#/responses/auth-500'
+        $ref: "#/responses/auth-500"

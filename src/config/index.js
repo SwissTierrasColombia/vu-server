@@ -74,6 +74,21 @@ export default {
           schema: 'POperatorModel',
           plant: 'once'
         },
+        {
+          file: 'vu.role.seed',
+          schema: 'VURoleModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.entity.seed',
+          schema: 'VUEntityModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.user.seed',
+          schema: 'VUUserModel',
+          plant: 'once'
+        },
       ]
     },
   },

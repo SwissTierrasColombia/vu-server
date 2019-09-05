@@ -5,6 +5,7 @@ import RoleBusiness from '../role/role.business';
 import OperatorBusiness from '../../parameterize/operator/operator.business';
 import CallbackBusiness from '../../parameterize/callback/callback.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
+import VURoleBusiness from '../../../vu/role/role.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -104,7 +105,7 @@ export default class StepImplementation extends StepBusiness {
         await StepBusiness.removeRuleToStep(stepId, ruleId);
     }
 
-    static async iAddRoleToStep(mStepId, mRoleId) {
+    static async iAddRoleToStep(mStepId, vuRoleId) {
 
         // verify if step exists
         const mStepFound = await this.getStepById(mStepId);
@@ -113,14 +114,9 @@ export default class StepImplementation extends StepBusiness {
         }
 
         // verify if role exists
-        const mRoleFound = await RoleBusiness.getRoleById(mRoleId);
-        if (!mRoleFound) {
+        const vuRoleFound = await VURoleBusiness.getRoleById(vuRoleId);
+        if (!vuRoleFound) {
             throw new APIException('m.process.roles.role_not_exists', 404);
-        }
-
-        // verify if role belongs to process
-        if (mStepFound.process.toString() !== mRoleFound.process.toString()) {
-            throw new APIException('m.process.roles.role_not_belongs_process', 401);
         }
 
         // verify if role has registered in the step
@@ -128,7 +124,7 @@ export default class StepImplementation extends StepBusiness {
         let foundRole = false;
         for (let i in rolesStep) {
             const roleId = rolesStep[i];
-            if (roleId.toString() === mRoleId.toString()) {
+            if (roleId.toString() === vuRoleId.toString()) {
                 foundRole = true;
                 break;
             }
@@ -137,14 +133,14 @@ export default class StepImplementation extends StepBusiness {
             throw new APIException('m.process.steps.step_role_registered', 401);
         }
 
-        rolesStep.push(mRoleId);
+        rolesStep.push(vuRoleId);
 
         await this.updateRolesToStep(mStepId, rolesStep);
 
         return await this.getStepById(mStepId);
     }
 
-    static async iRemoveRoleToStep(mStepId, mRoleId) {
+    static async iRemoveRoleToStep(mStepId, vuRoleId) {
 
         // verify if step exists
         const mStepFound = await this.getStepById(mStepId);
@@ -153,20 +149,15 @@ export default class StepImplementation extends StepBusiness {
         }
 
         // verify if role exists
-        const mRoleFound = await RoleBusiness.getRoleById(mRoleId);
-        if (!mRoleFound) {
+        const vuRoleFound = await VURoleBusiness.getRoleById(vuRoleId);
+        if (!vuRoleFound) {
             throw new APIException('m.process.roles.role_not_exists', 404);
-        }
-
-        // verify if role belongs to process
-        if (mStepFound.process.toString() !== mRoleFound.process.toString()) {
-            throw new APIException('m.process.roles.role_not_belongs_process', 401);
         }
 
         const rolesStep = mStepFound.roles;
         for (let i in rolesStep) {
             const roleId = rolesStep[i];
-            if (roleId.toString() === mRoleId.toString()) {
+            if (roleId.toString() === vuRoleId.toString()) {
                 rolesStep.splice(i, 1);
                 break;
             }

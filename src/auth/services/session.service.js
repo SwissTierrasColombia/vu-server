@@ -1,5 +1,4 @@
 import { result, invalid, error } from 'express-easy-helper';
-import { calc, time } from 'role-calc';
 import { r } from '../../lib/redis-jwt';
 import config from '../../config';
 
@@ -13,33 +12,26 @@ export async function initialize(err, user, res) {
     if (!user)
       return error(res, { message: 'Something went wrong, please try again.' });
 
-    // Calculate ttl by user roles, by default takes the role with the longest 'max'
-    let ttl = calc(time(config.roles, user.roles), 'max');
-
     // Create session in redis-jwt
     const token = await r.sign(user._id.toString(), {
-      ttl,
+      ttl: '30 days',
       dataSession: {// save data in REDIS (Private)
         ip: res.req.headers['x-forwarded-for'] || res.req.connection.remoteAddress,
         agent: res.req.headers['user-agent']
       },
       dataToken: {// save data in Token (Public)
-        example: 'I travel with the token!'
+        roles: user.roles,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username
       }
     });
 
-    // Save token in cookies
-    res.cookie('token', JSON.stringify(token));
+    // return token
+    return result(res, { token });
 
-    // if local return token
-    if (user.provider === 'local')
-      return result(res, { token });
-
-    // if Social redirect to..
-    res.redirect(`/?token=${token}`);
-
-  } catch (err) {
-    return error(res, { message: err });
+  } catch (e) {
+    return error(res, { message: e });
   }
 
 }

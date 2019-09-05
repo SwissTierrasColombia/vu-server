@@ -2,6 +2,10 @@
   x-swagger-router-controller: m.process.controller
   post:
     operationId: createProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Create a process
@@ -26,6 +30,10 @@
           $ref: "#/definitions/Error"
   get:
     operationId: getProcesses
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Get processes
@@ -48,6 +56,10 @@
   x-swagger-router-controller: m.process.controller
   put:
     operationId: updateProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Update a process
@@ -77,6 +89,10 @@
           $ref: "#/definitions/Error"
   delete:
     operationId: removeProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Remove a process
@@ -99,9 +115,10 @@
   x-swagger-router-controller: m.process.controller
   post:
     operationId: addRoleToProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Add role to process
+    summary: Add role to process (DEPRECATED)
     description: Add role to process
     parameters:
       - name: process
@@ -123,9 +140,10 @@
           $ref: "#/definitions/Error"
   get:
     operationId: getRolesByProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Get roles from process
+    summary: Get roles from process (DEPRECATED)
     description: Get roles from process
     parameters:
       - name: process
@@ -145,9 +163,10 @@
   x-swagger-router-controller: m.process.controller
   put:
     operationId: updateRoleFromProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Update role from process
+    summary: Update role from process (DEPRECATED)
     description: Update role from process
     parameters:
       - name: process
@@ -174,9 +193,10 @@
           $ref: "#/definitions/Error"
   delete:
     operationId: removeRoleFromProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Remove role from process
+    summary: Remove role from process (DEPRECATED)
     description: Remove role from process
     parameters:
       - name: process
@@ -201,6 +221,10 @@
   x-swagger-router-controller: m.process.controller
   post:
     operationId: addStepToProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Add step to process
@@ -213,7 +237,7 @@
         type: string
       - name: step
         in: formData
-        description: P/Step ID
+        description: PM - P/Step ID
         required: true
         type: string
     responses:
@@ -225,6 +249,10 @@
           $ref: "#/definitions/Error"
   get:
     operationId: getStepsFromProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Get steps from process
@@ -247,6 +275,10 @@
   x-swagger-router-controller: m.process.controller
   delete:
     operationId: removeStepToProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Remove step to process
@@ -274,6 +306,10 @@
   x-swagger-router-controller: m.process.controller
   post:
     operationId: addVariableToProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Add variable to process
@@ -303,6 +339,10 @@
           $ref: "#/definitions/Error"
   get:
     operationId: getVariablesByProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Get variables from process
@@ -325,6 +365,10 @@
   x-swagger-router-controller: m.process.controller
   put:
     operationId: updateVariableFromProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Update variable from process
@@ -359,6 +403,10 @@
           $ref: "#/definitions/Error"
   delete:
     operationId: removeVariableFromProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Remove variable from process
@@ -386,9 +434,10 @@
   x-swagger-router-controller: m.process.controller
   post:
     operationId: addUserToProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Add user to process
+    summary: Add user to process (DEPRECATED)
     description: Add user to process
     parameters:
       - name: process
@@ -427,9 +476,10 @@
           $ref: "#/definitions/Error"
   get:
     operationId: getUsersToProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Get users to process
+    summary: Get users to process (DEPRECATED)
     description: Get users to process
     parameters:
       - name: process
@@ -449,9 +499,10 @@
   x-swagger-router-controller: m.process.controller
   put:
     operationId: updateUserToProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Update user to process
+    summary: Update user to process (DEPRECATED)
     description: Update user to process
     parameters:
       - name: process
@@ -495,9 +546,10 @@
           $ref: "#/definitions/Error"
   delete:
     operationId: removeUserFromProcess
+    x-hide: true
     tags:
       - PM - M/Processes
-    summary: Remove user from process
+    summary: Remove user from process (DEPRECATED)
     description: Remove user from process
     parameters:
       - name: process
@@ -522,6 +574,10 @@
   x-swagger-router-controller: m.process.controller
   put:
     operationId: deployProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Deploy process
@@ -544,6 +600,10 @@
   x-swagger-router-controller: m.process.controller
   get:
     operationId: getStepsFlow
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Processes
     summary: Get steps flow
@@ -557,6 +617,68 @@
     responses:
       200:
         description: Get steps flow
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/entities:
+  x-swagger-router-controller: m.process.controller
+  post:
+    operationId: addEntityToProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - PM - M/Processes
+    summary: Add entity to process
+    description: Add entity to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: entity
+        in: formData
+        description: VU - Entity ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get entities from process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/entities/{entity}:
+  x-swagger-router-controller: m.process.controller
+  delete:
+    operationId: removeEntityToProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - PM - M/Processes
+    summary: Remove entity to process
+    description: Remove entity to process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+      - name: entity
+        in: path
+        description: VU - Entity ID
+        required: true
+        type: string
+    responses:
+      204:
+        description: No content
       500:
         description: Server error
         schema:

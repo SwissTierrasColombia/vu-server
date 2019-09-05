@@ -73,6 +73,11 @@
                 "user_not_exists": "El usuario no existe",
                 "user_not_belongs_process": "El usuario no pertenece al proceso.",
                 "user_roles_minimum_one": "Se debe especificar al menos un rol para el usuario."
+            },
+            "entities": {
+                "entity_required": "La entidad es requerida.",
+                "entity_invalid": "La entidad es inválida.",
+                "entity_not_exists": "La entidad no existe."
             }
         }
     },

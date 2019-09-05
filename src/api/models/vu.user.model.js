@@ -62,13 +62,23 @@ const VUUserSchema = new Schema({
         }
     ],
 
+    enabled: {
+        type: Boolean,
+        default: false
+    },
+
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+
+    lastAccessAt: {
+        type: Date
+    },
 
 }, { collection: 'vu_users' });
 
 require('./statics/vu.user.static').default(VUUserSchema);
+require('./methods/vu.user.method').default(VUUserSchema);
 
 export default mongoose.model('VUUserModel', VUUserSchema);

@@ -38,10 +38,10 @@ export async function addFieldToStep(req, res) {
         req.checkBody("isRequired", getMessage('m.process.fields.field_is_required_required', language)).isBoolean();
 
         // validate permissions
-        req.checkBody("permissions", getMessage('m.process.fields.field_permissions_required', language)).notEmpty();
-        req.check('permissions', getMessage('m.process.fields.field_permissions_required', language)).custom((value) => {
-            return req.body.permissions !== Array;
-        });
+        // req.checkBody("permissions", getMessage('m.process.fields.field_permissions_required', language)).notEmpty();
+        // req.check('permissions', getMessage('m.process.fields.field_permissions_required', language)).custom((value) => {
+        //     return req.body.permissions !== Array;
+        // });
 
         const errors = req.validationErrors();
         if (errors) {
@@ -137,10 +137,10 @@ export async function updateFieldFromStep(req, res) {
         req.checkBody("isRequired", getMessage('m.process.fields.field_is_required_required', language)).isBoolean();
 
         // validate permissions
-        req.checkBody("permissions", getMessage('m.process.fields.field_permissions_required', language)).notEmpty();
-        req.check('permissions', getMessage('m.process.fields.field_permissions_required', language)).custom((value) => {
-            return req.body.permissions !== Array;
-        });
+        // req.checkBody("permissions", getMessage('m.process.fields.field_permissions_required', language)).notEmpty();
+        // req.check('permissions', getMessage('m.process.fields.field_permissions_required', language)).custom((value) => {
+        //     return req.body.permissions !== Array;
+        // });
 
         const errors = req.validationErrors();
         if (errors) {
@@ -330,9 +330,9 @@ export async function addRoleToStep(req, res) {
         }
 
         const mStepId = req.swagger.params.step.value;
-        const mRoleId = req.body.role;
+        const vuRoleId = req.body.role;
 
-        const stepUpdated = await StepImplementation.iAddRoleToStep(mStepId, mRoleId);
+        const stepUpdated = await StepImplementation.iAddRoleToStep(mStepId, vuRoleId);
 
         return result(res, 200, mStepTransformer.transformer(stepUpdated));
     } catch (exception) {
@@ -374,9 +374,9 @@ export async function removeRoleToStep(req, res) {
         }
 
         const mStepId = req.swagger.params.step.value;
-        const mRoleId = req.swagger.params.role.value;
+        const vuRoleId = req.swagger.params.role.value;
 
-        const stepUpdated = await StepImplementation.iRemoveRoleToStep(mStepId, mRoleId);
+        const stepUpdated = await StepImplementation.iRemoveRoleToStep(mStepId, vuRoleId);
 
         return result(res, 200, mStepTransformer.transformer(stepUpdated));
     } catch (exception) {

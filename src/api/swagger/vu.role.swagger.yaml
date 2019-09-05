@@ -1,18 +1,18 @@
-/api/p/steps:
-  x-swagger-router-controller: p.step.controller
+/api/vu/roles:
+  x-swagger-router-controller: vu.role.controller
   get:
-    operationId: getSteps
+    operationId: getRoles
     security:
       - Bearer: []
     x-security-scopes:
       - 5d710564330f7d7cd67ee491
     tags:
-      - PM - P/Steps
-    summary: Get steps
-    description: Get steps
+      - VU - Roles
+    summary: Get roles
+    description: Get roles
     responses:
       200:
-        description: Get steps
+        description: Get roles
       500:
         description: Server error
         schema:

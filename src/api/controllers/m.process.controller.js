@@ -30,8 +30,9 @@ export async function createProcess(req, res) {
 
         const processName = req.body.processName;
         const processDescription = req.body.processDescription;
+        const vuUserId = req.user._id;
 
-        const processNew = await ProcessImplementation.registerProcess(processName, processDescription);
+        const processNew = await ProcessImplementation.registerProcess(processName, processDescription, vuUserId);
 
         return result(res, 201, mProcessTransformer.transformer(processNew));
     } catch (exception) {
@@ -865,6 +866,90 @@ export async function getStepsFlow(req, res) {
         return result(res, 200, data);
     } catch (exception) {
         console.log("m.process@getStepsFlow ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// add entity to process
+export async function addEntityToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate role
+        req.checkBody("entity", getMessage('m.process.entities.entity_required', language)).notEmpty();
+        req.checkBody("entity", getMessage('m.process.entities.entity_invalid', language)).isMongoId();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const vuEntityId = req.body.entity;
+
+        const processUpdate = await ProcessImplementation.iAddEntityToProcess(processId, vuEntityId);
+
+        return result(res, 200, mProcessTransformer.transformer(processUpdate));
+    } catch (exception) {
+        console.log("m.process@addEntityToProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// remove entity to process
+export async function removeEntityToProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        // validate entity id
+        req.check('entity', getMessage('m.process.entities.entity_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.entity.value);
+        });
+        req.check('entity', getMessage('m.process.entities.entity_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.entity.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+        const vuEntityId = req.swagger.params.entity.value;
+
+        await ProcessImplementation.iRemoveEntityFromProcess(processId, vuEntityId);
+
+        return result(res, 204, {});
+    } catch (exception) {
+        console.log("m.process@removeEntityToProcess ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
         }

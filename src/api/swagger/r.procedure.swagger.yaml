@@ -2,6 +2,12 @@
   x-swagger-router-controller: r.process.controller
   get:
     operationId: getDataStartProcedure
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+      - 5d7105cb698085331067bf8f
+      - 5d7107e7a6a3e77e5fe15217
     tags:
       - PM - R/Procedures
     summary: Get data for start a procedure
@@ -24,6 +30,12 @@
   x-swagger-router-controller: r.process.controller
   get:
     operationId: getDataContinueProcedure
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+      - 5d7105cb698085331067bf8f
+      - 5d7107e7a6a3e77e5fe15217
     tags:
       - PM - R/Procedures
     summary: Get data for continue a procedure

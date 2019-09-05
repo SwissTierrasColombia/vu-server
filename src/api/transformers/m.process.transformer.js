@@ -4,6 +4,7 @@ import Transformer from 'transformer-response-data';
 export let mProcessTransformer = new Transformer({
     "_id": "_id",
     "process": "process",
+    "entities": "entities",
     "description": "description",
     "variables": "variables",
     "active": "active",

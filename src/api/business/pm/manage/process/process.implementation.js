@@ -11,6 +11,7 @@ import UserBusiness from '../user/user.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import PCallbackBusiness from '../../parameterize/callback/callback.business';
 import PStepBusiness from '../../parameterize/step/step.business';
+import VUEntityBusiness from '../../../vu/entity/entity.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -21,9 +22,9 @@ export default class ProcessImplementation extends ProcessBusiness {
         super();
     }
 
-    static async registerProcess(name, description) {
+    static async registerProcess(name, description, vuUserId) {
         description = (description) ? description : '';
-        return await this.createProcess(name.trim(), description);
+        return await this.createProcess(name.trim(), description, vuUserId);
     }
 
     static async getProcesses(filterAvailable) {
@@ -475,10 +476,10 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // verify that the process had a minimum role
-        const roles = await RoleBusiness.getRolesByProcess(mProcessId);
-        if (roles.length === 0) {
-            throw new APIException('m.process.process_deploy_error_roles', 401);
-        }
+        // const roles = await RoleBusiness.getRolesByProcess(mProcessId);
+        // if (roles.length === 0) {
+        //     throw new APIException('m.process.process_deploy_error_roles', 401);
+        // }
 
         // verify that the process had a minimum step
         const steps = await StepBusiness.getStepsFromProcess(mProcessId);
@@ -487,10 +488,10 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // verify that the process had a minimum users
-        const users = await UserBusiness.getUsersByProcessId(mProcessId);
-        if (users.length === 0) {
-            throw new APIException('m.process.process_deploy_error_users', 401);
-        }
+        // const users = await UserBusiness.getUsersByProcessId(mProcessId);
+        // if (users.length === 0) {
+        //     throw new APIException('m.process.process_deploy_error_users', 401);
+        // }
 
         // check at each step if you have assigned fields
         for (let i in steps) {
@@ -584,6 +585,58 @@ export default class ProcessImplementation extends ProcessBusiness {
 
         }
         return { nodes, links };
+    }
+
+    static async iAddEntityToProcess(mProcessId, vuEntityId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the entity exists
+        const entityFound = await VUEntityBusiness.getEntityById(vuEntityId);
+        if (!entityFound) {
+            throw new APIException('m.process.entities.entity_not_exists', 404);
+        }
+
+        const entities = processFound.entities;
+        const hasEntity = entities.find(item => {
+            return item.toString() === vuEntityId.toString();
+        });
+        if (!hasEntity) {
+            entities.push(vuEntityId.toString());
+            await this.updateEntities(mProcessId, entities);
+        }
+
+        return await this.getProcessById(mProcessId);
+    }
+
+    static async iRemoveEntityFromProcess(mProcessId, vuEntityId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the entity exists
+        const entityFound = await VUEntityBusiness.getEntityById(vuEntityId);
+        if (!entityFound) {
+            throw new APIException('m.process.entities.entity_not_exists', 404);
+        }
+
+        const entities = processFound.entities;
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            if (entity.toString() === vuEntityId.toString()) {
+                entities.splice(i, 1);
+                break;
+            }
+        }
+
+        await this.updateEntities(mProcessId, entities);
     }
 
 }

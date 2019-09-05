@@ -1,18 +1,18 @@
-/api/p/steps:
-  x-swagger-router-controller: p.step.controller
+/api/vu/entities:
+  x-swagger-router-controller: vu.entity.controller
   get:
-    operationId: getSteps
+    operationId: getEntities
     security:
       - Bearer: []
     x-security-scopes:
       - 5d710564330f7d7cd67ee491
     tags:
-      - PM - P/Steps
-    summary: Get steps
-    description: Get steps
+      - VU - Entities
+    summary: Get entities
+    description: Get entities
     responses:
       200:
-        description: Get steps
+        description: Get entities
       500:
         description: Server error
         schema:

@@ -45,33 +45,33 @@ export default class FieldImplementation extends FieldBusiness {
 
         // verify permissions
         const permissionsValid = [];
-        const processId = mStepFound.process.toString();
-        for (let property in permissions) {
-            const permission = permissions[property];
-            const isFormatValid = permission.hasOwnProperty('role') && permission.hasOwnProperty('create') &&
-                permission.hasOwnProperty('read') && permission.hasOwnProperty('update');
-            if (isFormatValid) {
-                // verify if role exists in the process
-                const role = await RoleBusiness.getRoleById(permission.role);
-                if (role.process.toString() === processId) {
-                    permissionsValid.push(permission);
-                }
-            }
-        }
-        const rolesProcess = await RoleBusiness.getRolesByProcess(processId);
-        let countRoles = 0;
-        for (let property in rolesProcess) {
-            const role = rolesProcess[property];
-            const roleFound = permissionsValid.find(function (element) {
-                return element.role.toString() === role._id.toString();
-            });
-            if (roleFound) {
-                countRoles++;
-            }
-        }
-        if (countRoles !== rolesProcess.length) {
-            throw new APIException('m.process.fields.field_permissions_required', 401);
-        }
+        // const processId = mStepFound.process.toString();
+        // for (let property in permissions) {
+        //     const permission = permissions[property];
+        //     const isFormatValid = permission.hasOwnProperty('role') && permission.hasOwnProperty('create') &&
+        //         permission.hasOwnProperty('read') && permission.hasOwnProperty('update');
+        //     if (isFormatValid) {
+        //         // verify if role exists in the process
+        //         const role = await RoleBusiness.getRoleById(permission.role);
+        //         if (role.process.toString() === processId) {
+        //             permissionsValid.push(permission);
+        //         }
+        //     }
+        // }
+        // const rolesProcess = await RoleBusiness.getRolesByProcess(processId);
+        // let countRoles = 0;
+        // for (let property in rolesProcess) {
+        //     const role = rolesProcess[property];
+        //     const roleFound = permissionsValid.find(function (element) {
+        //         return element.role.toString() === role._id.toString();
+        //     });
+        //     if (roleFound) {
+        //         countRoles++;
+        //     }
+        // }
+        // if (countRoles !== rolesProcess.length) {
+        //     throw new APIException('m.process.fields.field_permissions_required', 401);
+        // }
 
         // verify metadata if its necessary
         switch (pTypeId) {
@@ -127,33 +127,33 @@ export default class FieldImplementation extends FieldBusiness {
 
         // verify permissions
         const permissionsValid = [];
-        const processId = mStepFound.process.toString();
-        for (let property in permissions) {
-            const permission = permissions[property];
-            const isFormatValid = permission.hasOwnProperty('role') && permission.hasOwnProperty('create') &&
-                permission.hasOwnProperty('read') && permission.hasOwnProperty('update');
-            if (isFormatValid) {
-                // verify if role exists in the process
-                const role = await RoleBusiness.getRoleById(permission.role);
-                if (role.process.toString() === processId) {
-                    permissionsValid.push(permission);
-                }
-            }
-        }
-        const rolesProcess = await RoleBusiness.getRolesByProcess(processId);
-        let countRoles = 0;
-        for (let property in rolesProcess) {
-            const role = rolesProcess[property];
-            const roleFound = permissionsValid.find(function (element) {
-                return element.role.toString() === role._id.toString();
-            });
-            if (roleFound) {
-                countRoles++;
-            }
-        }
-        if (countRoles !== rolesProcess.length) {
-            throw new APIException('m.process.fields.field_permissions_required', 401);
-        }
+        // const processId = mStepFound.process.toString();
+        // for (let property in permissions) {
+        //     const permission = permissions[property];
+        //     const isFormatValid = permission.hasOwnProperty('role') && permission.hasOwnProperty('create') &&
+        //         permission.hasOwnProperty('read') && permission.hasOwnProperty('update');
+        //     if (isFormatValid) {
+        //         // verify if role exists in the process
+        //         const role = await RoleBusiness.getRoleById(permission.role);
+        //         if (role.process.toString() === processId) {
+        //             permissionsValid.push(permission);
+        //         }
+        //     }
+        // }
+        // const rolesProcess = await RoleBusiness.getRolesByProcess(processId);
+        // let countRoles = 0;
+        // for (let property in rolesProcess) {
+        //     const role = rolesProcess[property];
+        //     const roleFound = permissionsValid.find(function (element) {
+        //         return element.role.toString() === role._id.toString();
+        //     });
+        //     if (roleFound) {
+        //         countRoles++;
+        //     }
+        // }
+        // if (countRoles !== rolesProcess.length) {
+        //     throw new APIException('m.process.fields.field_permissions_required', 401);
+        // }
 
         // verify metadata if its necessary
         switch (pTypeId) {

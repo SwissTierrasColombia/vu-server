@@ -2,6 +2,10 @@
   x-swagger-router-controller: m.step.controller
   post:
     operationId: addFieldToStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Add field to step
@@ -46,6 +50,10 @@
           $ref: "#/definitions/Error"
   get:
     operationId: getFieldsFromStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Get fields from step
@@ -68,6 +76,10 @@
   x-swagger-router-controller: m.step.controller
   put:
     operationId: updateFieldFromStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Update field from step
@@ -117,6 +129,10 @@
           $ref: "#/definitions/Error"
   delete:
     operationId: removeFieldFromStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Remove field from step
@@ -144,6 +160,10 @@
   x-swagger-router-controller: m.step.controller
   post:
     operationId: addRuleToStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Add rule to step
@@ -176,6 +196,10 @@
   x-swagger-router-controller: m.step.controller
   delete:
     operationId: removeRuleToStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Remove rule to step
@@ -203,6 +227,10 @@
   x-swagger-router-controller: m.step.controller
   post:
     operationId: addRoleToStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Add role to step
@@ -211,10 +239,10 @@
       - name: step
         in: path
         type: string
-        description: Step ID
+        description: PM - M/Step ID
         required: true
       - name: role
-        description: Role ID
+        description: VU - Role ID
         in: formData
         type: string
         required: true
@@ -230,6 +258,10 @@
   x-swagger-router-controller: m.step.controller
   delete:
     operationId: removeRoleToStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Remove role to step
@@ -238,10 +270,10 @@
       - name: step
         in: path
         type: string
-        description: Step ID
+        description: PM - M/Step ID
         required: true
       - name: role
-        description: Role ID
+        description: VU - Role ID
         in: path
         type: string
         required: true
@@ -257,6 +289,10 @@
   x-swagger-router-controller: m.step.controller
   put:
     operationId: setOriginStep
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - M/Steps
     summary: Set origin step

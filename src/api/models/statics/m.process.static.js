@@ -5,11 +5,12 @@ export default (MProcessModel) => {
     // Statics
     MProcessModel.statics = {
 
-        async createProcess(name, description) {
+        async createProcess(name, description, vuUserId) {
             const MProcessModel = this;
             const process = new MProcessModel({
                 process: name,
                 description,
+                createdBy: vuUserId
             });
             return await process.save();
         },
@@ -42,6 +43,12 @@ export default (MProcessModel) => {
         async getProcessesByActive(active) {
             return await this.find({ active });
         },
+
+        async updateEntities(processId, entities) {
+            let process = await this.findById(processId);
+            process.entities = entities;
+            return await process.save();
+        }
 
     };
 

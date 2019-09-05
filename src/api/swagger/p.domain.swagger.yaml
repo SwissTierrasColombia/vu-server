@@ -2,6 +2,10 @@
   x-swagger-router-controller: p.domain.controller
   get:
     operationId: getTypesData
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - P/Domains
     summary: Get types data
@@ -18,6 +22,10 @@
   x-swagger-router-controller: p.domain.controller
   get:
     operationId: getTypesCallback
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - P/Domains
     summary: Get types callbacks
@@ -34,6 +42,10 @@
   x-swagger-router-controller: p.domain.controller
   get:
     operationId: getTypesOperator
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
       - PM - P/Domains
     summary: Get types operators
