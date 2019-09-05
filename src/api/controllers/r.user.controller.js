@@ -4,7 +4,7 @@ import { getMessage } from '../../lib/helpers/locales';
 import validator from 'validator';
 
 // Business
-import ProcessImplementation from '../business/runtime/process/process.implementation';
+import ProcessImplementation from '../business/pm/runtime/process/process.implementation';
 
 // Transformers
 import { rProcessTransformer } from '../transformers/r.process.transformer';

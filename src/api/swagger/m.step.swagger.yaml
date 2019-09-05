@@ -3,7 +3,7 @@
   post:
     operationId: addFieldToStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Add field to step
     description: Add field to step
     parameters:
@@ -47,7 +47,7 @@
   get:
     operationId: getFieldsFromStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Get fields from step
     description: Get fields from step
     parameters:
@@ -69,7 +69,7 @@
   put:
     operationId: updateFieldFromStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Update field from step
     description: Update field from step
     parameters:
@@ -118,7 +118,7 @@
   delete:
     operationId: removeFieldFromStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Remove field from step
     description: Remove field from step
     parameters:
@@ -145,7 +145,7 @@
   post:
     operationId: addRuleToStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Add rule to step
     description: Add rule to step
     parameters:
@@ -177,7 +177,7 @@
   delete:
     operationId: removeRuleToStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Remove rule to step
     description: Remove rule to step
     parameters:
@@ -204,7 +204,7 @@
   post:
     operationId: addRoleToStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Add role to step
     description: Add role to step
     parameters:
@@ -231,7 +231,7 @@
   delete:
     operationId: removeRoleToStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Remove role to step
     description: Remove role to step
     parameters:
@@ -258,7 +258,7 @@
   put:
     operationId: setOriginStep
     tags:
-      - M/Steps
+      - PM - M/Steps
     summary: Set origin step
     description: Set origin step
     parameters:

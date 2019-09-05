@@ -3,7 +3,7 @@
   get:
     operationId: getTypesData
     tags:
-      - P/Domains
+      - PM - P/Domains
     summary: Get types data
     description: Get types data
     responses:
@@ -19,7 +19,7 @@
   get:
     operationId: getTypesCallback
     tags:
-      - P/Domains
+      - PM - P/Domains
     summary: Get types callbacks
     description: Get types callbacks
     responses:
@@ -35,7 +35,7 @@
   get:
     operationId: getTypesOperator
     tags:
-      - P/Domains
+      - PM - P/Domains
     summary: Get types operators
     description: Get types operators
     responses:

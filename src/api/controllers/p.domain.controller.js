@@ -3,9 +3,9 @@ import { result, error } from 'express-easy-helper';
 import { getMessage } from '../../lib/helpers/locales';
 
 // Business
-import TypeDataImplementation from '../business/parameterize/typeData/typeData.implementation';
-import CallbackImplementation from '../business/parameterize/callback/callback.implementation';
-import OperatorImplementation from '../business/parameterize/operator/operator.implementation';
+import TypeDataImplementation from '../business/pm/parameterize/typeData/typeData.implementation';
+import CallbackImplementation from '../business/pm/parameterize/callback/callback.implementation';
+import OperatorImplementation from '../business/pm/parameterize/operator/operator.implementation';
 
 // Transformers
 import { pTypeDataTransformer } from '../transformers/p.typeData.transformer';

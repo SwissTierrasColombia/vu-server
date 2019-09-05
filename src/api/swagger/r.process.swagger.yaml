@@ -3,7 +3,7 @@
   post:
     operationId: saveInformationProcess
     tags:
-      - R/Processes
+      - PM - R/Processes
     summary: Save information process
     description: Save information process
     parameters:
@@ -30,7 +30,7 @@
   get:
     operationId: getProcess
     tags:
-      - R/Processes
+      - PM - R/Processes
     summary: Get process
     description: Get process
     parameters:

@@ -4,8 +4,8 @@ import { getMessage } from '../../lib/helpers/locales';
 import validator from 'validator';
 
 // Business
-import FieldImplementation from '../business/manage/field/field.implementation';
-import StepImplementation from '../business/manage/step/step.implementation';
+import FieldImplementation from '../business/pm/manage/field/field.implementation';
+import StepImplementation from '../business/pm/manage/step/step.implementation';
 
 // Transformers
 import { mFieldTransformer } from '../transformers/m.field.transformer';

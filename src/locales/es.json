@@ -14,6 +14,7 @@
             "process_deploy_error_fields": "Hay pasos a los cuales no se les han especificado campos.",
             "process_deploy_error_rules": "Hay pasos a los cuales no se les han especificado condiciones de flujo.",
             "process_deploy_error_steps_roles": "Hay pasos a los cuales no se les han especificado roles.",
+            "process_deploy_error_not_has_origin_step": "Se debe especificar un paso de origen.",
             "roles": {
                 "role_required": "El rol es requerido.",
                 "role_invalid": "El rol es inválido.",

@@ -3,7 +3,7 @@
   get:
     operationId: getProcessesBelongToUser
     tags:
-      - R/Users
+      - PM - R/Users
     summary: Get processes - user
     description: Get processes - user
     parameters:

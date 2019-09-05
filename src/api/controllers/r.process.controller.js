@@ -4,7 +4,7 @@ import { getMessage } from '../../lib/helpers/locales';
 import validator from 'validator';
 
 // Business
-import ProcessImplementation from '../business/runtime/process/process.implementation';
+import ProcessImplementation from '../business/pm/runtime/process/process.implementation';
 
 // Transformers
 import { rProcessTransformer } from '../transformers/r.process.transformer';
@@ -123,6 +123,43 @@ export async function getDataStartProcedure(req, res) {
         };
 
         return result(res, 200, data);
+    } catch (exception) {
+        console.log("r.process@getDataStartProcedure ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
+// get data continue procedure
+export async function getDataContinueProcedure(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const rProcessId = req.swagger.params.process.value;
+
+        const dataStartProcedure = await ProcessImplementation.getDataContinueProcedure(rProcessId);
+
+
+
+        return result(res, 200, {});
     } catch (exception) {
         console.log("r.process@getDataStartProcedure ---->", exception);
         if (exception.codeHttp && exception.key) {

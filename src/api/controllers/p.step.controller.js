@@ -3,7 +3,7 @@ import { result, error } from 'express-easy-helper';
 import { getMessage } from '../../lib/helpers/locales';
 
 // Business
-import StepImplementation from '../business/parameterize/step/step.implementation';
+import StepImplementation from '../business/pm/parameterize/step/step.implementation';
 
 // Transformers
 import { pStepTransformer } from '../transformers/p.step.transformer';

@@ -3,7 +3,7 @@
   post:
     operationId: createProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Create a process
     description: Create a process
     parameters:
@@ -27,7 +27,7 @@
   get:
     operationId: getProcesses
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Get processes
     description: Get processes
     parameters:
@@ -49,7 +49,7 @@
   put:
     operationId: updateProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Update a process
     description: Update a process
     parameters:
@@ -78,7 +78,7 @@
   delete:
     operationId: removeProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Remove a process
     description: Remove a process
     parameters:
@@ -100,7 +100,7 @@
   post:
     operationId: addRoleToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Add role to process
     description: Add role to process
     parameters:
@@ -124,7 +124,7 @@
   get:
     operationId: getRolesByProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Get roles from process
     description: Get roles from process
     parameters:
@@ -146,7 +146,7 @@
   put:
     operationId: updateRoleFromProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Update role from process
     description: Update role from process
     parameters:
@@ -175,7 +175,7 @@
   delete:
     operationId: removeRoleFromProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Remove role from process
     description: Remove role from process
     parameters:
@@ -202,7 +202,7 @@
   post:
     operationId: addStepToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Add step to process
     description: Add step to process
     parameters:
@@ -226,7 +226,7 @@
   get:
     operationId: getStepsFromProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Get steps from process
     description: Get steps from process
     parameters:
@@ -248,7 +248,7 @@
   delete:
     operationId: removeStepToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Remove step to process
     description: Remove step to process
     parameters:
@@ -275,7 +275,7 @@
   post:
     operationId: addVariableToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Add variable to process
     description: Add variable to process
     parameters:
@@ -304,7 +304,7 @@
   get:
     operationId: getVariablesByProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Get variables from process
     description: Get variables from process
     parameters:
@@ -326,7 +326,7 @@
   put:
     operationId: updateVariableFromProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Update variable from process
     description: Update variable from process
     parameters:
@@ -360,7 +360,7 @@
   delete:
     operationId: removeVariableFromProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Remove variable from process
     description: Remove variable from process
     parameters:
@@ -387,7 +387,7 @@
   post:
     operationId: addUserToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Add user to process
     description: Add user to process
     parameters:
@@ -428,7 +428,7 @@
   get:
     operationId: getUsersToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Get users to process
     description: Get users to process
     parameters:
@@ -450,7 +450,7 @@
   put:
     operationId: updateUserToProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Update user to process
     description: Update user to process
     parameters:
@@ -496,7 +496,7 @@
   delete:
     operationId: removeUserFromProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Remove user from process
     description: Remove user from process
     parameters:
@@ -523,7 +523,7 @@
   put:
     operationId: deployProcess
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Deploy process
     description: Deploy process
     parameters:
@@ -545,7 +545,7 @@
   get:
     operationId: getStepsFlow
     tags:
-      - M/Processes
+      - PM - M/Processes
     summary: Get steps flow
     description: Get steps flow
     parameters:
