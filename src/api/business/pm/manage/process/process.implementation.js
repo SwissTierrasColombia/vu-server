@@ -636,6 +636,17 @@ export default class ProcessImplementation extends ProcessBusiness {
             }
         }
 
+        // set to null the steps where the entity is registered
+        const steps = await StepBusiness.getStepsFromProcess(mProcessId);
+        for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+            if (step.entity) {
+                if (step.entity.toString() === vuEntityId.toString()) {
+                    await StepBusiness.updateEntityToStep(step._id.toString(), null);
+                }
+            }
+        }
+
         await this.updateEntities(mProcessId, entities);
     }
 

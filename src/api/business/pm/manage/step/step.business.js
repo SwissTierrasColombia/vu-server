@@ -67,4 +67,8 @@ export default class StepBusiness {
         return await MStepModel.getStepFirstFromProcess(mProcessId);
     }
 
+    static async updateEntityToStep(stepId, entityId) {
+        return await MStepModel.updateEntityToStep(stepId, entityId);
+    }
+
 }

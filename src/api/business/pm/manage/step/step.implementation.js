@@ -6,6 +6,8 @@ import OperatorBusiness from '../../parameterize/operator/operator.business';
 import CallbackBusiness from '../../parameterize/callback/callback.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import VURoleBusiness from '../../../vu/role/role.business';
+import VUEntityBusiness from '../../../vu/entity/entity.business';
+import MProcessBusiness from '../../../pm/manage/process/process.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -182,6 +184,35 @@ export default class StepImplementation extends StepBusiness {
             const isFirst = (step._id.toString() === mStepId) ? true : false;
             await this.updateStepFirst(step._id.toString(), isFirst);
         }
+
+        return await this.getStepById(mStepId);
+    }
+
+    static async iSetEntityToStep(mStepId, vuEntityId) {
+
+        // verify if step exists
+        const mStepFound = await this.getStepById(mStepId);
+        if (!mStepFound) {
+            throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        // verify if entity exists
+        const vuEntityFound = await VUEntityBusiness.getEntityById(vuEntityId);
+        if (!vuEntityFound) {
+            throw new APIException('m.process.entities.entity_not_exists', 404);
+        }
+
+        // verify if entity belongs to process
+        const processFound = await MProcessBusiness.getProcessById(mStepFound.process.toString());
+        const entitiesProcess = processFound.entities;
+        const find = entitiesProcess.find(item => {
+            return item.toString() === vuEntityId.toString();
+        });
+        if (!find) {
+            throw new APIException('m.process.entities.entity_not_belongs_to_process', 401);
+        }
+
+        await this.updateEntityToStep(mStepId, vuEntityId);
 
         return await this.getStepById(mStepId);
     }

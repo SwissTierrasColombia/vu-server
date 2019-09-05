@@ -77,7 +77,8 @@
             "entities": {
                 "entity_required": "La entidad es requerida.",
                 "entity_invalid": "La entidad es inválida.",
-                "entity_not_exists": "La entidad no existe."
+                "entity_not_exists": "La entidad no existe.",
+                "entity_not_belongs_to_process": "La entidad no pertenece al proceso."
             }
         }
     },

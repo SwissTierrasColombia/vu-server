@@ -88,6 +88,12 @@ export default (MStepModel) => {
 
         async getStepFirstFromProcess(mProcessId) {
             return await this.findOne({ process: mProcessId, isFirst: true });
+        },
+
+        async updateEntityToStep(stepId, entityId) {
+            let step = await this.findById(stepId);
+            step.entity = entityId;
+            return await step.save();
         }
 
     };

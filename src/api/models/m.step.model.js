@@ -79,6 +79,12 @@ const MStepSchema = new Schema({
         }
     ],
 
+    entity: {
+        type: Schema.Types.ObjectId,
+        ref: 'VUEntityModel',
+        required: false
+    },
+
     isFirst: {
         type: Boolean,
         default: false
