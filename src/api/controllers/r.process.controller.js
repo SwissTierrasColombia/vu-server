@@ -35,6 +35,7 @@ export async function saveInformationProcess(req, res) {
         const rProcessId = req.body.rProcess;
         const mStepId = req.body.step;
         const metadata = req.body.metadata;
+        const vuUserId = req.user._id; // user session
 
         const data = {};
         for (let prop in req.body) {
@@ -43,7 +44,7 @@ export async function saveInformationProcess(req, res) {
             }
         }
 
-        const dataSave = await ProcessImplementation.iSaveInformationStep(mProcessId, mStepId, data, metadata, files, rProcessId);
+        const dataSave = await ProcessImplementation.iSaveInformationStep(mProcessId, mStepId, data, metadata, files, rProcessId, vuUserId);
 
         return result(res, 200, rProcessTransformer.transformer(dataSave));
     } catch (exception) {

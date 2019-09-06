@@ -48,6 +48,10 @@ export default (MProcessModel) => {
             let process = await this.findById(processId);
             process.entities = entities;
             return await process.save();
+        },
+
+        async getProcessesMatchEntities(entities) {
+            return await this.find({ 'active': true, 'entities': { "$in": entities } });
         }
 
     };

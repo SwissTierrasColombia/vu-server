@@ -11,6 +11,7 @@ import MStepBusiness from '../../manage/step/step.business';
 import MFieldBusiness from '../../manage/field/field.business';
 import MUserBusiness from '../../manage/user/user.business';
 import PTypeDataBusiness from '../../parameterize/typeData/typeData.business';
+import VUUserBusiness from '../../../vu/user/user.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -21,7 +22,7 @@ export default class ProcessImplementation extends RProcessBusiness {
         super();
     }
 
-    static async iSaveInformationStep(mProcessId, mStepId, data, metadata, files, rProcessId) {
+    static async iSaveInformationStep(mProcessId, mStepId, data, metadata, files, rProcessId, vuUserId) {
 
         // verify if the process exists
         const processFound = await MProcessBusiness.getProcessById(mProcessId);
@@ -38,6 +39,33 @@ export default class ProcessImplementation extends RProcessBusiness {
         // verify if the step belong to process
         if (stepFound.process.toString() !== processFound._id.toString()) {
             throw new APIException('m.process.steps.step_not_belong_process', 401);
+        }
+
+        // verify if the user session exists
+        const userFound = await VUUserBusiness.getUserById(vuUserId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
+
+        // verify that the user has access to the step
+        const entitiesUser = userFound.entities;
+        const entityIdFound = entitiesUser.find(entityUserId => {
+            return entityUserId.toString() === stepFound.entity.toString();
+        });
+        const hasAccessEntity = (entityIdFound) ? true : false;
+        let hasAccessRole = false;
+        const rolesUser = userFound.roles;
+        const rolesStep = stepFound.roles;
+        rolesUser.forEach(roleUserId => {
+            const has = rolesStep.find(roleStepId => {
+                return roleStepId.toString() === roleUserId.toString();
+            });
+            if (has) {
+                hasAccessRole = true;
+            }
+        });
+        if (!hasAccessEntity || !hasAccessRole) {
+            throw new APIException('r.process.access_denied_step', 401);
         }
 
         // validate data
@@ -99,6 +127,7 @@ export default class ProcessImplementation extends RProcessBusiness {
                 const mStep = mSteps[i];
                 let activeStep = false;
                 let dataStep = {};
+                let modifiedBy = null;
                 if (mStep._id.toString() === mStepId.toString()) {
                     // save files
                     for (let i in mFields) {
@@ -115,16 +144,18 @@ export default class ProcessImplementation extends RProcessBusiness {
                     }
                     activeStep = true;
                     dataStep = data;
+                    modifiedBy = vuUserId;
                 }
                 rSteps.push({
                     step: mStep._id.toString(),
                     active: activeStep,
                     data: dataStep,
-                    metadata: {}
+                    metadata: {},
+                    modifiedBy
                 });
             }
 
-            runtimeProcessFound = await this.createProcess(mProcessId, rSteps);
+            runtimeProcessFound = await this.createProcess(mProcessId, vuUserId, rSteps);
         }
 
         return runtimeProcessFound;

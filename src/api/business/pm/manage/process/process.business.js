@@ -80,4 +80,8 @@ export default class ProcessBusiness {
         return await MProcessModel.updateEntities(processId, entities);
     }
 
+    static async getProcessesMatchEntities(entities) {
+        return await MProcessModel.getProcessesMatchEntities(entities);
+    }
+
 }

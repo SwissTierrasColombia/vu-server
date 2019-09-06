@@ -11,8 +11,8 @@ export default class ProcessBusiness {
         }
     }
 
-    static async createProcess(mProcessId, mSteps) {
-        return await RProcessModel.createProcess(mProcessId, mSteps);
+    static async createProcess(mProcessId, createdBy, mSteps) {
+        return await RProcessModel.createProcess(mProcessId, createdBy, mSteps);
     }
 
     static async updateProcessStep(rProcessId, mStepId, data, metadata) {
@@ -21,6 +21,10 @@ export default class ProcessBusiness {
 
     static async getProcessesByProcessAndSteps(mProcessId, mRoles, populates) {
         return await RProcessModel.getProcessesByProcessAndSteps(mProcessId, mRoles, populates);
+    }
+
+    static async getProcessesMatchSteps(mProcessId, mStepsId) {
+        return await RProcessModel.getProcessesMatchSteps(mProcessId, mStepsId);
     }
 
 }

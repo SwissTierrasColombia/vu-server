@@ -92,7 +92,8 @@
             "data_required": "La información es requerida.",
             "data_invalid": "Hay campos requeridos a los cuales no se les ha especificado valor.",
             "data_field_type_required": "El campo '{{field}}' es requerido.",
-            "data_field_type_invalid": "La información para el campo '{{field}}' es inválida."
+            "data_field_type_invalid": "La información para el campo '{{field}}' es inválida.",
+            "access_denied_step": "No se cuenta con los permisos necesarios para realizar la operación."
         }
     }
 }

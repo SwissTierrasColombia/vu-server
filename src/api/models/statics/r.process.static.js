@@ -7,11 +7,12 @@ export default (RProcessModel) => {
     // Statics
     RProcessModel.statics = {
 
-        async createProcess(mProcessId, mSteps) {
+        async createProcess(mProcessId, createdBy, mSteps) {
             const RProcessModel = this;
             const process = new RProcessModel({
                 process: mProcessId,
-                steps: mSteps
+                steps: mSteps,
+                createdBy
             });
             return await process.save();
         },
@@ -44,6 +45,18 @@ export default (RProcessModel) => {
             });
             processes = addPopulates(processes, populates);
             return await processes.exec();
+        },
+
+        async getProcessesMatchSteps(mProcessId, mStepsId) {
+            return await this.find({
+                process: mProcessId,
+                steps: {
+                    $elemMatch: {
+                        step: { "$in": mStepsId },
+                        active: true
+                    }
+                }
+            });
         }
 
     };

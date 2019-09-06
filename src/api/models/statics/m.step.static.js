@@ -94,7 +94,11 @@ export default (MStepModel) => {
             let step = await this.findById(stepId);
             step.entity = entityId;
             return await step.save();
-        }
+        },
+
+        async getStepsMatchEntitiesAndRoles(processId, entitiesId, rolesId) {
+            return await this.find({ process: processId, roles: { "$in": rolesId }, entity: { "$in": entitiesId } });
+        },
 
     };
 

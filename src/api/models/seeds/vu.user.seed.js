@@ -41,4 +41,46 @@ export default [
         ],
         enabled: true
     },
+    {
+        firstName: 'Usuario',
+        lastName: 'Notificador',
+        email: 'notificador@mail.com',
+        username: 'notificador',
+        password: '$2a$10$f.iNtPrK9Y69p1KRWcQai.UIBdFoOBpeEGMRA2odDsKptgSi4a4xe', // 123
+        roles: [
+            '5d7274ecfa0f0048ed4e8e84'
+        ],
+        entities: [
+            '5d7106ca03adb8a7f91b3a14'
+        ],
+        enabled: true
+    },
+    {
+        firstName: 'Usuario',
+        lastName: 'Radicador',
+        email: 'radicador@mail.com',
+        username: 'radicador',
+        password: '$2a$10$f.iNtPrK9Y69p1KRWcQai.UIBdFoOBpeEGMRA2odDsKptgSi4a4xe', // 123
+        roles: [
+            '5d7274bd35c6b3fea68d70a0'
+        ],
+        entities: [
+            '5d7106ca03adb8a7f91b3a14'
+        ],
+        enabled: true
+    },
+    {
+        firstName: 'Usuario',
+        lastName: 'Consultor',
+        email: 'consultor@mail.com',
+        username: 'consultor',
+        password: '$2a$10$f.iNtPrK9Y69p1KRWcQai.UIBdFoOBpeEGMRA2odDsKptgSi4a4xe', // 123
+        roles: [
+            '5d7274d6e3f885b775d877f5'
+        ],
+        entities: [
+            '5d7106ca03adb8a7f91b3a14'
+        ],
+        enabled: true
+    },
 ];

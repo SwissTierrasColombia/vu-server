@@ -36,10 +36,24 @@ const RProcessSchema = new Schema({
             },
             updatedAt: {
                 type: Date,
+                required: false,
+                default: Date.now
+            },
+            modifiedBy: {
+                type: Schema.Types.ObjectId,
+                ref: 'VUUserModel',
                 required: false
-            }
+            },
         }
     ],
+
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'VUUserModel',
+        required: [
+            true, 'The user is required.'
+        ]
+    },
 
     createdAt: {
         type: Date,

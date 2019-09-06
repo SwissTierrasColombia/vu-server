@@ -2,6 +2,8 @@
   x-swagger-router-controller: r.process.controller
   post:
     operationId: saveInformationProcess
+    security:
+      - Bearer: []
     tags:
       - PM - R/Processes
     summary: Save information process
