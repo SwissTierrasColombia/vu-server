@@ -18,10 +18,25 @@ export default (RProcessModel) => {
         },
 
         async getProcessById(rProcessId) {
-            return await this.findById(rProcessId);
+            let process = this.findById(rProcessId).populate({
+                path: 'process'
+            }).populate({
+                path: 'steps.step',
+                populate: [
+                    {
+                        path: 'step',
+                        model: 'MStepModel',
+                    },
+                    {
+                        path: 'typeStep',
+                        model: 'PStepModel',
+                    }
+                ]
+            });
+            return await process.exec();
         },
 
-        async updateProcessStep(rProcessId, mStepId, data, metadata) {
+        async updateProcessStep(rProcessId, mStepId, data, metadata, vuUserId) {
             return await this.findOneAndUpdate(
                 {
                     '_id': rProcessId,
@@ -31,7 +46,8 @@ export default (RProcessModel) => {
                     "$set": {
                         "steps.$.data": data,
                         "steps.$.metadata": metadata,
-                        "steps.$.updatedAt": moment()
+                        "steps.$.updatedAt": moment(),
+                        "steps.$.modifiedBy": vuUserId
                     }
                 }
             );
@@ -48,7 +64,7 @@ export default (RProcessModel) => {
         },
 
         async getProcessesMatchSteps(mProcessId, mStepsId) {
-            return await this.find({
+            let processes = this.find({
                 process: mProcessId,
                 steps: {
                     $elemMatch: {
@@ -56,7 +72,22 @@ export default (RProcessModel) => {
                         active: true
                     }
                 }
+            }).populate({
+                path: 'process'
+            }).populate({
+                path: 'steps.step',
+                populate: [
+                    {
+                        path: 'step',
+                        model: 'MStepModel',
+                    },
+                    {
+                        path: 'typeStep',
+                        model: 'PStepModel',
+                    }
+                ]
             });
+            return await processes.exec();
         }
 
     };

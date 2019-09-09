@@ -79,8 +79,9 @@ export async function getProcess(req, res) {
         }
 
         const rProcessId = req.swagger.params.process.value;
+        const vuUserId = req.user._id; // user session
 
-        const data = await ProcessImplementation.iGetInformationProcess(rProcessId);
+        const data = await ProcessImplementation.iGetInformationProcess(rProcessId, vuUserId);
 
         return result(res, 200, rProcessTransformer.transformer(data));
     } catch (exception) {
@@ -114,8 +115,9 @@ export async function getDataStartProcedure(req, res) {
         }
 
         const mProcessId = req.swagger.params.process.value;
+        const vuUserId = req.user._id; // user session
 
-        const dataStartProcedure = await ProcessImplementation.getDataStartProcedure(mProcessId);
+        const dataStartProcedure = await ProcessImplementation.getDataStartProcedure(mProcessId, vuUserId);
 
         const data = {
             fields: dataStartProcedure.fields,
@@ -155,14 +157,19 @@ export async function getDataContinueProcedure(req, res) {
         }
 
         const rProcessId = req.swagger.params.process.value;
+        const vuUserId = req.user._id; // user session
 
-        const dataStartProcedure = await ProcessImplementation.getDataContinueProcedure(rProcessId);
+        const dataContinueProcedure = await ProcessImplementation.getDataContinueProcedure(rProcessId, vuUserId);
 
+        const data = {
+            fields: dataContinueProcedure.fields,
+            process: rProcessId,
+            step: dataContinueProcedure.step
+        };
 
-
-        return result(res, 200, {});
+        return result(res, 200, data);
     } catch (exception) {
-        console.log("r.process@getDataStartProcedure ---->", exception);
+        console.log("r.process@getDataContinueProcedure ---->", exception);
         if (exception.codeHttp && exception.key) {
             return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
         }

@@ -12,6 +12,13 @@ export let rProcessTransformer = new Transformer({
         "reference": mProcessTransformer
     },
     "steps": "steps",
+    "stepNameActive": function (data) {
+        const steps = data.steps;
+        const stepActive = steps.find(item => {
+            return item.active === true;
+        });
+        return stepActive.step.typeStep.step;
+    },
     "createdAt": "createdAt",
     "updatedAt": "updatedAt"
 });

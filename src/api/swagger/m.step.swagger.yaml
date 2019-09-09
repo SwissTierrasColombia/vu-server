@@ -340,4 +340,28 @@
       500:
         description: Server error
         schema:
-          $ref: "#/definitions/Error"          
+          $ref: "#/definitions/Error"
+
+/api/m/steps/{step}/order:
+  x-swagger-router-controller: m.step.controller
+  get:
+    operationId: getDataOrderStep
+    security:
+      - Bearer: []
+    tags:
+      - PM - M/Steps
+    summary: Get data order step
+    description: Get data order step
+    parameters:
+      - name: step
+        in: path
+        type: string
+        description: PM - M/Step ID
+        required: true
+    responses:
+      200:
+        description: Get data order step
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

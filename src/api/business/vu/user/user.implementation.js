@@ -32,7 +32,7 @@ export default class UserImplementation extends UserBusiness {
                 mStepsId.push(manageStepsToProcess[j]._id.toString());
             }
 
-            const runtimeProcesses = await RProcessBusiness.getProcessesMatchSteps(mProcess._id.toString(), mStepsId); console.log('run', runtimeProcesses);
+            const runtimeProcesses = await RProcessBusiness.getProcessesMatchSteps(mProcess._id.toString(), mStepsId);
 
             allProcess = allProcess.concat(runtimeProcesses);
         }

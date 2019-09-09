@@ -32,9 +32,6 @@
     operationId: getProcesses
     security:
       - Bearer: []
-    x-security-scopes:
-      - 5d710564330f7d7cd67ee491
-      - 5d7107e7a6a3e77e5fe15217
     tags:
       - PM - M/Processes
     summary: Get processes

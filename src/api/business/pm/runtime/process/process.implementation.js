@@ -114,9 +114,10 @@ export default class ProcessImplementation extends RProcessBusiness {
         if (runtimeProcessFound) {
 
             // update step in rProcess
-            // metadata = (metadata) ? metadata : {};
-            // await this.updateProcessStep(rProcessId, mStepId, data, metadata);
-            // runtimeProcessFound = await this.getProcessById(rProcessId);
+            metadata = (metadata) ? metadata : {};
+            await this.updateProcessStep(rProcessId, mStepId, data, metadata, vuUserId);
+            runtimeProcessFound = await this.getProcessById(rProcessId);
+
         } else {
 
             // create runtime process
@@ -161,12 +162,54 @@ export default class ProcessImplementation extends RProcessBusiness {
         return runtimeProcessFound;
     }
 
-    static async iGetInformationProcess(rProcessId) {
+    static async iGetInformationProcess(rProcessId, vuUserId) {
 
         // verify if the process exists
         const processFound = await this.getProcessById(rProcessId);
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the user session exists
+        const userFound = await VUUserBusiness.getUserById(vuUserId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
+
+        const steps = processFound.steps;
+        let hasAccess = false;
+        for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+
+            const manageStep = await MStepBusiness.getStepById(step.step._id.toString());
+
+            // verify that the user has access to the step
+            const entitiesUser = userFound.entities;
+            const entityIdFound = entitiesUser.find(entityUserId => {
+                return entityUserId.toString() === manageStep.entity.toString();
+            });
+            const hasAccessEntity = (entityIdFound) ? true : false;
+
+            let hasAccessRole = false;
+            const rolesUser = userFound.roles;
+            const rolesStep = manageStep.roles;
+            rolesUser.forEach(roleUserId => {
+                const has = rolesStep.find(roleStepId => {
+                    return roleStepId.toString() === roleUserId.toString();
+                });
+                if (has) {
+                    hasAccessRole = true;
+                }
+            });
+            if (hasAccessEntity && hasAccessRole) {
+                hasAccess = true;
+                break;
+            }
+
+        }
+
+        if (!hasAccess) {
+            throw new APIException('r.process.access_denied_step', 401);
         }
 
         return processFound;
@@ -198,7 +241,7 @@ export default class ProcessImplementation extends RProcessBusiness {
         return allProcesses;
     }
 
-    static async getDataStartProcedure(mProcessId) {
+    static async getDataStartProcedure(mProcessId, vuUserId) {
 
         // verify if the process exists
         const processFound = await MProcessBusiness.getProcessById(mProcessId);
@@ -206,11 +249,39 @@ export default class ProcessImplementation extends RProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        const firstMStep = await MStepBusiness.getStepFirstFromProcess(mProcessId);
+        // verify if the user session exists
+        const userFound = await VUUserBusiness.getUserById(vuUserId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
 
+        // search first step from process
+        const firstMStep = await MStepBusiness.getStepFirstFromProcess(mProcessId);
         let mFields = [];
         if (firstMStep) {
             mFields = await MFieldBusiness.getFieldsByStep(firstMStep._id.toString());
+
+            // verify that the user has access to the step
+            const entitiesUser = userFound.entities;
+            const entityIdFound = entitiesUser.find(entityUserId => {
+                return entityUserId.toString() === firstMStep.entity.toString();
+            });
+            const hasAccessEntity = (entityIdFound) ? true : false;
+            let hasAccessRole = false;
+            const rolesUser = userFound.roles;
+            const rolesStep = firstMStep.roles;
+            rolesUser.forEach(roleUserId => {
+                const has = rolesStep.find(roleStepId => {
+                    return roleStepId.toString() === roleUserId.toString();
+                });
+                if (has) {
+                    hasAccessRole = true;
+                }
+            });
+            if (!hasAccessEntity || !hasAccessRole) {
+                throw new APIException('r.process.access_denied_step', 401);
+            }
+
         }
 
         mFields = mFields.filter(item => { return item.isPrivate === false; });
@@ -221,7 +292,7 @@ export default class ProcessImplementation extends RProcessBusiness {
         };
     }
 
-    static async getDataContinueProcedure(rProcessId) {
+    static async getDataContinueProcedure(rProcessId, vuUserId) {
 
         // verify if the process exists
         const rProcessFound = await this.getProcessById(rProcessId);
@@ -229,28 +300,50 @@ export default class ProcessImplementation extends RProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        //TODO: verify if the authenticated user has permissions on the procedure
+        // verify if the user session exists
+        const userFound = await VUUserBusiness.getUserById(vuUserId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
 
+        const mStepActive = rProcessFound.steps.find((step) => {
+            return step.active === true;
+        });
+        const mStepIdActive = mStepActive.step._id.toString();
+        const mStepFound = await MStepBusiness.getStepById(mStepIdActive);
 
+        let mFields = [];
+        if (mStepFound) {
+            mFields = await MFieldBusiness.getFieldsByStep(mStepFound._id.toString());
 
-        console.log('here');
+            // verify that the user has access to the step
+            const entitiesUser = userFound.entities;
+            const entityIdFound = entitiesUser.find(entityUserId => {
+                return entityUserId.toString() === mStepFound.entity.toString();
+            });
+            const hasAccessEntity = (entityIdFound) ? true : false;
+            let hasAccessRole = false;
+            const rolesUser = userFound.roles;
+            const rolesStep = mStepFound.roles;
+            rolesUser.forEach(roleUserId => {
+                const has = rolesStep.find(roleStepId => {
+                    return roleStepId.toString() === roleUserId.toString();
+                });
+                if (has) {
+                    hasAccessRole = true;
+                }
+            });
+            if (!hasAccessEntity || !hasAccessRole) {
+                throw new APIException('r.process.access_denied_step', 401);
+            }
+        }
 
+        mFields = mFields.filter(item => { return item.isPrivate === false; });
 
-
-        // let mFields = [];
-        // if (firstMStep) {
-        //     mFields = await MFieldBusiness.getFieldsByStep(firstMStep._id.toString());
-        // }
-
-        // mFields = mFields.filter(item => { return item.isPrivate === false; });
-
-        // return {
-        //     fields: mFields,
-        //     step: (firstMStep) ? firstMStep._id.toString() : ''
-        // };
-
-        return {};
-
+        return {
+            fields: mFields,
+            step: (mStepFound) ? mStepFound._id.toString() : ''
+        };
     }
 
 

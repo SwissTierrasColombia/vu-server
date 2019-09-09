@@ -467,3 +467,38 @@ export async function setEntityToStep(req, res) {
     }
 
 }
+
+// get data order step
+export async function getDataOrderStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+
+        const dataOrder = await StepImplementation.getDataOrderStep(mStepId);
+
+        return result(res, 200, dataOrder);
+    } catch (exception) {
+        console.log("m.step@getDataOrderStep ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}

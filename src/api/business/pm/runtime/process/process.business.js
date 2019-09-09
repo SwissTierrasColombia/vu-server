@@ -15,8 +15,8 @@ export default class ProcessBusiness {
         return await RProcessModel.createProcess(mProcessId, createdBy, mSteps);
     }
 
-    static async updateProcessStep(rProcessId, mStepId, data, metadata) {
-        return await RProcessModel.updateProcessStep(rProcessId, mStepId, data, metadata);
+    static async updateProcessStep(rProcessId, mStepId, data, metadata, vuUserId) {
+        return await RProcessModel.updateProcessStep(rProcessId, mStepId, data, metadata, vuUserId);
     }
 
     static async getProcessesByProcessAndSteps(mProcessId, mRoles, populates) {

@@ -8,6 +8,7 @@ import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import VURoleBusiness from '../../../vu/role/role.business';
 import VUEntityBusiness from '../../../vu/entity/entity.business';
 import MProcessBusiness from '../../../pm/manage/process/process.business';
+import PStepBusiness from '../../../pm/parameterize/step/step.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -215,6 +216,63 @@ export default class StepImplementation extends StepBusiness {
         await this.updateEntityToStep(mStepId, vuEntityId);
 
         return await this.getStepById(mStepId);
+    }
+
+    static async getDataOrderStep(mStepId) {
+
+        // verify if step exists
+        const mStepFound = await this.getStepById(mStepId);
+        if (!mStepFound) {
+            throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        const mProcessId = mStepFound.process.toString();
+        const dataStep = {
+            before: [],
+            after: []
+        };
+
+        // before
+        let steps = await this.getStepsFromProcess(mProcessId);
+        steps = JSON.parse(JSON.stringify(steps));
+        for (let i in steps) {
+            const step = steps[i];
+            const rules = step.rules;
+            for (let j = 0; j < rules.length; j++) {
+                const rule = rules[j];
+                const callbacks = rule.callbacks;
+                for (let k = 0; k < callbacks.length; k++) {
+                    const callback = callbacks[k];
+                    if (callback.callback.toString() === CallbackBusiness.CALLBACK_STEP) {
+                        if (callback.metadata.step.toString() === mStepId.toString()) {
+                            const fields = await FieldBusiness.getFieldsByStep(step._id.toString());
+                            step.fields = fields.filter(item => {
+                                return item.isPrivate === false;
+                            });
+                            step.typeStep = await PStepBusiness.getStepById(step.typeStep.toString());
+                            dataStep.before.push(step);
+                        }
+                    }
+                }
+            }
+        }
+
+        // after
+        const step = mStepFound;
+        const rules = step.rules;
+        for (let j = 0; j < rules.length; j++) {
+            const rule = rules[j];
+            const callbacks = rule.callbacks;
+            for (let k = 0; k < callbacks.length; k++) {
+                const callback = callbacks[k];
+                if (callback.callback.toString() === CallbackBusiness.CALLBACK_STEP) {
+                    const tempStep = await this.getStepById(callback.metadata.step.toString());
+                    dataStep.after.push(tempStep);
+                }
+            }
+        }
+
+        return dataStep;
     }
 
 }
