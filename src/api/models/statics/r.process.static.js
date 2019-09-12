@@ -66,6 +66,7 @@ export default (RProcessModel) => {
         async getProcessesMatchSteps(mProcessId, mStepsId) {
             let processes = this.find({
                 process: mProcessId,
+                active: true,
                 steps: {
                     $elemMatch: {
                         step: { "$in": mStepsId },

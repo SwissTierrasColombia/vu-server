@@ -3,6 +3,7 @@ import validator from 'validator';
 import { getMessage } from '../../../../../lib/helpers/locales';
 import moment from 'moment';
 import config from '../../../../../config';
+import path from 'path';
 
 // Business
 import RProcessBusiness from './process.business';
@@ -68,10 +69,14 @@ export default class ProcessImplementation extends RProcessBusiness {
             throw new APIException('r.process.access_denied_step', 401);
         }
 
+        let runtimeProcessFound = await this.getProcessById(rProcessId);
+
         // validate data
         const mFields = await MFieldBusiness.getFieldsByStep(mStepId);
         let errorField = false;
         let messageError = '';
+
+        let skipFiles = [];
 
         for (let i in mFields) {
             const mField = mFields[i];
@@ -80,7 +85,23 @@ export default class ProcessImplementation extends RProcessBusiness {
                 if (mField.isRequired) {
                     if (!data.hasOwnProperty(mField.field) || validator.isEmpty(data[mField.field])) {
                         if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
+
                             if (!files || !files.hasOwnProperty(mField.field)) {
+
+                                if (runtimeProcessFound) {
+                                    const getStepToUpdate = runtimeProcessFound.steps.find(item => {
+                                        return item.step._id.toString() === mStepId.toString();
+                                    });
+                                    if (getStepToUpdate.data) {
+                                        const dataFile = getStepToUpdate.data[mField.field];
+                                        if (dataFile) {
+                                            data[mField.field] = dataFile;
+                                            skipFiles.push(mField.field);
+                                            continue;
+                                        }
+                                    }
+                                }
+
                                 errorField = true;
                                 messageError = getMessage('r.process.data_field_type_required', 'es').replace('{{field}}', mField.description);
                                 break;
@@ -110,11 +131,31 @@ export default class ProcessImplementation extends RProcessBusiness {
             throw new APIException('-', 401, messageError);
         }
 
-        let runtimeProcessFound = await this.getProcessById(rProcessId);
+
         if (runtimeProcessFound) {
 
             // update step in rProcess
             metadata = (metadata) ? metadata : {};
+
+            for (let i in mFields) {
+                const mField = mFields[i];
+                if (skipFiles.indexOf(mField.field) === -1) {
+                    if (!mField.isPrivate) {
+                        if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
+                            const file = files[mField.field];
+                            const newName = moment().unix() + '_' + file.name.replace(' ', '_');
+                            const pathFile = `/assets/${newName}`;
+                            await file.mv(`${config.base}${pathFile}`);
+                            data[mField.field] = {
+                                url: pathFile,
+                                mimetype: file.mimetype,
+                                extension: (newName.substring(newName.indexOf('.'))).toLowerCase()
+                            };
+                        }
+                    }
+                }
+            }
+
             await this.updateProcessStep(rProcessId, mStepId, data, metadata, vuUserId);
             runtimeProcessFound = await this.getProcessById(rProcessId);
 
@@ -137,9 +178,13 @@ export default class ProcessImplementation extends RProcessBusiness {
                             if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
                                 const file = files[mField.field];
                                 const newName = moment().unix() + '_' + file.name.replace(' ', '_');
-                                const path = `/assets/${newName}`;
-                                await file.mv(`${config.base}${path}`);
-                                data[mField.field] = path;
+                                const pathFile = `/assets/${newName}`;
+                                await file.mv(`${config.base}${pathFile}`);
+                                data[mField.field] = {
+                                    url: pathFile,
+                                    mimetype: file.mimetype,
+                                    extension: (newName.substring(newName.indexOf('.'))).toLowerCase()
+                                };
                             }
                         }
                     }
@@ -159,7 +204,7 @@ export default class ProcessImplementation extends RProcessBusiness {
             runtimeProcessFound = await this.createProcess(mProcessId, vuUserId, rSteps);
         }
 
-        return runtimeProcessFound;
+        return await this.iGetInformationProcess(runtimeProcessFound._id.toString(), vuUserId);
     }
 
     static async iGetInformationProcess(rProcessId, vuUserId) {
@@ -344,6 +389,75 @@ export default class ProcessImplementation extends RProcessBusiness {
             fields: mFields,
             step: (mStepFound) ? mStepFound._id.toString() : ''
         };
+    }
+
+    static async iGetDataFile(rProcessId, mStepId, nameField, vuUserId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(rProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // verify if the user session exists
+        const userFound = await VUUserBusiness.getUserById(vuUserId);
+        if (!userFound) {
+            throw new APIException('m.process.users.user_not_exists', 404);
+        }
+
+        const steps = processFound.steps;
+        let hasAccess = false;
+        for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+
+            const manageStep = await MStepBusiness.getStepById(step.step._id.toString());
+
+            // verify that the user has access to the step
+            const entitiesUser = userFound.entities;
+            const entityIdFound = entitiesUser.find(entityUserId => {
+                return entityUserId.toString() === manageStep.entity.toString();
+            });
+            const hasAccessEntity = (entityIdFound) ? true : false;
+
+            let hasAccessRole = false;
+            const rolesUser = userFound.roles;
+            const rolesStep = manageStep.roles;
+            rolesUser.forEach(roleUserId => {
+                const has = rolesStep.find(roleStepId => {
+                    return roleStepId.toString() === roleUserId.toString();
+                });
+                if (has) {
+                    hasAccessRole = true;
+                }
+            });
+            if (hasAccessEntity && hasAccessRole) {
+                hasAccess = true;
+                break;
+            }
+
+        }
+
+        if (!hasAccess) {
+            throw new APIException('r.process.access_denied_step', 401);
+        }
+
+        let dataImage = null;
+        const stepsProcess = processFound.steps;
+        const stepFound = stepsProcess.find(item => {
+            return item.step._id.toString() === mStepId.toString();
+        });
+        if (stepFound.data) {
+            if (stepFound.data.hasOwnProperty(nameField)) {
+                dataImage = {
+                    url: stepFound.data[nameField].url,
+                    mimetype: stepFound.data[nameField].mimetype,
+                    extension: stepFound.data[nameField].extension
+                };
+            }
+        }
+
+
+        return dataImage;
     }
 
 

@@ -6,8 +6,6 @@
       - VU - Account
     summary: Signin
     description: Signin
-    consumes:
-      - application/x-www-form-urlencoded
     parameters:
       - name: username
         in: formData

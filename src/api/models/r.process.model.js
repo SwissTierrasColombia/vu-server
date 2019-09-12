@@ -63,6 +63,11 @@ const RProcessSchema = new Schema({
     updatedAt: {
         type: Date,
         required: false
+    },
+
+    active: {
+        type: Boolean,
+        default: true
     }
 
 }, { collection: 'r_processes' });
