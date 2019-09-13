@@ -37,8 +37,8 @@ export default {
   },
   "redis-jwt": { // Sessions
     //host: '/tmp/redis.sock', //unix domain
-    host: '127.0.0.1', //can be IP or hostname
-    port: 6379, // port
+    host: process.env.REDIS_JWT_HOST, //can be IP or hostname
+    port: process.env.REDIS_JWT_PORT, // port
     maxretries: 10, //reconnect retries, default 10
     //auth: '123', //optional password, if needed
     db: 0, //optional db selection
@@ -113,29 +113,12 @@ export default {
     local: {
       enabled: true
     },
-    facebook: {
-      enabled: false,
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '/auth/facebook/callback'
-    },
-    twitter: {
-      enabled: false,
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '/auth/twitter/callback'
-    },
-    google: {
-      enabled: false,
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '/auth/google/callback'
-    },
-    github: {
-      enabled: true,
-      clientID: '52be92c9a41f77a959eb',
-      clientSecret: '76c9bb03c689d098506822fa80dba372a1fe29c8',
-      callbackURL: '/auth/github/callback'
+  },
+  bull: {
+    redis: {
+      host: process.env.QUEUE_REDIS_HOST,
+      port: process.env.QUEUE_REDIS_PORT,
+      password: process.env.QUEUE_REDIS_PASSWORD
     }
   },
   // globals

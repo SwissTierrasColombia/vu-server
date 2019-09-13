@@ -5,6 +5,9 @@ import moment from 'moment';
 // Models
 import PTypeDataModel from '../../../../models/p.typesData.model';
 
+// Business
+import OperatorBusiness from '../../../pm/parameterize/operator/operator.business';
+
 export default class TypeDataBusiness {
 
     static TYPE_DATA_TEXT = '5d519eb247943f3539d116ef';
@@ -81,7 +84,7 @@ export default class TypeDataBusiness {
                 valid = TypeDataBusiness.validateTypeDataCheckbox(value);
                 break;
             case TypeDataBusiness.TYPE_DATA_FILE:
-
+                valid = true;
                 break;
             case TypeDataBusiness.TYPE_DATA_TEXTAREA:
                 valid = TypeDataBusiness.validateTypeDataTextarea(value);
@@ -155,6 +158,50 @@ export default class TypeDataBusiness {
 
     static async validateTypeDataURL(value) {
         return validator.isURL(value);
+    }
+
+    static async isValidConditionTypeDataText(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataNumeric(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+
+                break;
+            case OperatorBusiness.OPERATOR_MAJOR:
+
+                break;
+            case OperatorBusiness.OPERATOR_MINOR:
+
+                break;
+            case OperatorBusiness.OPERATOR_MAJOR_EQUAL:
+
+                break;
+            case OperatorBusiness.OPERATOR_MINOR_EQUAL:
+
+                break;
+        }
+        return conditionValid;
     }
 
 }

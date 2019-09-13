@@ -34,9 +34,17 @@ export default class StepImplementation extends StepBusiness {
             if (dataCondition.hasOwnProperty('field') && dataCondition.hasOwnProperty('operator') && dataCondition.hasOwnProperty('value')) {
                 const fieldFound = await FieldBusiness.getFieldById(dataCondition.field);
                 const operatorFound = await OperatorBusiness.getOperatorById(dataCondition.operator);
+
+                const pTypeData = await TypeDataBusiness.getTypeDataById(fieldFound.typeData.toString());
+                let confirmOperator = pTypeData.operators.find(operator => {
+                    return operator.toString() === dataCondition.operator.toString();
+                });
+
                 const verifyField = fieldFound && fieldFound.step.toString() === mStepId.toString();
-                const verifyOperator = operatorFound;
+                const verifyOperator = operatorFound && confirmOperator;
                 const verifyValue = dataCondition.value;
+
+                //TODO: Verify value with its type data
                 if (verifyField && verifyOperator && verifyValue) {
                     conditionsValid++;
                 }

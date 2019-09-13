@@ -29,6 +29,9 @@ const app = express();
   // Helpers
   await require('./lib/helpers/locales').default(app);
 
+  // Queues
+  await require('./lib/queues').default();
+
   // Server 
   app.listen(config.server.port, config.server.ip, () => {
     // Info

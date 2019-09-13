@@ -12,6 +12,7 @@ import MStepBusiness from '../../manage/step/step.business';
 import MFieldBusiness from '../../manage/field/field.business';
 import MUserBusiness from '../../manage/user/user.business';
 import PTypeDataBusiness from '../../parameterize/typeData/typeData.business';
+import POperatorBusiness from '../../parameterize/operator/operator.business';
 import VUUserBusiness from '../../../vu/user/user.business';
 
 // Exceptions
@@ -84,10 +85,10 @@ export default class ProcessImplementation extends RProcessBusiness {
 
                 if (mField.isRequired) {
                     if (!data.hasOwnProperty(mField.field) || validator.isEmpty(data[mField.field])) {
+
+
                         if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
-
                             if (!files || !files.hasOwnProperty(mField.field)) {
-
                                 if (runtimeProcessFound) {
                                     const getStepToUpdate = runtimeProcessFound.steps.find(item => {
                                         return item.step._id.toString() === mStepId.toString();
@@ -101,7 +102,6 @@ export default class ProcessImplementation extends RProcessBusiness {
                                         }
                                     }
                                 }
-
                                 errorField = true;
                                 messageError = getMessage('r.process.data_field_type_required', 'es').replace('{{field}}', mField.description);
                                 break;
@@ -458,6 +458,73 @@ export default class ProcessImplementation extends RProcessBusiness {
 
 
         return dataImage;
+    }
+
+    static async validateProcedure(rProcessId) {
+
+        const rProcess = await this.getProcessById(rProcessId);
+
+        if (rProcess) {
+
+            const stepActive = rProcess.steps.find(step => {
+                return step.active === true;
+            });
+
+            const rules = stepActive.step.rules;
+
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+
+                const conditions = rule.conditions;
+                let conditionsValid = 0;
+                for (let j = 0; j < conditions.length; j++) {
+                    const condition = conditions[j];
+
+                    const field = await MFieldBusiness.getFieldById(condition.field);
+
+                    // confirm that the operator belongs to type field
+                    let operatorFound = null;
+                    const pTypeData = await PTypeDataBusiness.getTypeDataById(field.typeData.toString());
+                    if (pTypeData) {
+                        operatorFound = pTypeData.operators.find(operator => {
+                            return operator.toString() === condition.operator.toString();
+                        });
+                    }
+
+                    let conditionValid = false;
+
+                    if (operatorFound) {
+                        switch (field.typeData.toString()) {
+                            case PTypeDataBusiness.TYPE_DATA_TEXT:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataText(condition.operator,
+                                    stepActive.data[field.field], condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_NUMBER:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataNumeric(condition.operator,
+                                    stepActive.data[field.field], condition.value);
+
+                        }
+                    }
+
+                    if (conditionValid) {
+                        conditionsValid++;
+                    }
+                }
+
+                if (conditionsValid === conditions.length) {
+
+
+                    // const conditions = rule.callbacks;
+                    console.log('condiciones cumplidas');
+
+                }
+
+
+            }
+
+        }
+
+        return false;
     }
 
 

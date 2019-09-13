@@ -6,7 +6,8 @@ export default (PTypesDataModel) => {
     PTypesDataModel.statics = {
 
         async getTypesData() {
-            return await this.find();
+            let types = this.find().populate('operators');
+            return await types.exec();
         },
 
         async getTypeDataById(typeDataId) {
