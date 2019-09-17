@@ -40,5 +40,12 @@ export default [
                 typeData: "5d519eb247943f3539d116ef"
             },
         ]
+    },
+    {
+        _id: "5d7f9a1d44b81253a451ef87",
+        callback: "Cierre",
+        fields: [
+
+        ]
     }
 ];

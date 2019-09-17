@@ -1,10 +1,5 @@
 export default [
     {
-        _id: "5d51ab98a1f0e97c9136ebca",
-        step: "Consulta",
-        icon: "icon"
-    },
-    {
         _id: "5d51ab98a1f0e97c9136ebcb",
         step: "Solicitud",
         icon: "icon"
@@ -43,10 +38,5 @@ export default [
         _id: "5d51ab98a1f0e97c9136ebd2",
         step: "Notificación",
         icon: "icon"
-    },
-    {
-        _id: "5d51ab98a1f0e97c9136ebd3",
-        step: "Cierre",
-        icon: "icon"
-    },
+    }
 ];

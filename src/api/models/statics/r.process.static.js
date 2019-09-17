@@ -89,7 +89,48 @@ export default (RProcessModel) => {
                 ]
             });
             return await processes.exec();
-        }
+        },
+
+        async updateStepActive(rProcessId, mStepId) {
+            await this.findOneAndUpdate(
+                {
+                    '_id': rProcessId,
+                    'steps.active': true
+                },
+                {
+                    "$set": {
+                        "steps.$.active": false,
+                    }
+                }
+            );
+            return await this.findOneAndUpdate(
+                {
+                    '_id': rProcessId,
+                    'steps.step': mStepId
+                },
+                {
+                    "$set": {
+                        "steps.$.active": true,
+                    }
+                }
+            );
+        },
+
+        async updateProcessActive(rProcessId, active) {
+            return await this.findOneAndUpdate(
+                {
+                    '_id': rProcessId
+                },
+                {
+                    "active": active
+                }
+            );
+        },
+
+        async getProcessesByProcess(mProcessId) {
+            let processes = this.find({ process: mProcessId });
+            return await processes.exec();
+        },
 
     };
 

@@ -15,6 +15,9 @@
             "process_deploy_error_rules": "Hay pasos a los cuales no se les han especificado condiciones de flujo.",
             "process_deploy_error_steps_roles": "Hay pasos a los cuales no se les han especificado roles.",
             "process_deploy_error_not_has_origin_step": "Se debe especificar un paso de origen.",
+            "process_deploy_error_entity": "Hay pasos a los cuales no se le han asignado una entidad.",
+            "process_not_deploy_yet": "El proceso no ha sido desplegado aún.",
+            "process_cant_remove_have_runtime": "No se puede eliminar el proceso porque existen trámites ya en ejecución.",
             "roles": {
                 "role_required": "El rol es requerido.",
                 "role_invalid": "El rol es inválido.",
@@ -93,7 +96,8 @@
             "data_invalid": "Hay campos requeridos a los cuales no se les ha especificado valor.",
             "data_field_type_required": "El campo '{{field}}' es requerido.",
             "data_field_type_invalid": "La información para el campo '{{field}}' es inválida.",
-            "access_denied_step": "No se cuenta con los permisos necesarios para realizar la operación."
+            "access_denied_step": "No se cuenta con los permisos necesarios para realizar la operación.",
+            "process_is_closing": "No se puede actualizar la información porque el trámite se ha cerrado."
         }
     }
 }

@@ -12,8 +12,10 @@ import MStepBusiness from '../../manage/step/step.business';
 import MFieldBusiness from '../../manage/field/field.business';
 import MUserBusiness from '../../manage/user/user.business';
 import PTypeDataBusiness from '../../parameterize/typeData/typeData.business';
+import PCallbackBusiness from '../../parameterize/callback/callback.business';
 import POperatorBusiness from '../../parameterize/operator/operator.business';
 import VUUserBusiness from '../../../vu/user/user.business';
+import QueueBusiness from '../../../queues/queue.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -134,6 +136,10 @@ export default class ProcessImplementation extends RProcessBusiness {
 
         if (runtimeProcessFound) {
 
+            if (!runtimeProcessFound.active) {
+                throw new APIException('r.process.process_is_closing', 401);
+            }
+
             // update step in rProcess
             metadata = (metadata) ? metadata : {};
 
@@ -202,6 +208,7 @@ export default class ProcessImplementation extends RProcessBusiness {
             }
 
             runtimeProcessFound = await this.createProcess(mProcessId, vuUserId, rSteps);
+            await QueueBusiness.addJob(QueueBusiness.QUEUE_TYPE_PROCEDURES, { rProcessId: runtimeProcessFound._id.toString() });
         }
 
         return await this.iGetInformationProcess(runtimeProcessFound._id.toString(), vuUserId);
@@ -210,7 +217,8 @@ export default class ProcessImplementation extends RProcessBusiness {
     static async iGetInformationProcess(rProcessId, vuUserId) {
 
         // verify if the process exists
-        const processFound = await this.getProcessById(rProcessId);
+        let processFound = await this.getProcessById(rProcessId);
+        processFound = JSON.parse(JSON.stringify(processFound));
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
         }
@@ -225,6 +233,10 @@ export default class ProcessImplementation extends RProcessBusiness {
         let hasAccess = false;
         for (let i = 0; i < steps.length; i++) {
             const step = steps[i];
+            const fields = await MFieldBusiness.getFieldsByStep(step.step._id.toString());
+            step.fields = fields.filter(item => {
+                return item.isPrivate === false;
+            });
 
             const manageStep = await MStepBusiness.getStepById(step.step._id.toString());
 
@@ -248,7 +260,6 @@ export default class ProcessImplementation extends RProcessBusiness {
             });
             if (hasAccessEntity && hasAccessRole) {
                 hasAccess = true;
-                break;
             }
 
         }
@@ -292,6 +303,10 @@ export default class ProcessImplementation extends RProcessBusiness {
         const processFound = await MProcessBusiness.getProcessById(mProcessId);
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        if (!processFound.active) {
+            throw new APIException('m.process.process_not_deploy_yet', 401);
         }
 
         // verify if the user session exists
@@ -463,6 +478,7 @@ export default class ProcessImplementation extends RProcessBusiness {
     static async validateProcedure(rProcessId) {
 
         const rProcess = await this.getProcessById(rProcessId);
+        let isOver = false;
 
         if (rProcess) {
 
@@ -471,7 +487,6 @@ export default class ProcessImplementation extends RProcessBusiness {
             });
 
             const rules = stepActive.step.rules;
-
             for (let i = 0; i < rules.length; i++) {
                 const rule = rules[i];
 
@@ -493,16 +508,57 @@ export default class ProcessImplementation extends RProcessBusiness {
 
                     let conditionValid = false;
 
-                    if (operatorFound) {
+                    let valueData = null;
+                    if (stepActive.data) {
+                        valueData = stepActive.data[field.field];
+                    }
+
+                    if (operatorFound && valueData) {
                         switch (field.typeData.toString()) {
                             case PTypeDataBusiness.TYPE_DATA_TEXT:
                                 conditionValid = await PTypeDataBusiness.isValidConditionTypeDataText(condition.operator,
-                                    stepActive.data[field.field], condition.value);
+                                    valueData, condition.value);
                                 break;
                             case PTypeDataBusiness.TYPE_DATA_NUMBER:
                                 conditionValid = await PTypeDataBusiness.isValidConditionTypeDataNumeric(condition.operator,
-                                    stepActive.data[field.field], condition.value);
-
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_EMAIL:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataEmail(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_PHONE_NUMBER:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataPhoneNumber(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_DATE:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataDate(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_SINGLE_RESPONSE_LIST:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataSingleResponseList(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_MULTIPLE_RESPONSE_LIST:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataMultipleResponseList(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_CHECKBOX:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataCheckbox(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_FILE:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataFile(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_TEXTAREA:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataTextArea(condition.operator,
+                                    valueData, condition.value);
+                                break;
+                            case PTypeDataBusiness.TYPE_DATA_URL:
+                                conditionValid = await PTypeDataBusiness.isValidConditionTypeDataUrl(condition.operator,
+                                    valueData, condition.value);
+                                break;
                         }
                     }
 
@@ -513,9 +569,29 @@ export default class ProcessImplementation extends RProcessBusiness {
 
                 if (conditionsValid === conditions.length) {
 
+                    const callbacks = rule.callbacks;
 
-                    // const conditions = rule.callbacks;
-                    console.log('condiciones cumplidas');
+                    for (let i = 0; i < callbacks.length; i++) {
+                        const callback = callbacks[i];
+
+                        switch (callback.callback.toString()) {
+                            case PCallbackBusiness.CALLBACK_STEP:
+                                await this.updateStepActive(rProcessId, callback.metadata.step);
+                                break;
+                            case PCallbackBusiness.CALLBACK_CLOSING:
+                                await this.updateProcessActive(rProcessId, false);
+                                isOver = true;
+                                break;
+                            case PCallbackBusiness.CALLBACK_EMAIL:
+
+                                break;
+                            case PCallbackBusiness.CALLBACK_SMS:
+
+                                break;
+                        }
+
+                    }
+
 
                 }
 
@@ -524,7 +600,7 @@ export default class ProcessImplementation extends RProcessBusiness {
 
         }
 
-        return false;
+        return isOver;
     }
 
 

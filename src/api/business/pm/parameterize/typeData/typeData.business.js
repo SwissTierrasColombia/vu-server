@@ -34,6 +34,20 @@ export default class TypeDataBusiness {
         }
     }
 
+    static isValidDate(date) {
+        let isValid = false;
+        if (Object.prototype.toString.call(date) === "[object Date]") {
+            if (isNaN(date.getTime())) {
+                isValid = false;
+            } else {
+                isValid = true;
+            }
+        } else {
+            isValid = false;
+        }
+        return isValid;
+    }
+
     static verifyTypeData(typeDataId, value) {
         let valid = false;
         switch (typeDataId.toString()) {
@@ -180,25 +194,188 @@ export default class TypeDataBusiness {
         let conditionValid = false;
         switch (operatorId.toString()) {
             case OperatorBusiness.OPERATOR_EQUAL:
-
+                conditionValid = parseFloat(valueRuntime) === parseFloat(valueCondition);
                 break;
             case OperatorBusiness.OPERATOR_DIFFERENT:
-
+                conditionValid = parseFloat(valueRuntime) !== parseFloat(valueCondition);
                 break;
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
-
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
             case OperatorBusiness.OPERATOR_MAJOR:
-
+                conditionValid = parseFloat(valueRuntime) > parseFloat(valueCondition);
                 break;
             case OperatorBusiness.OPERATOR_MINOR:
-
+                conditionValid = parseFloat(valueRuntime) < parseFloat(valueCondition);
                 break;
             case OperatorBusiness.OPERATOR_MAJOR_EQUAL:
-
+                conditionValid = parseFloat(valueRuntime) >= parseFloat(valueCondition);
                 break;
             case OperatorBusiness.OPERATOR_MINOR_EQUAL:
+                conditionValid = parseFloat(valueRuntime) <= parseFloat(valueCondition);
+                break;
+        }
+        return conditionValid;
+    }
 
+    static async isValidConditionTypeDataEmail(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataPhoneNumber(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataDate(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        const date = new Date(valueRuntime);
+        if (this.isValidDate(date)) {
+            const dateNowMoment = moment();
+            const dateProcedureMoment = moment(valueRuntime);
+            switch (operatorId.toString()) {
+                case OperatorBusiness.OPERATOR_AFTER_TIME:
+                    conditionValid = dateNowMoment.diff(dateProcedureMoment, 'hours') >= parseFloat(valueCondition);
+                    break;
+                case OperatorBusiness.OPERATOR_BEFORE_TIME:
+                    conditionValid = dateNowMoment.diff(dateProcedureMoment, 'hours') <= parseFloat(valueCondition);
+                    break;
+                case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                    conditionValid = !validator.isEmpty(valueRuntime.toString());
+                    break;
+            }
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataSingleResponseList(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataMultipleResponseList(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        const partsRuntime = valueRuntime.split(',');
+        const partsCondition = valueCondition.split(',');
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_IN:
+                let has = false;
+                for (let i = 0; i < partsRuntime.length; i++) {
+                    const findIn = partsCondition.find(item => {
+                        return item.toString() === partsRuntime[i].toString();
+                    });
+                    if (findIn) {
+                        has = true;
+                    }
+                }
+                conditionValid = has;
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                let noHas = true;
+                for (let i = 0; i < partsRuntime.length; i++) {
+                    const findIn = partsCondition.find(item => {
+                        return item.toString() === partsRuntime[i].toString();
+                    });
+                    if (findIn) {
+                        noHas = false;
+                    }
+                }
+                conditionValid = noHas;
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataCheckbox(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataFile(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataTextArea(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+        }
+        return conditionValid;
+    }
+
+    static async isValidConditionTypeDataUrl(operatorId, valueRuntime, valueCondition) {
+        let conditionValid = false;
+        switch (operatorId.toString()) {
+            case OperatorBusiness.OPERATOR_EQUAL:
+                conditionValid = valueRuntime.toString() === valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_DIFFERENT:
+                conditionValid = valueRuntime.toString() !== valueCondition.toString();
+                break;
+            case OperatorBusiness.OPERATOR_NOT_EMPTY:
+                conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
         }
         return conditionValid;

@@ -7,6 +7,7 @@ import { mStepTransformer } from './m.step.transformer';
 //create transformer and define output properties
 export let rProcessTransformer = new Transformer({
     "_id": "_id",
+    "active": "active",
     "process": {
         "field": "process",
         "reference": mProcessTransformer

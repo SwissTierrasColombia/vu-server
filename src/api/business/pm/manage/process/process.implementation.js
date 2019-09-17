@@ -14,6 +14,7 @@ import PStepBusiness from '../../parameterize/step/step.business';
 import PTypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import POperatorBusiness from '../../parameterize/operator/operator.business';
 import VUEntityBusiness from '../../../vu/entity/entity.business';
+import RProcessBusiness from '../../runtime/process/process.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -335,6 +336,12 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
+        // verify runtime
+        const processes = await RProcessBusiness.getProcessesByProcess(processId);
+        if (processes.length > 0) {
+            throw new APIException('m.process.process_cant_remove_have_runtime', 401);
+        }
+
         // remove variables
         await VariableBusiness.removeVariablesByProcessId(processId);
 
@@ -489,23 +496,19 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
-        // verify that the process had a minimum role
-        // const roles = await RoleBusiness.getRolesByProcess(mProcessId);
-        // if (roles.length === 0) {
-        //     throw new APIException('m.process.process_deploy_error_roles', 401);
-        // }
-
         // verify that the process had a minimum step
         const steps = await StepBusiness.getStepsFromProcess(mProcessId);
         if (steps.length === 0) {
             throw new APIException('m.process.process_deploy_error_steps', 401);
         }
 
-        // verify that the process had a minimum users
-        // const users = await UserBusiness.getUsersByProcessId(mProcessId);
-        // if (users.length === 0) {
-        //     throw new APIException('m.process.process_deploy_error_users', 401);
-        // }
+        // check at each step if you have assigned entity
+        for (let i in steps) {
+            const step = steps[i];
+            if (!step.entity) {
+                throw new APIException('m.process.process_deploy_error_entity', 401);
+            }
+        }
 
         // check at each step if you have assigned fields
         for (let i in steps) {

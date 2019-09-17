@@ -27,4 +27,16 @@ export default class ProcessBusiness {
         return await RProcessModel.getProcessesMatchSteps(mProcessId, mStepsId);
     }
 
+    static async updateStepActive(rProcessId, mStepId) {
+        return await RProcessModel.updateStepActive(rProcessId, mStepId);
+    }
+
+    static async updateProcessActive(rProcessId, active) {
+        return await RProcessModel.updateProcessActive(rProcessId, active);
+    }
+
+    static async getProcessesByProcess(mProcessId) {
+        return await RProcessModel.getProcessesByProcess(mProcessId);
+    }
+
 }

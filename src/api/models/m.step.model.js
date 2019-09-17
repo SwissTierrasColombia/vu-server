@@ -51,9 +51,7 @@ const MStepSchema = new Schema({
                     },
                     metadata: {
                         type: Schema.Types.Mixed,
-                        required: [
-                            true, 'Metadata is required.'
-                        ],
+                        required: false
                     }
                 }
             ]
