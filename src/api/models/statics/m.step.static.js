@@ -100,6 +100,21 @@ export default (MStepModel) => {
             return await this.find({ process: processId, roles: { "$in": rolesId }, entity: { "$in": entitiesId } });
         },
 
+        async updateRuleToStep(mStepId, ruleId, dataRule) {
+            return await this.findOneAndUpdate(
+                {
+                    '_id': mStepId,
+                    'rules._id': ruleId
+                },
+                {
+                    "$set": {
+                        "rules.$.conditions": dataRule.conditions,
+                        "rules.$.callbacks": dataRule.callbacks
+                    }
+                }
+            );
+        }
+
     };
 
 };

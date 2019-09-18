@@ -681,3 +681,29 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/m/processes/{process}/undeploy:
+  x-swagger-router-controller: m.process.controller
+  put:
+    operationId: undeployProcess
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - PM - M/Processes
+    summary: Undeploy process
+    description: Undeploy process
+    parameters:
+      - name: process
+        in: path
+        description: Process ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Undeploy process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

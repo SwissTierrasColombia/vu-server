@@ -839,6 +839,41 @@ export async function deployProcess(req, res) {
 
 }
 
+// undeploy process
+export async function undeployProcess(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate process id
+        req.check('process', getMessage('m.process.process_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.process.value);
+        });
+        req.check('process', getMessage('m.process.process_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.process.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const processId = req.swagger.params.process.value;
+
+        const process = await ProcessImplementation.undeployProcess(processId);
+
+        return result(res, 200, mProcessTransformer.transformer(process));
+    } catch (exception) {
+        console.log("m.process@undeployProcess ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
 // get steps flow
 export async function getStepsFlow(req, res) {
 

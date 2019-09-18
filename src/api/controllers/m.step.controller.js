@@ -261,6 +261,64 @@ export async function addRuleToStep(req, res) {
 
 }
 
+// update rule to step
+export async function updateRuleToStep(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate m/step id
+        req.check('step', getMessage('m.process.steps.step_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.step.value);
+        });
+        req.check('step', getMessage('m.process.steps.step_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.step.value);
+        });
+
+        // validate rule
+        req.check('rule', getMessage('m.process.rules.rule_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.rule.value);
+        });
+        req.check('rule', getMessage('m.process.rules.rule_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.rule.value);
+        });
+
+        // validate conditions
+        req.checkBody("conditions", getMessage('m.process.rules.rule_conditions_required', language)).notEmpty();
+        req.check('conditions', getMessage('m.process.rules.rule_conditions_required', language)).custom((value) => {
+            return req.body.conditions !== Array;
+        });
+
+        // validate callbacks
+        req.checkBody("callbacks", getMessage('m.process.rules.rule_callbacks_required', language)).notEmpty();
+        req.check('callbacks', getMessage('m.process.rules.rule_callbacks_required', language)).custom((value) => {
+            return req.body.callbacks !== Array;
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const mStepId = req.swagger.params.step.value;
+        const ruleId = req.swagger.params.rule.value;
+        const conditions = req.body.conditions;
+        const callbacks = req.body.callbacks;
+
+        const stepUpdated = await StepImplementation.iUpdateRuleToStep(mStepId, ruleId, conditions, callbacks);
+
+        return result(res, 200, mStepTransformer.transformer(stepUpdated));
+    } catch (exception) {
+        console.log("m.step@addRuleToStep ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
+
 // remove rule from step
 export async function removeRuleToStep(req, res) {
 

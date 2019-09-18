@@ -39,4 +39,12 @@ export default class ProcessBusiness {
         return await RProcessModel.getProcessesByProcess(mProcessId);
     }
 
+    static async getProcessesByActive(active) {
+        return await RProcessModel.getProcessesByActive(active);
+    }
+
+    static async getCountActiveProcessByTypeProcess(mProcessId, active) {
+        return await RProcessModel.getCountActiveProcessByTypeProcess(mProcessId, active);
+    }
+
 }

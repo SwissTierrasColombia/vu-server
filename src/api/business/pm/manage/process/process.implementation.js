@@ -36,7 +36,15 @@ export default class ProcessImplementation extends ProcessBusiness {
             return await this.getProcessesAvailable();
         }
 
-        return await this.getAllProcesses();
+        let processes = await this.getAllProcesses();
+        processes = JSON.parse(JSON.stringify(processes));
+        for (let i = 0; i < processes.length; i++) {
+            const process = processes[i];
+            const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(process._id.toString(), true);
+            process.inAction = count;
+        }
+
+        return processes;
     }
 
     static async iAddRoleToProcess(processId, role) {
@@ -665,6 +673,19 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         await this.updateEntities(mProcessId, entities);
+    }
+
+    static async undeployProcess(mProcessId) {
+
+        // verify if the process exists
+        const processFound = await this.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        await this.updateActiveProcess(mProcessId, false);
+
+        return await this.getProcessById(mProcessId);
     }
 
 }
