@@ -18,6 +18,7 @@
             "process_deploy_error_entity": "Hay pasos a los cuales no se le han asignado una entidad.",
             "process_not_deploy_yet": "El proceso no ha sido desplegado aún.",
             "process_cant_remove_have_runtime": "No se puede eliminar el proceso porque existen trámites ya en ejecución.",
+            "process_cant_update": "No se puede actualizar información del proceso porque ya ha sido desplegado o cuenta con trámites en ejecución.",
             "roles": {
                 "role_required": "El rol es requerido.",
                 "role_invalid": "El rol es inválido.",
@@ -44,7 +45,8 @@
                 "field_not_exists": "El campo no existe.",
                 "field_not_belongs_to_step": "El campo no pertenece al paso.",
                 "field_pri_count_description": "Cantidad de veces que se ha iniciado el paso.",
-                "field_option_list_required": "Las opciones de la lista son requeridas."
+                "field_option_list_required": "Las opciones de la lista son requeridas.",
+                "field_used_rules": "No se puede borrar el campo ya que esta siendo usado en una regla."
             },
             "rules": {
                 "rule_conditions_required": "Se deben especificar las condiciones para la regla.",

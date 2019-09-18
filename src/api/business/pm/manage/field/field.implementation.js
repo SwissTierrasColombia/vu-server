@@ -3,6 +3,8 @@ import FieldBusiness from './field.business';
 import StepBusiness from '../step/step.business';
 import RoleBusiness from '../role/role.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
+import RProcessBusiness from '../../runtime/process/process.business';
+import MProcessBusiness from '../process/process.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -20,6 +22,17 @@ export default class FieldImplementation extends FieldBusiness {
         const mStepFound = await StepBusiness.getStepById(mStepId);
         if (!mStepFound) {
             throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify if type exists
@@ -100,6 +113,17 @@ export default class FieldImplementation extends FieldBusiness {
         const mStepFound = await StepBusiness.getStepById(mStepId);
         if (!mStepFound) {
             throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify if type exists
@@ -196,10 +220,40 @@ export default class FieldImplementation extends FieldBusiness {
             throw new APIException('m.process.steps.step_not_exists', 404);
         }
 
+        // verify field belong to rule
+        const rules = mStepFound.rules;
+        let foundField = false;
+        for (let i = 0; i < rules.length; i++) {
+            const rule = rules[i];
+            const conditions = rule.conditions;
+            for (let j = 0; j < conditions.length; j++) {
+                const condition = conditions[j];
+                if (condition.field.toString() === mFieldId.toString()) {
+                    foundField = true;
+                }
+            }
+        }
+        if (foundField) {
+            throw new APIException('m.process.fields.field_used_rules', 401);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         // verify if field belongs to step
         if (fieldFound.step.toString() !== mStepFound._id.toString()) {
             throw new APIException('m.process.fields.field_not_belongs_to_step', 401);
         }
+
+
 
         await FieldBusiness.removeFieldById(mFieldId);
     }

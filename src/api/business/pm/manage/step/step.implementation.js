@@ -7,8 +7,9 @@ import CallbackBusiness from '../../parameterize/callback/callback.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import VURoleBusiness from '../../../vu/role/role.business';
 import VUEntityBusiness from '../../../vu/entity/entity.business';
-import MProcessBusiness from '../../../pm/manage/process/process.business';
 import PStepBusiness from '../../../pm/parameterize/step/step.business';
+import MProcessBusiness from '../../../pm/manage/process/process.business';
+import RProcessBusiness from '../../runtime/process/process.business';
 
 // Exceptions
 import APIException from '../../../../exceptions/api.exception';
@@ -25,6 +26,17 @@ export default class StepImplementation extends StepBusiness {
         const mStepFound = await this.getStepById(mStepId);
         if (!mStepFound) {
             throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // validate conditions
@@ -97,6 +109,17 @@ export default class StepImplementation extends StepBusiness {
         const mStepFound = await this.getStepById(mStepId);
         if (!mStepFound) {
             throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify if rule exists
@@ -184,6 +207,17 @@ export default class StepImplementation extends StepBusiness {
             throw new APIException('m.process.steps.step_not_exists', 404);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         // verify if rule exists
         const rules = mStepFound.rules;
         let ruleFound = false;
@@ -206,6 +240,17 @@ export default class StepImplementation extends StepBusiness {
         const mStepFound = await this.getStepById(mStepId);
         if (!mStepFound) {
             throw new APIException('m.process.steps.step_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify if role exists
@@ -243,6 +288,17 @@ export default class StepImplementation extends StepBusiness {
             throw new APIException('m.process.steps.step_not_exists', 404);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         // verify if role exists
         const vuRoleFound = await VURoleBusiness.getRoleById(vuRoleId);
         if (!vuRoleFound) {
@@ -271,6 +327,17 @@ export default class StepImplementation extends StepBusiness {
             throw new APIException('m.process.steps.step_not_exists', 404);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         const stepsProcess = await this.getStepsFromProcess(mStepFound.process.toString());
         for (let i in stepsProcess) {
             const step = stepsProcess[i];
@@ -289,6 +356,17 @@ export default class StepImplementation extends StepBusiness {
             throw new APIException('m.process.steps.step_not_exists', 404);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const mProcessId = mStepFound.process.toString();
+        const processFound = await MProcessBusiness.getProcessById(mProcessId);
+        if (!processFound) {
+            throw new APIException('m.process.process_not_exists', 404);
+        }
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         // verify if entity exists
         const vuEntityFound = await VUEntityBusiness.getEntityById(vuEntityId);
         if (!vuEntityFound) {
@@ -296,7 +374,6 @@ export default class StepImplementation extends StepBusiness {
         }
 
         // verify if entity belongs to process
-        const processFound = await MProcessBusiness.getProcessById(mStepFound.process.toString());
         const entitiesProcess = processFound.entities;
         const find = entitiesProcess.find(item => {
             return item.toString() === vuEntityId.toString();

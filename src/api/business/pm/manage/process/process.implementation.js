@@ -137,6 +137,12 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_step_registered', 401);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         const stepNew = await StepBusiness.createStep(pStepId, processId);
         const mStepNewId = stepNew._id.toString();
 
@@ -162,6 +168,7 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
+        // verify if the step exists
         const stepFound = await StepBusiness.getStepById(mStepId);
         if (!stepFound) {
             throw new APIException('m.process.steps.step_not_exists', 404);
@@ -169,6 +176,12 @@ export default class ProcessImplementation extends ProcessBusiness {
 
         if (stepFound.process.toString() !== processId.toString()) {
             throw new APIException('m.process.steps.step_not_belong_process', 401);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // remove fields
@@ -203,6 +216,8 @@ export default class ProcessImplementation extends ProcessBusiness {
 
     static async iGetStepsByProcess(processId) {
 
+        console.log("holaaa");
+
         // verify if the process exists
         const processFound = await this.getProcessById(processId);
         if (!processFound) {
@@ -223,17 +238,17 @@ export default class ProcessImplementation extends ProcessBusiness {
                     condition.typeData = (field) ? field.typeData : null;
                     condition.metadata = (field) ? field.metadata : {};
 
-                    const typeData = await PTypeDataBusiness.getTypeDataById(field.typeData);
-                    const operators = [];
-                    if (typeData) {
-                        for (let z = 0; z < typeData.operators.length; z++) {
-                            const operatorFound = await POperatorBusiness.getOperatorById(typeData.operators[z]);
-                            operators.push(operatorFound);
+                    if (field) {
+                        const typeData = await PTypeDataBusiness.getTypeDataById(field.typeData);
+                        const operators = [];
+                        if (typeData) {
+                            for (let z = 0; z < typeData.operators.length; z++) {
+                                const operatorFound = await POperatorBusiness.getOperatorById(typeData.operators[z]);
+                                operators.push(operatorFound);
+                            }
                         }
+                        condition.operators = (typeData) ? operators : [];
                     }
-                    condition.operators = (typeData) ? operators : [];
-
-
                 }
             }
         }
@@ -247,6 +262,12 @@ export default class ProcessImplementation extends ProcessBusiness {
         const processFound = await this.getProcessById(processId);
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify the field name
@@ -286,6 +307,12 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         // verify if the variable exists
         const variableFound = await VariableBusiness.getVariableById(variableId);
         if (!variableFound) {
@@ -320,6 +347,12 @@ export default class ProcessImplementation extends ProcessBusiness {
         const processFound = await this.getProcessById(processId);
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify if the variable exists
@@ -620,6 +653,12 @@ export default class ProcessImplementation extends ProcessBusiness {
             throw new APIException('m.process.process_not_exists', 404);
         }
 
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mProcessId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
+        }
+
         // verify if the entity exists
         const entityFound = await VUEntityBusiness.getEntityById(vuEntityId);
         if (!entityFound) {
@@ -644,6 +683,12 @@ export default class ProcessImplementation extends ProcessBusiness {
         const processFound = await this.getProcessById(mProcessId);
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
+        }
+
+        // process information cannot be edited until it is deactivated and there are no procedures in progress
+        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mProcessId, true);
+        if (processFound.active || count > 0) {
+            throw new APIException('m.process.process_cant_update', 401);
         }
 
         // verify if the entity exists
