@@ -1,12 +1,8 @@
 {
-    "name": "nodetomic-api-swagger",
-    "version": "3.5.0",
-    "description": "RESTful API Nodejs designed for horizontal scalability with support for cluster, based on Swagger, Redis, JWT, Passport, Socket.io, Express, MongoDB.",
+    "name": "pm-server",
+    "version": "1.0.0",
+    "description": "RESTful API.",
     "main": "src/app.js",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/kevoj/nodetomic-api-swagger.git"
-    },
     "scripts": {
         "start": "npm stop && pm2-dev pm2.dev.config.js",
         "nodemon": "export NODE_ENV=development & set NODE_PATH=development && npm stop && nodemon src/app.js --exec babel-node -e js,yaml",
@@ -20,7 +16,6 @@
         "cluster": "npm run build && cd dist && npm run cluster",
         "update": "pm2 update"
     },
-    "author": "Leonardo Rico Guevara - https://github.com/kevoj",
     "license": "MIT",
     "keywords": [
         "RESTful",
