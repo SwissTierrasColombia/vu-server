@@ -1,0 +1,17 @@
+/api/vu/users/tasks:
+  x-swagger-router-controller: vu.user.controller
+  get:
+    operationId: getTaskUser
+    security:
+      - Bearer: []
+    tags:
+      - PM - R/Users
+    summary: Get tasks user
+    description: Get tasks user
+    responses:
+      200:
+        description: Get tasks user
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

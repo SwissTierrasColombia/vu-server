@@ -1,7 +1,7 @@
 module.exports = {
   "apps": [
     {
-      "name": "app-dev",
+      "name": "vu-api-dev",
       "script": "./src/app.js",
       "watch": ["src/**/*.{js,yaml}"],
       "exec_interpreter": "babel-node",

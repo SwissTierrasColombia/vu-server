@@ -1,0 +1,19 @@
+/api/vu/entities:
+  x-swagger-router-controller: vu.entity.controller
+  get:
+    operationId: getEntities
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Entities
+    summary: Get entities
+    description: Get entities
+    responses:
+      200:
+        description: Get entities
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

@@ -29,6 +29,9 @@ const app = express();
   // Helpers
   await require('./lib/helpers/locales').default(app);
 
+  // Queues
+  await require('./lib/queues').default();
+
   // Server 
   app.listen(config.server.port, config.server.ip, () => {
     // Info
@@ -36,7 +39,7 @@ const app = express();
           mode: [${chalk.magentaBright(`${config.mode}`)}]
           url: ${chalk.blueBright(`http://${config.server.ip}:${config.server.port}`)}\n-------`));
     // Ready!
-    console.log(chalk.black.bgGreenBright(`>>nodetomic-api-swagger ready!<<`));
+    console.log(chalk.black.bgGreenBright(`>>pm-server ready!<<`));
   });
 
 })();

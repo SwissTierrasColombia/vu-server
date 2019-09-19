@@ -1,0 +1,86 @@
+/api/r/processes:
+  x-swagger-router-controller: r.process.controller
+  post:
+    operationId: saveInformationProcess
+    security:
+      - Bearer: []
+    tags:
+      - PM - R/Processes
+    summary: Save information process
+    description: Save information process
+    parameters:
+      - name: mProcess
+        in: formData
+        type: string
+        description: M/Process ID
+        required: true
+      - name: step
+        in: formData
+        type: string
+        description: M/Step ID
+        required: true
+    responses:
+      200:
+        description: Save information
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/r/processes/{process}:
+  x-swagger-router-controller: r.process.controller
+  get:
+    operationId: getProcess
+    security:
+      - Bearer: []
+    tags:
+      - PM - R/Processes
+    summary: Get process
+    description: Get process
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: R/Process ID
+        required: true
+    responses:
+      200:
+        description: Get process
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/r/processes/{process}/download:
+  x-swagger-router-controller: r.process.controller
+  get:
+    operationId: downloadFile
+    security:
+      - Bearer: []
+    tags:
+      - PM - R/Processes
+    summary: Get process
+    description: Download file from process
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: R/Process ID
+        required: true
+      - name: step
+        in: query
+        type: string
+        description: M/Step ID
+        required: true
+      - name: field
+        in: query
+        type: string
+        description: Field name
+        required: true
+    responses:
+      200:
+        description: Download file
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

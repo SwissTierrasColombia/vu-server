@@ -1,4 +1,5 @@
 import expressValidator from 'express-validator';
+import fileUpload from 'express-fileupload';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -22,6 +23,7 @@ export function index(app) {
     app.use(helmet());
     app.use(cors({ origin: true, credentials: true }));
     app.use(expressValidator());
+    app.use(fileUpload());
 
     if ("twitter" in config.oAuth && config.oAuth.twitter.enabled)
       app.use(session({ secret: config.secret, resave: false, saveUninitialized: false }));

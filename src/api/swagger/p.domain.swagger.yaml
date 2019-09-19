@@ -2,13 +2,57 @@
   x-swagger-router-controller: p.domain.controller
   get:
     operationId: getTypesData
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
     tags:
-      - Domains
+      - PM - P/Domains
     summary: Get types data
     description: Get types data
     responses:
       200:
         description: Get types data
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/p/domains/types-callback:
+  x-swagger-router-controller: p.domain.controller
+  get:
+    operationId: getTypesCallback
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - PM - P/Domains
+    summary: Get types callbacks
+    description: Get types callbacks
+    responses:
+      200:
+        description: Get types callbacks
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/p/domains/types-operator:
+  x-swagger-router-controller: p.domain.controller
+  get:
+    operationId: getTypesOperator
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - PM - P/Domains
+    summary: Get types operators
+    description: Get types operators
+    responses:
+      200:
+        description: Get types operators
       500:
         description: Server error
         schema:

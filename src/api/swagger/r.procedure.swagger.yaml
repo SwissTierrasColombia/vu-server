@@ -1,0 +1,47 @@
+/api/r/procedures/{process}/fields:
+  x-swagger-router-controller: r.process.controller
+  get:
+    operationId: getDataStartProcedure
+    security:
+      - Bearer: []
+    tags:
+      - PM - R/Procedures
+    summary: Get data for start a procedure
+    description: Get data for start a procedure
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: M/Process ID
+        required: true
+    responses:
+      200:
+        description: Get data for start a procedure
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/r/procedures/{process}/fields-next:
+  x-swagger-router-controller: r.process.controller
+  get:
+    operationId: getDataContinueProcedure
+    security:
+      - Bearer: []
+    tags:
+      - PM - R/Procedures
+    summary: Get data for continue a procedure
+    description: Get data for continue a procedure
+    parameters:
+      - name: process
+        in: path
+        type: string
+        description: R/Process ID
+        required: true
+    responses:
+      200:
+        description: Get data for continue a procedure
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

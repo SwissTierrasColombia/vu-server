@@ -1,14 +1,17 @@
 import path from 'path';
+import dotenv from 'dotenv';
 
-const APP_NAME = `your-app-name`;
-const DB_NAME = `your-database-name-dev`;
+// Load enviroment variables
+dotenv.config();
+
+const APP_NAME = `PM Server`;
 const CLIENT = '/client';
 
 export default {
-  secret: `your_secret_key`, // Secret Key
+  secret: process.env.APP_SECRET, // Secret Key
   server: { // Express
-    ip: 'localhost',
-    port: 8000,
+    ip: process.env.SERVER_HOST,
+    port: process.env.SERVER_PORT,
   },
   log: true, // show logs
   // Roles: if a user has multiple roles, will take the time of the greater role
@@ -34,28 +37,23 @@ export default {
   },
   "redis-jwt": { // Sessions
     //host: '/tmp/redis.sock', //unix domain
-    host: '127.0.0.1', //can be IP or hostname
-    port: 6379, // port
+    host: process.env.REDIS_JWT_HOST, //can be IP or hostname
+    port: process.env.REDIS_JWT_PORT, // port
     maxretries: 10, //reconnect retries, default 10
     //auth: '123', //optional password, if needed
     db: 0, //optional db selection
-    secret: 'secret_key', // secret key for Tokens!
+    secret: process.env.REDIS_JWT_SECRET, // secret key for Tokens!
     multiple: true, // single or multiple sessions by user
     kea: false // Enable notify-keyspace-events KEA
   },
   mongoose: { // MongoDB
     // uri: mongodb://username:password@host:port/database?options
-    uri: `mongodb://localhost:27017/${DB_NAME}`,
+    uri: process.env.MONGO_CONNECTION,
     options: {
     },
     seed: {
       path: '/api/models/seeds/',
       list: [
-        {
-          file: 'user.seed',
-          schema: 'User',
-          plant: 'once' //  once - always - never
-        },
         {
           file: 'p.typesData.seed',
           schema: 'PTypeDataModel',
@@ -65,7 +63,32 @@ export default {
           file: 'p.step.seed',
           schema: 'PStepModel',
           plant: 'once'
-        }
+        },
+        {
+          file: 'p.callback.seed',
+          schema: 'PCallbackModel',
+          plant: 'once'
+        },
+        {
+          file: 'p.operator.seed',
+          schema: 'POperatorModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.role.seed',
+          schema: 'VURoleModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.entity.seed',
+          schema: 'VUEntityModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.user.seed',
+          schema: 'VUUserModel',
+          plant: 'once'
+        },
       ]
     },
   },
@@ -90,29 +113,12 @@ export default {
     local: {
       enabled: true
     },
-    facebook: {
-      enabled: false,
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '/auth/facebook/callback'
-    },
-    twitter: {
-      enabled: false,
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '/auth/twitter/callback'
-    },
-    google: {
-      enabled: false,
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '/auth/google/callback'
-    },
-    github: {
-      enabled: true,
-      clientID: '52be92c9a41f77a959eb',
-      clientSecret: '76c9bb03c689d098506822fa80dba372a1fe29c8',
-      callbackURL: '/auth/github/callback'
+  },
+  bull: {
+    redis: {
+      host: process.env.QUEUE_REDIS_HOST,
+      port: process.env.QUEUE_REDIS_PORT,
+      password: process.env.QUEUE_REDIS_PASSWORD
     }
   },
   // globals

@@ -8,7 +8,17 @@ const PTypesDataSchema = new Schema({
         required: [
             true, 'Type data is required.'
         ]
-    }
+    },
+
+    operators: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'POperatorModel',
+            required: [
+                true, 'Operator is required.'
+            ]
+        }
+    ]
 
 }, { collection: 'p_types_data' });
 

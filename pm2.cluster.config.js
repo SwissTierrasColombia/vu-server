@@ -1,7 +1,7 @@
 module.exports = {
   "apps": [
     {
-      "name": "app",
+      "name": "vu-api",
       "script": "./server/app.js",
       "instances": 'max',
       "exec_mode": "cluster",

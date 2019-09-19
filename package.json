@@ -1,12 +1,8 @@
 {
-    "name": "nodetomic-api-swagger",
-    "version": "3.5.0",
-    "description": "RESTful API Nodejs designed for horizontal scalability with support for cluster, based on Swagger, Redis, JWT, Passport, Socket.io, Express, MongoDB.",
+    "name": "pm-server",
+    "version": "1.0.0",
+    "description": "RESTful API.",
     "main": "src/app.js",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/kevoj/nodetomic-api-swagger.git"
-    },
     "scripts": {
         "start": "npm stop && pm2-dev pm2.dev.config.js",
         "nodemon": "export NODE_ENV=development & set NODE_PATH=development && npm stop && nodemon src/app.js --exec babel-node -e js,yaml",
@@ -20,7 +16,6 @@
         "cluster": "npm run build && cd dist && npm run cluster",
         "update": "pm2 update"
     },
-    "author": "Leonardo Rico Guevara - https://github.com/kevoj",
     "license": "MIT",
     "keywords": [
         "RESTful",
@@ -57,16 +52,20 @@
     "dependencies": {
         "bcrypt": "^2.0.1",
         "body-parser": "^1.18.2",
+        "bull": "^3.10.0",
         "chalk": "^2.4.1",
         "compression": "^1.7.2",
         "cookie-parser": "^1.4.3",
         "cors": "^2.8.4",
+        "dotenv": "^8.1.0",
         "express": "^4.16.3",
         "express-easy-helper": "^1.1.0",
+        "express-fileupload": "^1.1.5",
         "express-session": "^1.15.6",
         "express-validator": "^5.2.0",
         "helmet": "^3.12.0",
         "method-override": "^2.3.10",
+        "moment": "^2.24.0",
         "mongoose": "5.0.17",
         "mongoose-paginate": "^5.0.3",
         "passport": "^0.4.0",
@@ -87,6 +86,7 @@
         "transformer-response-data": "^1.0.1"
     },
     "devDependencies": {
+        "@types/bull": "^3.10.2",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
         "babel-eslint": "^8.2.3",
