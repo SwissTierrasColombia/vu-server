@@ -1,6 +1,6 @@
 {
     "name": "pm-server",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "RESTful API.",
     "main": "src/app.js",
     "scripts": {
