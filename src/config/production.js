@@ -114,8 +114,12 @@ export default {
       enabled: true
     }
   },
-  queue: {
-    port: process.env.QUEUE_PORT
+  bull: {
+    redis: {
+      host: process.env.QUEUE_REDIS_HOST,
+      port: process.env.QUEUE_REDIS_PORT,
+      password: process.env.QUEUE_REDIS_PASSWORD
+    }
   },
   // globals
   mode: process.env.NODE_ENV || 'production', // mode
