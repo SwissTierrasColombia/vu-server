@@ -37,8 +37,8 @@ export default {
   },
   "redis-jwt": { // Sessions
     //host: '/tmp/redis.sock', //unix domain
-    host: '127.0.0.1', //can be IP or hostname
-    port: 6379, // port
+    host: process.env.REDIS_JWT_HOST, //can be IP or hostname
+    port: process.env.REDIS_JWT_PORT, // port
     maxretries: 10, //reconnect retries, default 10
     //auth: '123', //optional password, if needed
     db: 0, //optional db selection
