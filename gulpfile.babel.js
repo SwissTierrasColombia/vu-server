@@ -48,6 +48,8 @@ gulp.task('build-replace', () => {
   gulp.src([`src/lib/swagger/ui/*`]).pipe(gulp.dest(dist_swagger));
   // Copy .env
   gulp.src([".env"]).pipe(gulp.dest(dist));
+  // Copy locales
+  gulp.src(["src/locales/*"]).pipe(gulp.dest(`${dist_server}/locales`));
   // package.json
   gulp.src("package.json").pipe(jeditor((json) => {
     delete json.devDependencies;
