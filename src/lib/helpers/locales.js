@@ -1,10 +1,10 @@
 import config from '../../config';
 
-var languages = [];
+let languages = [];
 
 export default (app) => {
 
-    var fs = require('fs');
+    let fs = require('fs');
     fs.readdirSync(`${config.base}/locales`).forEach(local => {
         let json = JSON.parse(fs.readFileSync(`${config.base}/locales/${local}`, 'utf8'));
         languages[local.replace('.json', '')] = json;

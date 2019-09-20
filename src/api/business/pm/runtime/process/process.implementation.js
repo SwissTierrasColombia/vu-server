@@ -559,6 +559,9 @@ export default class ProcessImplementation extends RProcessBusiness {
                                 conditionValid = await PTypeDataBusiness.isValidConditionTypeDataUrl(condition.operator,
                                     valueData, condition.value);
                                 break;
+                            default:
+                                conditionValid = false;
+                                break;
                         }
                     }
 
@@ -586,6 +589,9 @@ export default class ProcessImplementation extends RProcessBusiness {
 
                                 break;
                             case PCallbackBusiness.CALLBACK_SMS:
+
+                                break;
+                            default:
 
                                 break;
                         }
