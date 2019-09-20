@@ -4,6 +4,9 @@ import RProcessBusiness from '../../pm/runtime/process/process.business';
 import MProcessBusiness from '../../pm/manage/process/process.business';
 import MStepBusiness from '../../pm/manage/step/step.business';
 
+// Exceptions
+import APIException from '../../../exceptions/api.exception';
+
 export default class UserImplementation extends UserBusiness {
 
     constructor() {

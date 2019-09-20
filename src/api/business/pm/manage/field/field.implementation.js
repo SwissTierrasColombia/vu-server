@@ -94,6 +94,9 @@ export default class FieldImplementation extends FieldBusiness {
                     throw new APIException('m.process.fields.field_option_list_required', 401);
                 }
                 break;
+            default:
+
+                break;
         }
 
         const fieldNew = await FieldBusiness.createField(name, description, pTypeId, isRequired, permissionsValid, mStepId, false, metadata);
@@ -186,6 +189,9 @@ export default class FieldImplementation extends FieldBusiness {
                 if (!(metadata && metadata.hasOwnProperty('options'))) {
                     throw new APIException('m.process.fields.field_option_list_required', 401);
                 }
+                break;
+            default:
+
                 break;
         }
 

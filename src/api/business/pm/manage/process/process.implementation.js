@@ -11,7 +11,6 @@ import UserBusiness from '../user/user.business';
 import TypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import PCallbackBusiness from '../../parameterize/callback/callback.business';
 import PStepBusiness from '../../parameterize/step/step.business';
-import PTypeDataBusiness from '../../parameterize/typeData/typeData.business';
 import POperatorBusiness from '../../parameterize/operator/operator.business';
 import VUEntityBusiness from '../../../vu/entity/entity.business';
 import RProcessBusiness from '../../runtime/process/process.business';
@@ -239,7 +238,7 @@ export default class ProcessImplementation extends ProcessBusiness {
                     condition.metadata = (field) ? field.metadata : {};
 
                     if (field) {
-                        const typeData = await PTypeDataBusiness.getTypeDataById(field.typeData);
+                        const typeData = await TypeDataBusiness.getTypeDataById(field.typeData);
                         const operators = [];
                         if (typeData) {
                             for (let z = 0; z < typeData.operators.length; z++) {

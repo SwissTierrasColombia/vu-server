@@ -66,6 +66,9 @@ export default class TypeDataBusiness {
             case TypeDataBusiness.TYPE_DATA_DATE:
                 valid = moment(value, 'YYYY-MM-DD', true).isValid();
                 break;
+            default:
+                valid = false;
+                break;
         }
         return valid;
     }
@@ -105,6 +108,9 @@ export default class TypeDataBusiness {
                 break;
             case TypeDataBusiness.TYPE_DATA_URL:
                 valid = TypeDataBusiness.validateTypeDataURL(value);
+                break;
+            default:
+                valid = false;
                 break;
         }
         return valid;
@@ -186,6 +192,9 @@ export default class TypeDataBusiness {
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
+            default:
+                conditionValid = false;
+                break;
         }
         return conditionValid;
     }
@@ -214,6 +223,9 @@ export default class TypeDataBusiness {
             case OperatorBusiness.OPERATOR_MINOR_EQUAL:
                 conditionValid = parseFloat(valueRuntime) <= parseFloat(valueCondition);
                 break;
+            default:
+                conditionValid = false;
+                break;
         }
         return conditionValid;
     }
@@ -230,6 +242,9 @@ export default class TypeDataBusiness {
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
+            default:
+                conditionValid = false;
+                break;
         }
         return conditionValid;
     }
@@ -245,6 +260,9 @@ export default class TypeDataBusiness {
                 break;
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+            default:
+                conditionValid = false;
                 break;
         }
         return conditionValid;
@@ -266,6 +284,9 @@ export default class TypeDataBusiness {
                 case OperatorBusiness.OPERATOR_NOT_EMPTY:
                     conditionValid = !validator.isEmpty(valueRuntime.toString());
                     break;
+                default:
+                    conditionValid = false;
+                    break;
             }
         }
         return conditionValid;
@@ -282,6 +303,9 @@ export default class TypeDataBusiness {
                 break;
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+            default:
+                conditionValid = false;
                 break;
         }
         return conditionValid;
@@ -319,6 +343,9 @@ export default class TypeDataBusiness {
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
+            default:
+                conditionValid = false;
+                break;
         }
         return conditionValid;
     }
@@ -335,6 +362,9 @@ export default class TypeDataBusiness {
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
+            default:
+                conditionValid = false;
+                break;
         }
         return conditionValid;
     }
@@ -344,6 +374,9 @@ export default class TypeDataBusiness {
         switch (operatorId.toString()) {
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+            default:
+                conditionValid = false;
                 break;
         }
         return conditionValid;
@@ -361,6 +394,9 @@ export default class TypeDataBusiness {
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
                 break;
+            default:
+                conditionValid = false;
+                break;
         }
         return conditionValid;
     }
@@ -376,6 +412,9 @@ export default class TypeDataBusiness {
                 break;
             case OperatorBusiness.OPERATOR_NOT_EMPTY:
                 conditionValid = !validator.isEmpty(valueRuntime.toString());
+                break;
+            default:
+                conditionValid = false;
                 break;
         }
         return conditionValid;
