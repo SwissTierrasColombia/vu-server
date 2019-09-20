@@ -46,6 +46,8 @@ gulp.task('build-replace', () => {
   gulp.src(['src/**/*.yaml']).pipe(gulp.dest(dist_server));
   // Copy swagger/ui
   gulp.src([`src/lib/swagger/ui/*`]).pipe(gulp.dest(dist_swagger));
+  // Copy .env
+  gulp.src([".env"]).pipe(gulp.dest(dist));
   // package.json
   gulp.src("package.json").pipe(jeditor((json) => {
     delete json.devDependencies;
