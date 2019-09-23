@@ -30,7 +30,7 @@ export default class FieldImplementation extends FieldBusiness {
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
         }
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(mStepFound.process.toString());
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -124,7 +124,7 @@ export default class FieldImplementation extends FieldBusiness {
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
         }
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(mStepFound.process.toString());
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -249,7 +249,7 @@ export default class FieldImplementation extends FieldBusiness {
         if (!processFound) {
             throw new APIException('m.process.process_not_exists', 404);
         }
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mStepFound.process.toString(), true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(mStepFound.process.toString());
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }

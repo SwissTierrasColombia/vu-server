@@ -16,6 +16,7 @@
             "process_deploy_error_steps_roles": "Hay pasos a los cuales no se les han especificado roles.",
             "process_deploy_error_not_has_origin_step": "Se debe especificar un paso de origen.",
             "process_deploy_error_entity": "Hay pasos a los cuales no se le han asignado una entidad.",
+            "process_deploy_error_not_rule_closing": "En el proceso se debe especificar mínimo una regla de cierre.",
             "process_not_deploy_yet": "El proceso no ha sido desplegado aún.",
             "process_cant_remove_have_runtime": "No se puede eliminar el proceso porque existen trámites ya en ejecución.",
             "process_cant_update": "No se puede actualizar información del proceso porque ya ha sido desplegado o cuenta con trámites en ejecución.",
