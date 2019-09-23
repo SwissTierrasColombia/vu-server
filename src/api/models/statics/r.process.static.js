@@ -139,6 +139,10 @@ export default (RProcessModel) => {
 
         async getCountActiveProcessByTypeProcess(mProcessId, active) {
             return await this.count({ process: mProcessId, active });
+        },
+
+        async getCountProcessesByProcess(mProcessId) {
+            return await this.count({ process: mProcessId });
         }
 
     };

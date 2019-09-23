@@ -23,7 +23,7 @@ export default [
             '5d7105cb698085331067bf8f'
         ],
         entities: [
-
+            "5d7106ca03adb8a7f91b3a14"
         ],
         enabled: true
     },

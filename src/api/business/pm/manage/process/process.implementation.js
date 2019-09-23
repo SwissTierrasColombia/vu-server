@@ -137,7 +137,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(processId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -178,7 +178,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(processId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -214,8 +214,6 @@ export default class ProcessImplementation extends ProcessBusiness {
     }
 
     static async iGetStepsByProcess(processId) {
-
-        console.log("holaaa");
 
         // verify if the process exists
         const processFound = await this.getProcessById(processId);
@@ -264,7 +262,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(processId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -307,7 +305,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(processId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -349,7 +347,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(processId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(processId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -377,8 +375,8 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // verify runtime
-        const processes = await RProcessBusiness.getProcessesByProcess(processId);
-        if (processes.length > 0) {
+        const processes = await RProcessBusiness.getCountProcessesByProcess(processId);
+        if (processes > 0) {
             throw new APIException('m.process.process_cant_remove_have_runtime', 401);
         }
 
@@ -563,13 +561,31 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // check at each step if you have assigned rules
+        let haveRuleClosed = false;
         for (let i in steps) {
             const step = steps[i];
             const rules = step.rules;
+
+            for (let j = 0; j < rules.length; j++) {
+                const rule = rules[j];
+                const callbacks = rule.callbacks;
+                for (let k = 0; k < callbacks.length; k++) {
+                    const callback = callbacks[k];
+                    if (callback.callback.toString() === PCallbackBusiness.CALLBACK_CLOSING) {
+                        haveRuleClosed = true;
+                    }
+                }
+            }
+
             if (rules.length === 0) {
                 throw new APIException('m.process.process_deploy_error_rules', 401);
             }
         }
+
+        if (!haveRuleClosed) {
+            throw new APIException('m.process.process_deploy_error_not_rule_closing', 401);
+        }
+
 
         // check at each step if you have assigned roles
         for (let i in steps) {
@@ -653,7 +669,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mProcessId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(mProcessId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }
@@ -685,7 +701,7 @@ export default class ProcessImplementation extends ProcessBusiness {
         }
 
         // process information cannot be edited until it is deactivated and there are no procedures in progress
-        const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(mProcessId, true);
+        const count = await RProcessBusiness.getCountProcessesByProcess(mProcessId);
         if (processFound.active || count > 0) {
             throw new APIException('m.process.process_cant_update', 401);
         }

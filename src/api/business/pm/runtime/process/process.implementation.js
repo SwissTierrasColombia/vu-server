@@ -148,15 +148,18 @@ export default class ProcessImplementation extends RProcessBusiness {
                 if (skipFiles.indexOf(mField.field) === -1) {
                     if (!mField.isPrivate) {
                         if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
-                            const file = files[mField.field];
-                            const newName = moment().unix() + '_' + file.name.replace(' ', '_');
-                            const pathFile = `/assets/${newName}`;
-                            await file.mv(`${config.base}${pathFile}`);
-                            data[mField.field] = {
-                                url: pathFile,
-                                mimetype: file.mimetype,
-                                extension: (newName.substring(newName.indexOf('.'))).toLowerCase()
-                            };
+                            if (files) {
+                                const file = files[mField.field];
+                                const newName = moment().unix() + '_' + file.name.replace(' ', '_');
+                                const pathFile = `/assets/${newName}`;
+                                await file.mv(`${config.base}${pathFile}`);
+                                data[mField.field] = {
+                                    url: pathFile,
+                                    mimetype: file.mimetype,
+                                    extension: (newName.substring(newName.indexOf('.'))).toLowerCase()
+                                };
+                            }
+
                         }
                     }
                 }
@@ -182,15 +185,18 @@ export default class ProcessImplementation extends RProcessBusiness {
                         const mField = mFields[i];
                         if (!mField.isPrivate) {
                             if (mField.typeData.toString() === PTypeDataBusiness.TYPE_DATA_FILE) {
-                                const file = files[mField.field];
-                                const newName = moment().unix() + '_' + file.name.replace(' ', '_');
-                                const pathFile = `/assets/${newName}`;
-                                await file.mv(`${config.base}${pathFile}`);
-                                data[mField.field] = {
-                                    url: pathFile,
-                                    mimetype: file.mimetype,
-                                    extension: (newName.substring(newName.indexOf('.'))).toLowerCase()
-                                };
+                                if (files) {
+                                    const file = files[mField.field];
+                                    const newName = moment().unix() + '_' + file.name.replace(' ', '_');
+                                    const pathFile = `/assets/${newName}`;
+                                    await file.mv(`${config.base}${pathFile}`);
+                                    data[mField.field] = {
+                                        url: pathFile,
+                                        mimetype: file.mimetype,
+                                        extension: (newName.substring(newName.indexOf('.'))).toLowerCase()
+                                    };
+                                }
+
                             }
                         }
                     }
