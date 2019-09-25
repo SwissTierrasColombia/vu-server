@@ -102,5 +102,34 @@
             "access_denied_step": "No se cuenta con los permisos necesarios para realizar la operación.",
             "process_is_closing": "No se puede actualizar la información porque el trámite se ha cerrado."
         }
+    },
+    "vu": {
+        "users": {
+            "user_firstname_required": "El nombre es requerido.",
+            "user_lastname_required": "Los apellidos son requerido.",
+            "user_username_required": "El username es requerido.",
+            "user_email_required": "El correo electrónico es requerido.",
+            "user_email_invalid": "El correo electrónico es inválido.",
+            "user_password_required": "La contraseña es requerido.",
+            "user_username_already_registered": "El username ya esta registrado en el sistema.",
+            "user_email_already_registered": "El correo electrónico ya esta registrado en el sistema.",
+            "user_roles_not_exists": "Los roles especificados son inválidos.",
+            "user_roles_minimun": "Se debe especificar mínimo un rol para el usuario.",
+            "user_entities_not_exists": "Las entidades especificados son inválidas.",
+            "user_roles_required": "Los roles del usuarios son requeridos.",
+            "user_roles_invalid": "Los roles del usuarios son inválidos.",
+            "user_required": "El usuario es requerido.",
+            "user_invalid": "El usuario es inválido.",
+            "user_not_exists": "El usuario no existe."
+        },
+        "roles": {
+            "role_required": "El rol es requerido.",
+            "role_invalid": "El rol es inválido.",
+            "role_not_exists": "El rol no existe."
+        }
+    },
+    "general": {
+        "page_required": "La página es requerida.",
+        "page_invalid": "La página es inválida."
     }
 }

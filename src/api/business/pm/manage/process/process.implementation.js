@@ -40,7 +40,9 @@ export default class ProcessImplementation extends ProcessBusiness {
         for (let i = 0; i < processes.length; i++) {
             const process = processes[i];
             const count = await RProcessBusiness.getCountActiveProcessByTypeProcess(process._id.toString(), true);
+            const countFinished = await RProcessBusiness.getCountActiveProcessByTypeProcess(process._id.toString(), false);
             process.inAction = count;
+            process.finished = countFinished;
         }
 
         return processes;

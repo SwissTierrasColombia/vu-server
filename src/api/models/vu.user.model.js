@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate';
 const Schema = mongoose.Schema;
 
 const VUUserSchema = new Schema({
@@ -78,7 +79,10 @@ const VUUserSchema = new Schema({
 
 }, { collection: 'vu_users' });
 
+
 require('./statics/vu.user.static').default(VUUserSchema);
 require('./methods/vu.user.method').default(VUUserSchema);
+
+VUUserSchema.plugin(mongoosePaginate);
 
 export default mongoose.model('VUUserModel', VUUserSchema);

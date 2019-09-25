@@ -15,3 +15,244 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/vu/account/register:
+  x-swagger-router-controller: vu.user.controller
+  post:
+    operationId: registerUser
+    tags:
+      - VU - Account
+    summary: Register User
+    description: Register User
+    parameters:
+      - name: firstName
+        in: formData
+        description: FirstName
+        required: true
+        type: string
+      - name: lastName
+        in: formData
+        description: Lastname
+        required: true
+        type: string
+      - name: email
+        in: formData
+        description: Email
+        required: true
+        type: string
+      - name: username
+        in: formData
+        description: username
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: password
+        required: true
+        type: string
+        format: password
+    responses:
+      201:
+        description: Register User
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/users:
+  x-swagger-router-controller: vu.user.controller
+  post:
+    operationId: registerUserFromAdmin
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Administrator - Users
+    summary: Register User
+    description: Register User
+    parameters:
+      - name: firstName
+        in: formData
+        description: FirstName
+        required: true
+        type: string
+      - name: lastName
+        in: formData
+        description: Lastname
+        required: true
+        type: string
+      - name: email
+        in: formData
+        description: Email
+        required: true
+        type: string
+      - name: username
+        in: formData
+        description: username
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: password
+        required: true
+        type: string
+        format: password
+      - name: roles
+        in: formData
+        description: Roles
+        type: array
+        items:
+          type: string
+      - name: entities
+        in: formData
+        description: Entities
+        type: array
+        items:
+          type: string
+    responses:
+      201:
+        description: Register User
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  get:
+    operationId: getUsersFromAdmin
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Administrator - Users
+    summary: Get Users
+    description: GEt Users
+    parameters:
+      - name: page
+        in: query
+        description: Number Page
+        type: number
+        required: true
+    responses:
+      201:
+        description: Register User
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/users/{user}:
+  x-swagger-router-controller: vu.user.controller
+  put:
+    operationId: updateUserFromAdmin
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Administrator - Users
+    summary: Update User
+    description: Update User
+    parameters:
+      - name: user
+        in: path
+        description: User ID
+        required: true
+        type: string
+      - name: firstName
+        in: formData
+        description: FirstName
+        required: true
+        type: string
+      - name: lastName
+        in: formData
+        description: Lastname
+        required: true
+        type: string
+      - name: email
+        in: formData
+        description: Email
+        required: true
+        type: string
+      - name: username
+        in: formData
+        description: username
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: password
+        required: false
+        type: string
+        format: password
+      - name: roles
+        in: formData
+        description: Roles
+        type: array
+        items:
+          type: string
+      - name: entities
+        in: formData
+        description: Entities
+        type: array
+        items:
+          type: string
+    responses:
+      201:
+        description: Update User
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/users/{user}/disable:
+  x-swagger-router-controller: vu.user.controller
+  put:
+    operationId: disableUserFromAdmin
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Administrator - Users
+    summary: Disable User
+    description: Disable User
+    parameters:
+      - name: user
+        in: path
+        description: User ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Disable User
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/users/{user}/enable:
+  x-swagger-router-controller: vu.user.controller
+  put:
+    operationId: enableUserFromAdmin
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Administrator - Users
+    summary: Enable User
+    description: Enable User
+    parameters:
+      - name: user
+        in: path
+        description: User ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Enable User
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
