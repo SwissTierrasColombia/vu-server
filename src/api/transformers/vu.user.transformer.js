@@ -7,14 +7,8 @@ import { vuEntityTransformer } from './vu.entity.transformer';
 //create transformer and define output properties
 export let vuUserTransformer = new Transformer({
     "_id": "_id",
-    "roles": {
-        "field": "roles",
-        "reference": vuRoleTransformer
-    },
-    "entities": {
-        "field": "entities",
-        "reference": vuEntityTransformer
-    },
+    "roles": "roles",
+    "entities": "entities",
     "enabled": "enabled",
     "firstName": "firstName",
     "lastName": "lastName",

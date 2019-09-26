@@ -19,4 +19,20 @@ export default class RoleBusiness {
         }
     }
 
+    static async getRoleByName(roleName) {
+        return await VURoleModel.getRoleByName(roleName);
+    }
+
+    static async createRole(roleName) {
+        return await VURoleModel.createRole(roleName);
+    }
+
+    static async updateRole(roleId, name) {
+        return await VURoleModel.updateRole(roleId, name);
+    }
+
+    static async deleteRole(roleId) {
+        return await VURoleModel.deleteRole(roleId);
+    }
+
 }

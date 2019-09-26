@@ -95,6 +95,12 @@ export default (VUUserModel) => {
             return await user.save();
         },
 
+        async countUserWithRole(roleId) {
+            return await this.count({
+                roles: { "$in": [roleId] }
+            });
+        }
+
     };
 
 };

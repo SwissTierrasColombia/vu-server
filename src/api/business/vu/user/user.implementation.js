@@ -188,4 +188,15 @@ export default class UserImplementation extends UserBusiness {
         return await this.getUserById(userId, ['entities', 'roles']);
     }
 
+    static async iGetUserFromAdmin(userId) {
+
+        // verify if user exists
+        const userFound = await this.getUserById(userId);
+        if (!userFound) {
+            throw new APIException('vu.users.user_not_exists', 404);
+        }
+
+        return userFound;
+    }
+
 }

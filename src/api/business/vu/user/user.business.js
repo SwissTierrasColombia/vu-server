@@ -35,4 +35,8 @@ export default class UserBusiness {
         return await VUUserModel.updateEnabled(userId, enabled);
     }
 
+    static async countUserWithRole(roleId) {
+        return await VUUserModel.countUserWithRole(roleId);
+    }
+
 }

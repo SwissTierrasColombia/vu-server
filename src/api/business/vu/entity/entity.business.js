@@ -15,4 +15,16 @@ export default class EntityBusiness {
         }
     }
 
+    static async getEntityByName(entityName) {
+        return await VUEntityModel.getEntityByName(entityName);
+    }
+
+    static async createEntity(entityName) {
+        return await VUEntityModel.createEntity(entityName);
+    }
+
+    static async updateEntity(entityId, entityName) {
+        return await VUEntityModel.updateEntity(entityId, entityName);
+    }
+
 }

@@ -296,3 +296,38 @@ export async function enableUserFromAdmin(req, res) {
     }
 
 }
+
+// enable user from admin
+export async function getUserFromAdmin(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // validate user id
+        req.check('user', getMessage('vu.users.user_required', language)).custom((value) => {
+            return !validator.isEmpty(req.swagger.params.user.value);
+        });
+        req.check('user', getMessage('vu.users.user_invalid', language)).custom((value) => {
+            return validator.isMongoId(req.swagger.params.user.value);
+        });
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        const userId = req.swagger.params.user.value;
+
+        const user = await UserImplementation.iGetUserFromAdmin(userId);
+
+        return result(res, 200, vuUserTransformer.transformer(user));
+    } catch (exception) {
+        console.log("vu.user@getUserFromAdmin ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, language) });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}

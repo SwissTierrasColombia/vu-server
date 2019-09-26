@@ -125,7 +125,18 @@
         "roles": {
             "role_required": "El rol es requerido.",
             "role_invalid": "El rol es inválido.",
-            "role_not_exists": "El rol no existe."
+            "role_not_exists": "El rol no existe.",
+            "role_name_required": "El nombre del rol es requerido.",
+            "role_name_already_registered": "El rol ya se encuentra registrado.",
+            "role_cant_delete_users_used": "No se puede borrar el rol porque hay usuarios que ya lo tienen asignado.",
+            "role_cant_delete_steps_used": "No se puede borrar el rol porque hay pasos de procesos que ya lo tienen asignado."
+        },
+        "entities": {
+            "entity_name_required": "El nombre de la entidad es requerido.",
+            "entity_name_already_registered": "La entidad ya se encuentra registrado.",
+            "entity_required": "La entidad es requerida.",
+            "entity_invalid": "La entidad es inválida.",
+            "entity_not_exists": "La entidad no existe."
         }
     },
     "general": {
