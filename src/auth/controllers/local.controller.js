@@ -60,8 +60,6 @@ export async function updatePassword(req, res) {
     // validate password
     req.checkBody("password", getMessage('vu.users.user_password_required', language)).notEmpty();
 
-    console.log("holaa")
-
     const errors = req.validationErrors();
     if (errors) {
       return badRequest(res, 400, { message: errors[0].msg });

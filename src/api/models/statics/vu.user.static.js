@@ -13,9 +13,18 @@ export default (VUUserModel) => {
 
                 const VUUserModel = this;
 
-                VUUserModel.findOne({
-                    username: username
-                }).then(user => {
+                VUUserModel.findOne(
+                    {
+                        $or: [
+                            {
+                                username: username,
+                            },
+                            {
+                                email: username,
+                            }
+                        ],
+                    }
+                ).then(user => {
 
                     if (!user)
                         reject(`El nombre de usuario no esta registrado.`); // You can register user here
