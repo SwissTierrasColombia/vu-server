@@ -8,6 +8,8 @@ import MProcessBusiness from '../../pm/manage/process/process.business';
 import MStepBusiness from '../../pm/manage/step/step.business';
 import RoleBusiness from '../role/role.business';
 import EntityBusiness from '../entity/entity.business';
+import OTPBusiness from '../../otp/otp.business';
+import EmailBusiness from '../../notifications/email.business';
 
 // Exceptions
 import APIException from '../../../exceptions/api.exception';
@@ -197,6 +199,54 @@ export default class UserImplementation extends UserBusiness {
         }
 
         return userFound;
+    }
+
+    static async iRestorePassword(email) {
+
+        email = email.trim().toLowerCase();
+
+        const userFound = await this.getUserByEmail(email);
+        if (!userFound) {
+            throw new APIException('vu.users.user_not_exists', 404);
+        }
+
+        const dataOTP = await OTPBusiness.generateOTP();
+        await this.updateOTP(userFound._id.toString(), dataOTP.token, dataOTP.secret, dataOTP.step);
+
+        const data = { token: dataOTP.token, firstName: userFound.firstName, lastName: userFound.lastName };
+        const to = email;
+        const subject = 'Ventanilla Única - Restaurar Contraseña';
+        const html = await EmailBusiness.getTemplateEmail('restore_password', data);
+
+        EmailBusiness.sendEmail(to, subject, html);
+
+        return dataOTP.token;
+    }
+
+    static async iUpdatePassword(token, email, password) {
+
+        email = email.trim().toLowerCase();
+
+        let userFound = await this.getUserByEmail(email);
+        if (!userFound) {
+            throw new APIException('vu.users.user_not_exists', 404);
+        }
+
+        // validate code otp
+        let verify = await OTPBusiness.verifyOTP(userFound.otp.secret, token);
+        if (!verify) {
+            throw new APIException('vu.users.user_token_invalid', 401);
+        }
+
+        //hash password
+        password = await bcrypt.hashSync(password, 10);
+        await this.updatePassword(userFound._id.toString(), password);
+
+        // reset otp for security
+        let dataOTP = await OTPBusiness.generateOTP();
+        await UserBusiness.updateOTP(userFound._id.toString(), dataOTP.token, dataOTP.secret, dataOTP.step);
+
+        return await this.getUserById(userFound._id);
     }
 
 }

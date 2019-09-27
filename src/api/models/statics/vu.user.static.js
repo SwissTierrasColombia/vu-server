@@ -99,6 +99,22 @@ export default (VUUserModel) => {
             return await this.count({
                 roles: { "$in": [roleId] }
             });
+        },
+
+        async updateOTP(userId, token, secret, step) {
+            let user = await this.findById(userId);
+            user.otp = {
+                token,
+                secret,
+                step
+            };
+            return await user.save();
+        },
+
+        async updatePassword(userId, password) {
+            let user = await this.findById(userId);
+            user.password = password;
+            return await user.save();
         }
 
     };

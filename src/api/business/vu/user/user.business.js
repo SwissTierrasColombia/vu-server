@@ -15,8 +15,8 @@ export default class UserBusiness {
         return await VUUserModel.getUserByUsername(username);
     }
 
-    static async getUserByEmail(username) {
-        return await VUUserModel.getUserByEmail(username);
+    static async getUserByEmail(email) {
+        return await VUUserModel.getUserByEmail(email);
     }
 
     static async createUser(firstName, lastName, email, username, password, roles, entities, enabled) {
@@ -37,6 +37,14 @@ export default class UserBusiness {
 
     static async countUserWithRole(roleId) {
         return await VUUserModel.countUserWithRole(roleId);
+    }
+
+    static async updateOTP(userId, token, secret, step) {
+        return await VUUserModel.updateOTP(userId, token, secret, step);
+    }
+
+    static async updatePassword(userId, password) {
+        return await VUUserModel.updatePassword(userId, password);
     }
 
 }

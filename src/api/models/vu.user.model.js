@@ -63,6 +63,18 @@ const VUUserSchema = new Schema({
         }
     ],
 
+    otp: {
+        secret: {
+            type: String
+        },
+        step: {
+            type: Number,
+        },
+        token: {
+            type: String
+        }
+    },
+
     enabled: {
         type: Boolean,
         default: false

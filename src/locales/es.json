@@ -120,7 +120,9 @@
             "user_roles_invalid": "Los roles del usuarios son inválidos.",
             "user_required": "El usuario es requerido.",
             "user_invalid": "El usuario es inválido.",
-            "user_not_exists": "El usuario no existe."
+            "user_not_exists": "El usuario no existe.",
+            "user_token_required": "El código es requerido.",
+            "user_token_invalid": "El código es inválido."
         },
         "roles": {
             "role_required": "El rol es requerido.",
