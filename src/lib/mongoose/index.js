@@ -32,7 +32,7 @@ export async function connect() {
 
         for (let i in models) {
             if (models[i].indexOf('.js') > -1) {
-                require(`${config.base}/api/models/${models[i]}`)
+                require(`${config.base}/api/models/${models[i]}`);
             }
         }
         // Plant seed

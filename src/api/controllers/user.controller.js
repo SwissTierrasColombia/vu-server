@@ -47,7 +47,7 @@ export function update(req, res) {
     }).exec()
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -96,7 +96,7 @@ export function updateAdmin(req, res) {
     }).exec()
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -108,6 +108,6 @@ export function destroyAdmin(req, res, next) {
   ).exec()
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }

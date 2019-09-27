@@ -10,7 +10,7 @@ export default (app) => {
         languages[local.replace('.json', '')] = json;
     });
 
-}
+};
 
 /**
  * Get message traduction

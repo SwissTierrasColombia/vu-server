@@ -13,6 +13,6 @@ export default (PStepModel) => {
             return await this.findById(pStepId);
         }
 
-    }
+    };
 
 };

@@ -1,5 +1,5 @@
 // Libs
-import { result, error } from 'express-easy-helper';
+import { result, error, badRequest } from 'express-easy-helper';
 import { getMessage } from '../../lib/helpers/locales';
 import validator from 'validator';
 
