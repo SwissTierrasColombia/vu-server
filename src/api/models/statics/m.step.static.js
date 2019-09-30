@@ -113,6 +113,12 @@ export default (MStepModel) => {
                     }
                 }
             );
+        },
+
+        async countStepsWithRole(roleId) {
+            return await this.count({
+                roles: { "$in": [roleId] }
+            });
         }
 
     };

@@ -30,3 +30,58 @@
         $ref: "#/responses/auth-422"
       500:
         $ref: "#/responses/auth-500"
+
+/api/vu/account/restore:
+  x-swagger-router-controller: local.controller
+  put:
+    operationId: restorePassword
+    tags:
+      - VU - Account
+    summary: Restore password
+    description: Restore password
+    parameters:
+      - name: email
+        in: formData
+        description: Email
+        required: true
+        type: string
+    responses:
+      200:
+        description: Restore Password
+      422:
+        $ref: "#/responses/auth-422"
+      500:
+        $ref: "#/responses/auth-500"
+
+/api/vu/account/update:
+  x-swagger-router-controller: local.controller
+  put:
+    operationId: updatePassword
+    tags:
+      - VU - Account
+    summary: Update password
+    description: Update password
+    parameters:
+      - name: token
+        in: formData
+        description: Token
+        required: true
+        type: string
+      - name: email
+        in: formData
+        description: Email
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: New Password
+        required: true
+        type: string
+        format: password
+    responses:
+      200:
+        description: Restore Password
+      422:
+        $ref: "#/responses/auth-422"
+      500:
+        $ref: "#/responses/auth-500"

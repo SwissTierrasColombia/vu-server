@@ -33,4 +33,4 @@ export default (app) => {
   // app.use('/bower_components', express.static(`${config.root}/bower_components`));
   // app.get('/:url(admin)/*', (req, res) => res.sendFile(`${config.client2}/index.html`));
 
-}
+};

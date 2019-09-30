@@ -31,5 +31,7 @@
         "constructor-super": 1,
         "no-duplicate-imports": 1,
         "no-const-assign": 1,
+        "no-extra-semi": 1,
+        "semi": 1
     }
 }

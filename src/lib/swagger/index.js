@@ -46,7 +46,7 @@ export async function index(app) {
             resolve();
         });
 
-    })
+    });
 
 }
 
@@ -56,12 +56,12 @@ function router(app, swaggerConfig) {
     Object.keys(swaggerConfig.paths).forEach((keyParent, i) => {
         let parent = swaggerConfig.paths[keyParent];
         Object.keys(parent).forEach((keyChild, j) => {
-            let child = swaggerConfig.paths[keyParent][keyChild]
+            let child = swaggerConfig.paths[keyParent][keyChild];
             if (typeof child === 'object' && 'x-hide' in child && child['x-hide'] === true) {
                 delete swaggerConfig.paths[keyParent][keyChild];
             }
-        })
-    })
+        });
+    });
 
     // or remove manual, exmaple:
     // delete swaggerConfig.paths['/auth/github'];
@@ -71,7 +71,7 @@ function router(app, swaggerConfig) {
         app.get(`/swagger.json`, (req, res) => res.json(swaggerConfig));
         app.use('/docs', express.static(`${config.base}/lib/swagger/ui`));
     }
-};
+}
 
 // disable debug [object][object]
 function errorHandler(err, req, res, next) {

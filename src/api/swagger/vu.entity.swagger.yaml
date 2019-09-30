@@ -17,3 +17,80 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+  post:
+    operationId: createEntity
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Entities
+    summary: Create entity
+    description: Create entity
+    parameters:
+      - name: entity
+        in: formData
+        description: Entity name
+        type: string
+        required: true
+    responses:
+      201:
+        description: Create entity
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/entities/{entity}:
+  x-swagger-router-controller: vu.entity.controller
+  get:
+    operationId: getEntity
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Entities
+    summary: Get entity
+    description: Get entity
+    parameters:
+      - name: entity
+        in: path
+        description: Entity ID
+        type: string
+        required: true
+    responses:
+      200:
+        description: Get entity
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  put:
+    operationId: updateEntity
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Entities
+    summary: Update entity
+    description: Update entity
+    parameters:
+      - name: entity
+        in: path
+        description: Entity ID
+        type: string
+        required: true
+      - name: name
+        in: formData
+        description: Entity name
+        type: string
+        required: true
+    responses:
+      200:
+        description: Update entity
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

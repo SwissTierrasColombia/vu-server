@@ -102,5 +102,47 @@
             "access_denied_step": "No se cuenta con los permisos necesarios para realizar la operación.",
             "process_is_closing": "No se puede actualizar la información porque el trámite se ha cerrado."
         }
+    },
+    "vu": {
+        "users": {
+            "user_firstname_required": "El nombre es requerido.",
+            "user_lastname_required": "Los apellidos son requerido.",
+            "user_username_required": "El username es requerido.",
+            "user_email_required": "El correo electrónico es requerido.",
+            "user_email_invalid": "El correo electrónico es inválido.",
+            "user_password_required": "La contraseña es requerido.",
+            "user_username_already_registered": "El username ya esta registrado en el sistema.",
+            "user_email_already_registered": "El correo electrónico ya esta registrado en el sistema.",
+            "user_roles_not_exists": "Los roles especificados son inválidos.",
+            "user_roles_minimun": "Se debe especificar mínimo un rol para el usuario.",
+            "user_entities_not_exists": "Las entidades especificados son inválidas.",
+            "user_roles_required": "Los roles del usuarios son requeridos.",
+            "user_roles_invalid": "Los roles del usuarios son inválidos.",
+            "user_required": "El usuario es requerido.",
+            "user_invalid": "El usuario es inválido.",
+            "user_not_exists": "El usuario no existe.",
+            "user_token_required": "El código es requerido.",
+            "user_token_invalid": "El código es inválido."
+        },
+        "roles": {
+            "role_required": "El rol es requerido.",
+            "role_invalid": "El rol es inválido.",
+            "role_not_exists": "El rol no existe.",
+            "role_name_required": "El nombre del rol es requerido.",
+            "role_name_already_registered": "El rol ya se encuentra registrado.",
+            "role_cant_delete_users_used": "No se puede borrar el rol porque hay usuarios que ya lo tienen asignado.",
+            "role_cant_delete_steps_used": "No se puede borrar el rol porque hay pasos de procesos que ya lo tienen asignado."
+        },
+        "entities": {
+            "entity_name_required": "El nombre de la entidad es requerido.",
+            "entity_name_already_registered": "La entidad ya se encuentra registrado.",
+            "entity_required": "La entidad es requerida.",
+            "entity_invalid": "La entidad es inválida.",
+            "entity_not_exists": "La entidad no existe."
+        }
+    },
+    "general": {
+        "page_required": "La página es requerida.",
+        "page_invalid": "La página es inválida."
     }
 }

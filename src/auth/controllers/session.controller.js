@@ -11,7 +11,7 @@ export function list(req, res) {
         all[prop] = JSON.parse(all[prop]);
       return result(res, all);
     })
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -21,7 +21,7 @@ export function destroy(req, res) {
   return call.destroy(`${req.user._id}:${req.swagger.params.id.value.split(":")[1]}`)
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -31,7 +31,7 @@ export function logout(req, res) {
   return call.destroy(req.user.session.rjwt)
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -47,7 +47,7 @@ export function listAdmin(req, res) {
         all[prop] = JSON.parse(all[prop]);
       return result(res, all);
     })
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -57,7 +57,7 @@ export function destroyAdmin(req, res) {
   return call.destroy(`${req.swagger.params.id.value}`)
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }
 
@@ -67,6 +67,6 @@ export function logoutAdmin(req, res) {
   return call.destroyMultiple(req.swagger.params.id.value)
     .then(notFound(res))
     .then(result(res))
-    .catch(error(res))
+    .catch(error(res));
 
 }

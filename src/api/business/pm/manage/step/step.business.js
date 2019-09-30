@@ -79,4 +79,8 @@ export default class StepBusiness {
         return await MStepModel.updateRuleToStep(mStepId, ruleId, dataRule);
     }
 
+    static async countStepsWithRole(roleId) {
+        return await MStepModel.countStepsWithRole(roleId);
+    }
+
 }

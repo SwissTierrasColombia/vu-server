@@ -51,7 +51,7 @@ export default (conn, config) => {
 
   });
 
-}
+};
 
 function plant(model, data) {
 

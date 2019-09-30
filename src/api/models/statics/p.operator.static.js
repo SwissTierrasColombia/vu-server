@@ -13,6 +13,6 @@ export default (POperatorModel) => {
             return await this.findById(operatorId);
         },
 
-    }
+    };
 
 };

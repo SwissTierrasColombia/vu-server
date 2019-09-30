@@ -121,6 +121,21 @@ export default {
       password: process.env.QUEUE_REDIS_PASSWORD
     }
   },
+  nodemailer: {
+    host: process.env.MAIL_HOST,
+    secure: process.env.MAIL_SECURE,
+    port: process.env.MAIL_PORT,
+    from: process.env.MAIL_FROM,
+    auth: {
+      user: process.env.MAIL_USERNAME,
+      pass: process.env.MAIL_PASSWORD
+    }
+  },
+  otp: {
+    step: 180, //seconds duration token
+    algorithm: 'sha512',
+    digits: 6
+  },
   // globals
   mode: process.env.NODE_ENV || 'production', // mode
   name: APP_NAME, // name 

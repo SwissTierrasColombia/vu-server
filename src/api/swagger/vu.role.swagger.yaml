@@ -17,3 +17,103 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+  post:
+    operationId: createRole
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Roles
+    summary: Create role
+    description: Create role
+    parameters:
+      - name: role
+        in: formData
+        description: Role name
+        type: string
+        required: true
+    responses:
+      200:
+        description: Create role
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/roles/{role}:
+  x-swagger-router-controller: vu.role.controller
+  get:
+    operationId: getRole
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Roles
+    summary: Get role
+    description: Get role
+    parameters:
+      - name: role
+        in: path
+        description: Role ID
+        required: true
+        type: string
+    responses:
+      200:
+        description: Get roles
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  put:
+    operationId: updateRole
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Roles
+    summary: Update role
+    description: Update role
+    parameters:
+      - name: role
+        in: path
+        description: Role ID
+        type: string
+        required: true
+      - name: name
+        in: formData
+        description: Role name
+        type: string
+        required: true
+    responses:
+      200:
+        description: Update role
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+  delete:
+    operationId: deleteRole
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - 5d710564330f7d7cd67ee491
+    tags:
+      - VU - Roles
+    summary: Delete role
+    description: Delete role
+    parameters:
+      - name: role
+        in: path
+        description: Role ID
+        type: string
+        required: true
+    responses:
+      204:
+        description: Delete role
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

@@ -18,6 +18,6 @@ export default (PCallbackModel) => {
             return await callback.exec();
         }
 
-    }
+    };
 
 };
