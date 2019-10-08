@@ -139,6 +139,11 @@
             "entity_required": "La entidad es requerida.",
             "entity_invalid": "La entidad es inválida.",
             "entity_not_exists": "La entidad no existe."
+        },
+        "departments": {
+            "department_required": "El departamento es requerido.",
+            "department_invalid": "El departamento es inválido.",
+            "department_not_exits": "El departamento no existe."
         }
     },
     "general": {

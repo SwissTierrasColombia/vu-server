@@ -1,0 +1,37 @@
+/api/vu/departments:
+  x-swagger-router-controller: vu.department.controller
+  get:
+    operationId: getDepartments
+    tags:
+      - VU - Departments
+    summary: Get departments
+    description: Get departments
+    responses:
+      200:
+        description: Get departments
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/vu/departments/{department}/municipalities:
+  x-swagger-router-controller: vu.department.controller
+  get:
+    operationId: getMunicipalitiesByDeparment
+    tags:
+      - VU - Departments
+    summary: Get municipalities by deparment
+    description: Get municipalities by deparment
+    parameters:
+      - name: department
+        in: path
+        type: string
+        description: Department ID
+        required: true
+    responses:
+      200:
+        description: Get municipalities by deparment
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

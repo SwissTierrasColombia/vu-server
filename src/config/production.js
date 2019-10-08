@@ -89,6 +89,16 @@ export default {
           schema: 'VUUserModel',
           plant: 'once'
         },
+        {
+          file: 'vu.department.seed',
+          schema: 'VUDepartmentModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.municipality.seed',
+          schema: 'VUMunicipalityModel',
+          plant: 'once'
+        },
       ]
     },
   },
