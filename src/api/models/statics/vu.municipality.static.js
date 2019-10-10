@@ -5,6 +5,10 @@ export default (VUMunicipalityModel) => {
 
         async getMunicipalitiesByDepartment(departmentId) {
             return await this.find({ department: departmentId });
+        },
+
+        async getMunicipalityById(municipalityId) {
+            return await this.findById(municipalityId);
         }
 
     };

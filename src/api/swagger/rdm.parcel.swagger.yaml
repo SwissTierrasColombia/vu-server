@@ -1,0 +1,90 @@
+/api/rdm/parcels:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoParcel
+    tags:
+      - RDM - Parcels
+    summary: Get basic information parcel
+    description: Get basic information parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get basic information parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/geometry:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoGeometryParcel
+    tags:
+      - RDM - Parcels
+    summary: Get geometry information parcel
+    description: Get geometry information parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: parcelId
+        in: query
+        type: string
+        description: Parcel ID
+        required: true
+    responses:
+      200:
+        description: Get geometry information parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/geometry/image:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getImageGeometryParcel
+    tags:
+      - RDM - Parcels
+    summary: Get image geometry parcel
+    description: Get image geometry parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: parcelId
+        in: query
+        type: string
+        description: Parcel ID
+        required: true
+    responses:
+      200:
+        description: Get image geometry parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

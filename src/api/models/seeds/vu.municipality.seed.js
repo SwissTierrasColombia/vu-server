@@ -5,11 +5,13 @@ export default [
     {
         _id: MunicipalityBusiness.MUNICIPALITY_CANUTALITO,
         municipality: 'CANUTALITO',
-        department: DepartmentBusiness.DEPARMENT_SUCRE
+        department: DepartmentBusiness.DEPARMENT_SUCRE,
+        versions: []
     },
     {
         _id: MunicipalityBusiness.MUNICIPALITY_OVEJAS,
         municipality: 'OVEJAS',
-        department: DepartmentBusiness.DEPARMENT_SUCRE
+        department: DepartmentBusiness.DEPARMENT_SUCRE,
+        versions: []
     },
 ];

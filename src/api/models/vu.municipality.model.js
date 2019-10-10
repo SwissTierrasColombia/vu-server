@@ -18,6 +18,73 @@ const VUMunicipalitySchema = new Schema({
         ],
     },
 
+    versions: [
+        {
+            name: {
+                type: String,
+                required: [
+                    true, 'Name required.'
+                ],
+            },
+            order: {
+                type: Number,
+                required: [
+                    true, 'Order required.'
+                ],
+            },
+            layer: {
+                type: String,
+                required: [
+                    true, 'Layer required.'
+                ],
+            },
+            srs: {
+                type: String,
+                required: [
+                    true, 'Srs required.'
+                ],
+            },
+            connection: {
+                host: {
+                    type: String,
+                    required: [
+                        true, 'Host required.'
+                    ],
+                },
+                port: {
+                    type: String,
+                    required: [
+                        true, 'Port required.'
+                    ],
+                },
+                database: {
+                    type: String,
+                    required: [
+                        true, 'Database required.'
+                    ],
+                },
+                schema: {
+                    type: String,
+                    required: [
+                        true, 'Schema required.'
+                    ],
+                },
+                username: {
+                    type: String,
+                    required: [
+                        true, 'Username required.'
+                    ],
+                },
+                password: {
+                    type: String,
+                    required: [
+                        true, 'Password required.'
+                    ],
+                }
+            }
+        }
+    ],
+
     createdAt: {
         type: Date,
         default: Date.now

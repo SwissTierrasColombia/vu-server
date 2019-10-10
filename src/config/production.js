@@ -146,6 +146,9 @@ export default {
     algorithm: 'sha512',
     digits: 6
   },
+  geoserver: {
+    urlWms: process.env.GEOSERVER_URL_WMS
+  },
   // globals
   mode: process.env.NODE_ENV || 'production', // mode
   name: APP_NAME, // name 

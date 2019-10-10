@@ -10,5 +10,21 @@ export default class MunicipalityBusiness {
         return await VUMunicipalityModel.getMunicipalitiesByDepartment(departmentId);
     }
 
+    static async getMunicipalityById(municipalityId) {
+        try {
+            return await VUMunicipalityModel.getMunicipalityById(municipalityId);
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static async getVersionToUse(municipality) {
+        const versions = municipality.versions;
+        versions.sort(function (a, b) {
+            return b.order - a.order;
+        });
+        return versions[0];
+    }
+
 
 }
