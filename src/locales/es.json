@@ -153,7 +153,8 @@
         },
         "parcels": {
             "parcel_not_found": "No se ha encontrado información relacionada con el predio.",
-            "parcel_required": "El predio es requerido."
+            "parcel_required": "El predio es requerido.",
+            "terrain_required": "El terreno es requerido."
         }
     },
     "general": {

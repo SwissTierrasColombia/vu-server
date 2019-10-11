@@ -88,3 +88,269 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/rdm/terrains/geometry:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getGeometryTerrain
+    tags:
+      - RDM - Parcels
+    summary: Get geometry terrain
+    description: Get geometry terrain
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: terrainId
+        in: query
+        type: string
+        description: Terrain ID
+        required: true
+    responses:
+      200:
+        description: Get geometry terrain
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/economic:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoEconomicParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information economic parcel
+    description: Get information economic parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get information economic parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/legal:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoLegalParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information legal parcel
+    description: Get information legal parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get information legal parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/physical:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoPhysicalParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information physical parcel
+    description: Get information physical parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get information physical parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/igac-property-record-card:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoIgacParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information Igac parcel
+    description: Get information Igac parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get information Igac parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/party:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoPartyParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information party parcel
+    description: Get information party parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get information party parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/affectations:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoAffectionsParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information affectations parcel
+    description: Get information affectations parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: terrainId
+        in: query
+        type: string
+        description: Terrain ID
+        required: false
+    responses:
+      200:
+        description: Get information affectations parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"
+
+/api/rdm/parcels/catastral-code:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoCatastralParcel
+    tags:
+      - RDM - Parcels
+    summary: Get information catastral parcel
+    description: Get information catastral parcel
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: terrainId
+        in: query
+        type: string
+        description: Terrain ID
+        required: false
+    responses:
+      200:
+        description: Get information catastral parcel
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

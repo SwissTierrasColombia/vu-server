@@ -111,5 +111,172 @@ export default class ParcelImplementation extends ParcelBusiness {
         return imageBase64;
     }
 
+    static async iGetGeometryTerrain(municipalityId, terrainId) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationTerrain = await this.getGeometryTerrain(version.connection, terrainId);
+        if (!informationTerrain) {
+            throw new APIException('vu.parcels.parcel_not_found', 404);
+        }
+
+        return informationTerrain;
+    }
+
+    static async iGetParcelEconomicInformation(municipalityId, cadastralCode, fmi, nupre) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationEconomic = await this.getParcelEconomicInformation(version.connection, null, fmi, cadastralCode, null, true, true);
+        if (!informationEconomic) {
+            throw new APIException('vu.parcels.parcel_not_found', 404);
+        }
+
+        return informationEconomic;
+    }
+
+    static async iGetParcelLegalInformation(municipalityId, cadastralCode, fmi, nupre) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationLegal = await this.getParcelLegalInformation(version.connection, null, fmi, cadastralCode, null);
+        if (!informationLegal) {
+            throw new APIException('vu.parcels.parcel_not_found', 404);
+        }
+
+        return informationLegal;
+    }
+
+    static async iGetParcelPhysicalInformation(municipalityId, cadastralCode, fmi, nupre) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationPhysical = await this.getParcelPhysicalInformation(version.connection, null, fmi, cadastralCode, null, true);
+        if (!informationPhysical) {
+            throw new APIException('vu.parcels.parcel_not_found', 404);
+        }
+
+        return informationPhysical;
+    }
+
+    static async iGetParcelIgacInformation(municipalityId, cadastralCode, fmi, nupre) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationIgac = await this.getParcelIgacInformation(version.connection, null, fmi, cadastralCode, null, true);
+        if (!informationIgac) {
+            throw new APIException('vu.parcels.parcel_not_found', 404);
+        }
+
+        return informationIgac;
+    }
+
+    static async iGetParcelPartyInformation(municipalityId, cadastralCode, fmi, nupre) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationParty = await this.getParcelPartyInformation(version.connection, fmi, cadastralCode, nupre);
+
+        return informationParty;
+    }
+
+    static async iGetAffectations(municipalityId, terrainId) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        console.log('holaa');
+
+    }
+
+    static async iGetParcelCatastralCodeInformation(municipalityId, terrainId) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+
+        const informationCatastral = await this.getParcelCatastralCodeInformation(version.connection, terrainId);
+        if (!informationCatastral) {
+            throw new APIException('vu.parcels.parcel_not_found', 404);
+        }
+
+        return informationCatastral;
+    }
+
 
 }
