@@ -278,5 +278,37 @@ export default class ParcelImplementation extends ParcelBusiness {
         return informationCatastral;
     }
 
+    static async iGetParcelBasicInformationRecord(municipalityId, nupre, catastralCode, fmi) {
+
+        const municipalityFound = await MunicipalityBusiness.getMunicipalityById(municipalityId);
+        if (!municipalityFound) {
+            throw new APIException('vu.municipalities.municipality_not_exits', 404);
+        }
+
+        const versions = municipalityFound.versions;
+        if (versions.length === 0) {
+            throw new APIException('vu.municipalities.municipality_not_information_available', 401);
+        }
+
+        let dataRecord = [];
+
+        const version = await MunicipalityBusiness.getVersionToUse(municipalityFound);
+        const codeBeforeVersion = version.order - 1;
+        if (codeBeforeVersion > 0) {
+
+            const beforeVersion = municipalityFound.versions.find(item => {
+                return item.order === codeBeforeVersion;
+            });
+
+            dataRecord = await this.getParcelBasicInformation(beforeVersion.connection, null, fmi, catastralCode, null, false, false);
+            if (!dataRecord) {
+                dataRecord = [];
+            }
+
+        }
+
+        return dataRecord;
+    }
+
 
 }

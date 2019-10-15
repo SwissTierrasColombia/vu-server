@@ -354,3 +354,40 @@
         description: Server error
         schema:
           $ref: "#/definitions/Error"
+
+/api/rdm/parcels/record:
+  x-swagger-router-controller: rdm.parcel.controller
+  get:
+    operationId: getInfoParcelRecord
+    tags:
+      - RDM - Parcels
+    summary: Get basic information parcel (record)
+    description: Get basic information parcel (record)
+    parameters:
+      - name: municipality
+        in: query
+        type: string
+        description: Municipality ID
+        required: true
+      - name: nupre
+        in: query
+        type: string
+        description: Nupre
+        required: false
+      - name: cadastralCode
+        in: query
+        type: string
+        description: Parcel Number
+        required: false
+      - name: fmi
+        in: query
+        type: string
+        description: FMI
+        required: false
+    responses:
+      200:
+        description: Get basic information parcel (record)
+      500:
+        description: Server error
+        schema:
+          $ref: "#/definitions/Error"

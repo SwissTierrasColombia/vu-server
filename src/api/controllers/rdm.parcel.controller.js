@@ -394,3 +394,38 @@ export async function getInfoCatastralParcel(req, res) {
     }
 
 }
+
+// get info parcel record
+export async function getInfoParcelRecord(req, res) {
+
+    const language = 'es';
+
+    try {
+
+        // data input
+        const nupre = req.swagger.params.nupre.value;
+        const cadastralCode = req.swagger.params.cadastralCode.value;
+        const fmi = req.swagger.params.fmi.value;
+        const municipalityId = req.swagger.params.municipality.value;
+
+        // validate municipality
+        req.checkQuery("municipality", getMessage('vu.municipalities.municipality_required', language)).notEmpty();
+        req.checkQuery("municipality", getMessage('vu.municipalities.municipality_invalid', language)).isMongoId();
+
+        const errors = req.validationErrors();
+        if (errors) {
+            return badRequest(res, 400, { message: errors[0].msg });
+        }
+
+        let dataParcel = await ParcelImplementation.iGetParcelBasicInformationRecord(municipalityId, nupre, cadastralCode, fmi);
+
+        return result(res, 200, dataParcel);
+    } catch (exception) {
+        console.log("rmd.parcel@getInfoParcel ---->", exception);
+        if (exception.codeHttp && exception.key) {
+            return error(res, exception.codeHttp, { message: getMessage(exception.key, 'es') });
+        }
+        return error(res, 500, { message: 'Server error ...' });
+    }
+
+}
