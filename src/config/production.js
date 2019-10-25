@@ -89,6 +89,16 @@ export default {
           schema: 'VUUserModel',
           plant: 'once'
         },
+        {
+          file: 'vu.department.seed',
+          schema: 'VUDepartmentModel',
+          plant: 'once'
+        },
+        {
+          file: 'vu.municipality.seed',
+          schema: 'VUMunicipalityModel',
+          plant: 'once'
+        },
       ]
     },
   },
@@ -135,6 +145,9 @@ export default {
     step: 180, //seconds duration token
     algorithm: 'sha512',
     digits: 6
+  },
+  geoserver: {
+    urlWms: process.env.GEOSERVER_URL_WMS
   },
   // globals
   mode: process.env.NODE_ENV || 'production', // mode

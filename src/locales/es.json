@@ -139,6 +139,22 @@
             "entity_required": "La entidad es requerida.",
             "entity_invalid": "La entidad es inválida.",
             "entity_not_exists": "La entidad no existe."
+        },
+        "departments": {
+            "department_required": "El departamento es requerido.",
+            "department_invalid": "El departamento es inválido.",
+            "department_not_exits": "El departamento no existe."
+        },
+        "municipalities": {
+            "municipality_required": "El municipio es requerido.",
+            "municipality_invalid": "El municipio es inválido.",
+            "municipality_not_exits": "El municipio no existe.",
+            "municipality_not_information_available": "El municipio no tiene información registrada."
+        },
+        "parcels": {
+            "parcel_not_found": "No se ha encontrado información relacionada con el predio.",
+            "parcel_required": "El predio es requerido.",
+            "terrain_required": "El terreno es requerido."
         }
     },
     "general": {
