@@ -69,7 +69,7 @@
         "image-to-base64": "^2.0.1",
         "method-override": "^2.3.10",
         "moment": "^2.24.0",
-        "mongoose": "5.0.17",
+        "mongoose": "5.7.7",
         "mongoose-paginate": "^5.0.3",
         "nodemailer": "^6.3.0",
         "otplib": "^11.0.1",
