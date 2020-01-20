@@ -43,3 +43,10 @@ git clone https://github.com/AgenciaImplementacion/pm-server
 cd pm-server
 npm i
 ```
+
+## Iniciar servidor
+
+```bash
+cd pm-server
+npm run simple
+```
